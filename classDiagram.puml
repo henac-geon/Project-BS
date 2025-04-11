@@ -1,0 +1,150 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+' === 추상 클래스 === '
+abstract class Book {
+  - string title
+  - int durability
+  - bool isDamaged
+  + void damage()
+  + void repair()
+  + abstract void displayInfo()
+}
+
+note right of Book
+  다양한 장르/속성의 책이
+  계속해서 추가될 예정
+end note
+
+abstract class NPC {
+  - string name
+  + abstract Book* requestBook(vector<Book*>)
+  + abstract bool rateBook(Book*)
+}
+
+note left of NPC
+  새로운 NPC 타입 지속 추가 예정
+  (학생, 마법사, 상인 등)
+end note
+
+abstract class MiniGame {
+  + abstract bool play(Book&)
+}
+
+note left of MiniGame
+  다양한 미니게임이
+  (불필요한 행정 시스템이 모티브)
+  계속해서 추가될 예정
+end note
+
+
+abstract class GameMode {
+  + abstract void run(GameManager&)
+}
+
+' === 구체 클래스들 === '
+class FantasyBook extends Book {
+  + void displayInfo()
+}
+
+class ScienceBook extends Book {
+  + void displayInfo()
+}
+
+class StudentNPC extends NPC {
+  + Book* requestBook(vector<Book*>)
+  + bool rateBook(Book*)
+}
+
+class WizardNPC extends NPC {
+  + Book* requestBook(vector<Book*>)
+  + bool rateBook(Book*)
+}
+
+class TypingGame extends MiniGame {
+  + bool play(Book&)
+}
+
+class PuzzleGame extends MiniGame {
+  + bool play(Book&)
+}
+
+class AdminMode extends GameMode {
+  + void run(GameManager&)
+}
+
+class UserMode extends GameMode {
+  + void run(GameManager&)
+}
+
+' === 일반 클래스들 === '
+class Inventory {
+  - vector<Book*> books
+  + void addBook(Book*)
+  + void removeBook(int index)
+  + Book* findBook(string title)
+}
+
+class LevelSystem {
+  - int experience
+  - int level
+  + void gainExp(int amount)
+  + bool checkLevelUp()
+  + int getLevel()
+}
+
+class ScoreSystem {
+  - int score
+  - int grade
+  + void updateScore(bool satisfied)
+  + int getScore()
+  + int getGrade()
+}
+
+class UIManager {
+  + void displayMainMenu()
+  + void displayInventory(const Inventory&)
+  + void displayNPCInteraction(const NPC&)
+  + void displayAsciiArt(string artName)
+  + void displayDailySummary(int day, int gold, int magicPower)
+  + int getUserInput(string prompt)
+  + void displayModeSelection()
+}
+
+class GameManager {
+  - Inventory inventory
+  - vector<NPC*> npcs
+  - vector<MiniGame*> miniGames
+  - int day
+  - int gold
+  - int magicPower
+  - LevelSystem levelSystem
+  - ScoreSystem scoreSystem
+  - UIManager uiManager
+  - GameMode* currentMode
+  + void startDay()
+  + void writeBook()
+  + void serveNPCs()
+  + void dailySummary()
+  + void endDay()
+  + void switchMode(GameMode*)
+}
+
+' === 관계 및 다중성 === '
+GameManager "1" --> "1" Inventory
+GameManager "1" --> "*" NPC
+GameManager "1" --> "*" MiniGame
+GameManager "1" --> "1" LevelSystem
+GameManager "1" --> "1" ScoreSystem
+GameManager "1" --> "1" UIManager
+GameManager "1" --> "1" GameMode
+
+Inventory "1" --> "*" Book
+NPC "1" --> "1" Book : 요청
+MiniGame "1" --> "1" Book : 수리 대상
+ScoreSystem "1" --> "*" NPC
+
+AdminMode --> GameManager
+UserMode --> GameManager
+
+@enduml
