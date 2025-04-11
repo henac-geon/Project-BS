@@ -1,16 +1,68 @@
 @startuml
 skinparam classAttributeIconSize 0
+' skinparam linetype ortho
+skinparam visibilityModifier true
 
-' === 추상 클래스 === '
-abstract class Book {
-  - string title
-  - int durability
-  - bool isDamaged
-  + void damage()
-  + void repair()
-  + abstract void displayInfo()
+' ============================= '
+'          ENUM 정의            '
+' ============================= '
+
+enum Genre {
+  Fantasy
+  Romance
+  Horror
+  Mystery
+  SciFi
+  NonFiction
 }
 
+enum Mood {
+  Dark
+  Light
+  Emotional
+  Tense
+  Whimsical
+}
+
+enum DamageType {
+  Water
+  Fire
+  MagicCurse
+  Tear
+  Lost
+}
+
+enum NPCType {
+  Student
+  Wizard
+  Merchant
+  Librarian
+}
+
+enum BookCondition {
+  Perfect
+  Worn
+  Damaged
+  Destroyed
+}
+
+' ============================= '
+'         추상 클래스           '
+' ============================= '
+
+abstract class Book {
+  - string title
+  - string description
+  - Genre genre
+  - Mood mood
+  - int length
+  - bool isDamaged
+  - DamageType damageType
+  - BookCondition condition
+
+  + void repair()
+  + void displayInfo()
+}
 note right of Book
   다양한 장르/속성의 책이
   계속해서 추가될 예정
@@ -18,19 +70,24 @@ end note
 
 abstract class NPC {
   - string name
-  + abstract Book* requestBook(vector<Book*>)
-  + abstract bool rateBook(Book*)
-}
+  - Genre preferredGenre
+  - Mood preferredMood
+  - List<Book> inventory
+  - int gold
+  - int magicPower
 
+  + Book requestBook(List<Book> candidates)
+  + bool rateBook(Book book)
+  + void compensateForDamage(Book book)
+}
 note left of NPC
   새로운 NPC 타입 지속 추가 예정
   (학생, 마법사, 상인 등)
 end note
 
 abstract class MiniGame {
-  + abstract bool play(Book&)
+  + bool play(Book book)
 }
-
 note left of MiniGame
   다양한 미니게임이
   (불필요한 행정 시스템이 모티브)
@@ -39,10 +96,13 @@ end note
 
 
 abstract class GameMode {
-  + abstract void run(GameManager&)
+  + void run(GameManager gm)
 }
 
-' === 구체 클래스들 === '
+' ============================= '
+'         구체 클래스           '
+' ============================= '
+
 class FantasyBook extends Book {
   + void displayInfo()
 }
@@ -52,37 +112,40 @@ class ScienceBook extends Book {
 }
 
 class StudentNPC extends NPC {
-  + Book* requestBook(vector<Book*>)
-  + bool rateBook(Book*)
+  + Book requestBook(List<Book> candidates)
+  + bool rateBook(Book book)
 }
 
 class WizardNPC extends NPC {
-  + Book* requestBook(vector<Book*>)
-  + bool rateBook(Book*)
+  + Book requestBook(List<Book> candidates)
+  + bool rateBook(Book book)
 }
 
 class TypingGame extends MiniGame {
-  + bool play(Book&)
+  + bool play(Book book)
 }
 
 class PuzzleGame extends MiniGame {
-  + bool play(Book&)
+  + bool play(Book book)
 }
 
 class AdminMode extends GameMode {
-  + void run(GameManager&)
+  + void run(GameManager gm)
 }
 
 class UserMode extends GameMode {
-  + void run(GameManager&)
+  + void run(GameManager gm)
 }
 
-' === 일반 클래스들 === '
+' ============================= '
+'         시스템 클래스         '
+' ============================= '
+
 class Inventory {
-  - vector<Book*> books
-  + void addBook(Book*)
+  - List<Book> books
+  + void addBook(Book book)
   + void removeBook(int index)
-  + Book* findBook(string title)
+  + Book findBook(string title)
 }
 
 class LevelSystem {
@@ -103,48 +166,85 @@ class ScoreSystem {
 
 class UIManager {
   + void displayMainMenu()
-  + void displayInventory(const Inventory&)
-  + void displayNPCInteraction(const NPC&)
-  + void displayAsciiArt(string artName)
-  + void displayDailySummary(int day, int gold, int magicPower)
+  + void displayInventory(Inventory inventory)
+  + void displayNPCInteraction(NPC npc)
+  + void displayBookDetail(Book book)
+  + void displayBookCondition(BookCondition bc)
+  + void displayPenaltyInfo(int gold, int mp)
+  + void displayAsciiArt(string art)
+  + void displayLevelUpMessage(int level)
   + int getUserInput(string prompt)
   + void displayModeSelection()
+  + void displayMiniGameResult(string result)
 }
 
 class GameManager {
   - Inventory inventory
-  - vector<NPC*> npcs
-  - vector<MiniGame*> miniGames
+  - List<NPC> npcs
+  - List<MiniGame> miniGames
   - int day
   - int gold
   - int magicPower
   - LevelSystem levelSystem
   - ScoreSystem scoreSystem
   - UIManager uiManager
-  - GameMode* currentMode
+  - GameMode currentMode
   + void startDay()
   + void writeBook()
   + void serveNPCs()
   + void dailySummary()
   + void endDay()
-  + void switchMode(GameMode*)
+  + void switchMode(GameMode mode)
 }
 
-' === 관계 및 다중성 === '
-GameManager "1" --> "1" Inventory
-GameManager "1" --> "*" NPC
-GameManager "1" --> "*" MiniGame
-GameManager "1" --> "1" LevelSystem
-GameManager "1" --> "1" ScoreSystem
-GameManager "1" --> "1" UIManager
-GameManager "1" --> "1" GameMode
+class PenaltySystem {
+  + static int calculateGoldPenalty(Book book)
+  + static int calculateMagicPenalty(Book book)
+}
 
-Inventory "1" --> "*" Book
-NPC "1" --> "1" Book : 요청
-MiniGame "1" --> "1" Book : 수리 대상
-ScoreSystem "1" --> "*" NPC
+class BookFactory {
+  + static Book createRandomBook()
+  + static Book createBook(Genre genre, Mood mood, int length)
+}
+
+class AchievementSystem {
+  - List<string> unlocked
+  + void checkAchievements(GameManager gm)
+  + void unlock(string name)
+}
+
+class LogSystem {
+  + void logEvent(string message)
+  + void displayLogs()
+}
+
+' ============================= '
+'       관계 및 의존성 설정      '
+' ============================= '
+
+GameManager --> Inventory
+GameManager --> NPC
+GameManager --> MiniGame
+GameManager --> LevelSystem
+GameManager --> ScoreSystem
+GameManager --> UIManager
+GameManager --> GameMode
+
+Inventory --> Book
+NPC --> Book : 요청
+MiniGame --> Book : 플레이 대상
+ScoreSystem --> NPC
 
 AdminMode --> GameManager
 UserMode --> GameManager
+
+UIManager ..> Book : <<uses>>
+UIManager ..> NPC : <<uses>>
+UIManager ..> BookCondition : <<uses>>
+
+NPC ..> PenaltySystem : <<uses>>
+GameManager ..> BookFactory : <<uses>>
+GameManager ..> AchievementSystem : <<uses>>
+GameManager ..> LogSystem : <<uses>>
 
 @enduml
