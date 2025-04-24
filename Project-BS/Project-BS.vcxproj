@@ -127,7 +127,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="CsvIO.cpp" />
     <ClCompile Include="쓰래기.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CsvIO.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
