@@ -30,7 +30,8 @@ enum class eDamageType {
     Fire,
     MagicCurse,
     Tear,
-    Lost
+    Lost,
+    None
 };
 
 enum class eNPCType {
