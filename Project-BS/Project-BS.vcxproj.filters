@@ -96,6 +96,18 @@
     <ClCompile Include="UIManager.cpp">
       <Filter>소스 파일\UI</Filter>
     </ClCompile>
+    <ClCompile Include="FantasyBook.cpp">
+      <Filter>소스 파일\Book</Filter>
+    </ClCompile>
+    <ClCompile Include="ScienceBook.cpp">
+      <Filter>소스 파일\Book</Filter>
+    </ClCompile>
+    <ClCompile Include="WizardNPC.cpp">
+      <Filter>소스 파일\NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="StudentNPC.cpp">
+      <Filter>소스 파일\NPC</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CsvIO.h">
@@ -130,6 +142,18 @@
     </ClInclude>
     <ClInclude Include="BookFactory.h">
       <Filter>헤더 파일\Book</Filter>
+    </ClInclude>
+    <ClInclude Include="FantasyBook.h">
+      <Filter>헤더 파일\Book</Filter>
+    </ClInclude>
+    <ClInclude Include="ScienceBook.h">
+      <Filter>헤더 파일\Book</Filter>
+    </ClInclude>
+    <ClInclude Include="WizardNPC.h">
+      <Filter>헤더 파일\NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="StudentNPC.h">
+      <Filter>헤더 파일\NPC</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
