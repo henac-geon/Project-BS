@@ -127,11 +127,30 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Book.cpp" />
     <ClCompile Include="CsvIO.cpp" />
-    <ClCompile Include="쓰래기.cpp" />
+    <ClCompile Include="Inventory.cpp" />
+    <ClCompile Include="LevelSystem.cpp" />
+    <ClCompile Include="MiniGame.cpp" />
+    <ClCompile Include="NPC.cpp" />
+    <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="PenaltySystem.cpp" />
+    <ClCompile Include="PenaltySystem.h" />
+    <ClCompile Include="ScoreSystem.cpp" />
+    <ClCompile Include="UIManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Book.h" />
+    <ClInclude Include="BookFactory.h" />
     <ClInclude Include="CsvIO.h" />
+    <ClInclude Include="Enums.h" />
+    <ClInclude Include="NPC.h" />
+    <ClInclude Include="MiniGame.h" />
+    <ClInclude Include="GameManager.h" />
+    <ClInclude Include="LevelSystem.h" />
+    <ClInclude Include="ScoreSystem.h" />
+    <ClInclude Include="UIManager.h" />
+    <ClInclude Include="Inventory.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
