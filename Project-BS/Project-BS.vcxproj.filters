@@ -13,5 +13,147 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="소스 파일\Book">
+      <UniqueIdentifier>{a8f08e63-e000-444b-8dc7-a685db689c06}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Book">
+      <UniqueIdentifier>{718794bd-7495-44c4-a503-140b5326e207}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Utility">
+      <UniqueIdentifier>{725a421b-ca18-4c9b-a66c-5c956784cf5a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Utility">
+      <UniqueIdentifier>{ad885677-eef4-4935-958c-01fb4a4c5ebb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\NPC">
+      <UniqueIdentifier>{37c0b653-ff54-4541-b43a-ab14d0ed5f4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\NPC">
+      <UniqueIdentifier>{4503415c-c0c6-4d4d-91f8-00f3c5269e87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\MiniGame">
+      <UniqueIdentifier>{42fde833-77e4-423f-a5ca-4ff84f673c1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\MiniGame">
+      <UniqueIdentifier>{c3ef3bbb-2ea1-4c60-90a5-04d45ba8ec1d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Core">
+      <UniqueIdentifier>{bc87f7c4-0741-497f-acf0-0abe4df8d7f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Core">
+      <UniqueIdentifier>{b28cf2c3-b617-4337-a8a0-ce79db77c5bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\UI">
+      <UniqueIdentifier>{5419beaf-630a-4352-9f5e-f497c78605bf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\UI">
+      <UniqueIdentifier>{a6eb8eeb-5322-42ef-88cf-741cb8759af3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Systems">
+      <UniqueIdentifier>{01ec1469-edc7-4c73-bc6f-99e08abb2349}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Common">
+      <UniqueIdentifier>{d9de3d41-2f08-4fe3-b8e7-6589e7ee5fd1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Systems">
+      <UniqueIdentifier>{3b1ef56a-c770-4938-b628-787605be56ea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\Commons">
+      <UniqueIdentifier>{f9dbda96-5671-4a4b-8e5e-8dcbe5cd5589}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Book.cpp">
+      <Filter>소스 파일\Book</Filter>
+    </ClCompile>
+    <ClCompile Include="NPC.cpp">
+      <Filter>소스 파일\NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="CsvIO.cpp">
+      <Filter>소스 파일\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="MiniGame.cpp">
+      <Filter>소스 파일\MiniGame</Filter>
+    </ClCompile>
+    <ClCompile Include="GameManager.cpp">
+      <Filter>소스 파일\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="LevelSystem.cpp">
+      <Filter>소스 파일\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="ScoreSystem.cpp">
+      <Filter>소스 파일\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Inventory.cpp">
+      <Filter>소스 파일\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="PenaltySystem.h">
+      <Filter>헤더 파일\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="PenaltySystem.cpp">
+      <Filter>소스 파일\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="UIManager.cpp">
+      <Filter>소스 파일\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="FantasyBook.cpp">
+      <Filter>소스 파일\Book</Filter>
+    </ClCompile>
+    <ClCompile Include="ScienceBook.cpp">
+      <Filter>소스 파일\Book</Filter>
+    </ClCompile>
+    <ClCompile Include="WizardNPC.cpp">
+      <Filter>소스 파일\NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="StudentNPC.cpp">
+      <Filter>소스 파일\NPC</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CsvIO.h">
+      <Filter>헤더 파일\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Book.h">
+      <Filter>헤더 파일\Book</Filter>
+    </ClInclude>
+    <ClInclude Include="NPC.h">
+      <Filter>헤더 파일\NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="MiniGame.h">
+      <Filter>헤더 파일\MiniGame</Filter>
+    </ClInclude>
+    <ClInclude Include="Enums.h">
+      <Filter>헤더 파일\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="GameManager.h">
+      <Filter>헤더 파일\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelSystem.h">
+      <Filter>헤더 파일\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="ScoreSystem.h">
+      <Filter>헤더 파일\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="UIManager.h">
+      <Filter>헤더 파일\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="Inventory.h">
+      <Filter>헤더 파일\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="BookFactory.h">
+      <Filter>헤더 파일\Book</Filter>
+    </ClInclude>
+    <ClInclude Include="FantasyBook.h">
+      <Filter>헤더 파일\Book</Filter>
+    </ClInclude>
+    <ClInclude Include="ScienceBook.h">
+      <Filter>헤더 파일\Book</Filter>
+    </ClInclude>
+    <ClInclude Include="WizardNPC.h">
+      <Filter>헤더 파일\NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="StudentNPC.h">
+      <Filter>헤더 파일\NPC</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

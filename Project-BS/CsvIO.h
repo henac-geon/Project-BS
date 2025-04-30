@@ -1,6 +1,9 @@
 // CsvIO.hpp
 #pragma once
 
+#ifndef CSVIO_H
+#define CSVIO_H
+
 #include <string>
 #include <vector>
 
@@ -36,3 +39,5 @@ public:
      */
     static std::vector<std::vector<std::string>> importFromCsv(const std::string& filename);
 };
+
+#endif
