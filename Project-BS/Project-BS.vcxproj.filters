@@ -108,6 +108,12 @@
     <ClCompile Include="StudentNPC.cpp">
       <Filter>소스 파일\NPC</Filter>
     </ClCompile>
+    <ClCompile Include="BookFactory.cpp">
+      <Filter>소스 파일\Book</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CsvIO.h">

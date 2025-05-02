@@ -37,7 +37,11 @@ public:
      * 생성자에서는 전달받은 메타데이터로 멤버 변수를 초기화하고,
      * 기본적으로 손상 상태를 "양호"로 설정합니다.
      */
-    Book(const std::string& title, const std::string& description, eBookGenre genre, eBookMood mood, int length);
+    Book(const std::string& title,
+        const std::string& description,
+        eBookGenre genre,
+        eBookMood mood,
+        int length);
 
     /**
      * @brief 가상 소멸자
@@ -65,6 +69,12 @@ public:
      * @return std::string - 책의 제목
      */
     std::string getTitle() const;
+
+    /**
+     * @brief 책 상태를 반환하는 getter
+     * @return eBookCondition - 책의 상태
+     */
+    eBookCondition getCondition() const;
 };
 
 #endif // BOOK_H

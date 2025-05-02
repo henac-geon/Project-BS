@@ -128,10 +128,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Book.cpp" />
+    <ClCompile Include="BookFactory.cpp" />
     <ClCompile Include="CsvIO.cpp" />
     <ClCompile Include="FantasyBook.cpp" />
     <ClCompile Include="Inventory.cpp" />
     <ClCompile Include="LevelSystem.cpp" />
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="MiniGame.cpp" />
     <ClCompile Include="NPC.cpp" />
     <ClCompile Include="GameManager.cpp" />
