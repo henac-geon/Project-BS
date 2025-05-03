@@ -11,22 +11,41 @@
  *
  * 생성자에서는 멤버 초기화 리스트를 사용하여 모든 멤버를 안전하게 초기화합니다.
  * 기본적으로 isDamaged는 false로 설정하여 손상되지 않은 상태로 시작하며,
- * damageType은 eDamageType::Lost(분실), condition은 eBookCondition::Perfect(완전)로 초기화합니다.
+ * damageType은 eDamageType::None(손상 없음), condition은 eBookCondition::Perfect(완전)로 초기화합니다.
  */
-Book::Book(const std::string& title, const std::string& description, eBookGenre genre, eBookMood mood, int length)
-    : title(title), description(description), genre(genre), mood(mood), length(length), isDamaged(false), damageType(eDamageType::None), condition(eBookCondition::Perfect)
+Book::Book(const std::string& title,
+    const std::string& description,
+    eBookGenre genre,
+    eBookMood mood,
+    int length)
+    : title(title),               // 제목 초기화
+    description(description),   // 설명 초기화
+    genre(genre),               // 장르 초기화
+    mood(mood),                 // 분위기 초기화
+    length(length),             // 분량 초기화
+    isDamaged(false),           // 기본 손상 여부: 없음
+    damageType(eDamageType::None),       // 기본 손상 유형: 없음
+    condition(eBookCondition::Perfect)   // 기본 상태: 완전
 {
-    // TODO: 필요에 따라 생성 시 추가 초기화 로직 추가
-    // 예: 초기 설명 출력, 통계 기록, 인벤토리에 자동 추가 등
+    // TODO: 필요에 따라 추가 초기화 로직 구현
 }
 
 /**
  * @brief 책 제목을 반환하는 Getter
  *
  * @return std::string - 책의 제목
- *
- * 간단한 인라인 함수로, 멤버 변수 title을 읽기 전용으로 반환합니다.
  */
 std::string Book::getTitle() const {
-    return title;  // title 멤버 변수 반환
+    return title;  // title 멤버 반환
+}
+
+/**
+ * @brief 책 상태를 반환하는 Getter
+ *
+ * @return eBookCondition - 책의 현재 상태
+ *
+ * condition 멤버 변수 값을 그대로 반환합니다.
+ */
+eBookCondition Book::getCondition() const {
+    return condition;  // condition 멤버 반환
 }

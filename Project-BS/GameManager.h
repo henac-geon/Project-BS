@@ -48,6 +48,12 @@ public:
     ~GameManager();
 
     /**
+     * @brief 플레이어에게 모드 선택 UI를 띄우고, 선택된 값을 반환
+     * @return int - 1: WriteBook, 2: ServeNPCs, 3: DailySummary, 4: Exit
+     */
+    int selectMode();
+
+    /**
      * @brief 하루를 시작하는 초기화 함수
      *
      * day를 증가시키고, 일일 자원(골드, 마법력)을 리셋하거나 보너스를 적용합니다.

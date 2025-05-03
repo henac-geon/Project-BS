@@ -34,6 +34,13 @@ GameManager::~GameManager() {
     }
 }
 
+
+int GameManager::selectMode() {
+    uiManager.displayModeSelection();  // "Select Mode:" 출력
+    // 프롬프트를 넘겨서 입력받음
+    return uiManager.getUserInput("Enter choice (1-4): ");
+}
+
 /**
  * @brief 하루를 시작하며 메인 메뉴를 UI에 표시
  *
