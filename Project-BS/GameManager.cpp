@@ -1,112 +1,80 @@
-#include "GameManager.h"    // GameManager 클래스 정의 포함
-#include "BookFactory.h"     // 무작위 책 생성용 팩토리 클래스
-#include "PenaltySystem.h"   // 페널티 계산 시스템
-#include <iostream>           // std::cout 사용
-#include <string>             // std::to_string 사용
+#include "GameManager.h"
+#include "AsciiArtRepository.h"
+#include "BookFactory.h"
+#include "PenaltySystem.h"
+#include <iostream>
 
-/**
- * @brief 기본 생성자
- *
- * - day를 1로 초기화하여 1일차부터 시작
- * - gold 및 magicPower는 0으로 초기화
- * - actions 및 actionNames 초기화
- */
 GameManager::GameManager()
-    : day(1),        // 게임 시작 일수 설정
-    gold(0),
-    magicPower(0)
-{
-    initActions();
+    : day(1), gold(0), magicPower(0) {
+
 }
 
-/**
- * @brief 소멸자
- *
- * 동적 할당된 NPC 및 MiniGame 객체를 해제하여 메모리 누수를 방지합니다.
- */
 GameManager::~GameManager() {
-    for (auto npc : npcs) {
-        delete npc;
-    }
-    for (auto mg : miniGames) {
-        delete mg;
+    for (auto npc : npcs) delete npc;
+}
+
+void GameManager::run() {
+    std::string command;
+    std::cout << "게임을 시작하려면 '시작'을 입력하세요: ";
+    std::cin >> command;
+    if (command != "시작") return;
+
+    while (true) {
+        startDay();
+        performWritingPhase();
+        performNPCPhase();
+        performSettlementPhase();
+        endDay();
+
+        std::cout << "다음 날로 진행하시겠습니까? (y/n): ";
+        std::cin >> command;
+        if (command != "y" && command != "Y") break;
     }
 }
 
-/**
- * @brief actions 및 actionNames 초기화
- */
-void GameManager::initActions() {
-    actionNames = {
-        "Write Book",
-        "Serve NPCs",
-        "View Inventory",
-        "Daily Summary",
-        "Exit"
-    };
-
-    actions = {
-        [this]() { writeBook();     return true; },
-        [this]() { serveNPCs();     return true; },
-        [this]() { viewInventory(); return true; },
-        [this]() { dailySummary();  return true; },
-        [this]() { return false;             }
-    };
-}
-
-/**
- * @brief 하루를 시작하며 메인 메뉴를 UI에 표시
- */
 void GameManager::startDay() {
-    uiManager.displayMainMenu();
+    uiManager.clearScreen();
+    std::cout << AsciiArt::getWelcomeArt() << std::endl;
+    std::cout << "\n Day " << day << " 시작!\n";
 }
 
-/**
- * @brief 메뉴를 화면에 출력
- */
-void GameManager::displayMenu() {
-    uiManager.displayModeSelection();
-    for (size_t i = 0; i < actionNames.size(); ++i) {
-        std::cout << ' ' << (i + 1) << ". " << actionNames[i] << '\n';
+void GameManager::performWritingPhase() {
+    int numBooks = rand() % 3 + 1;
+    std::cout << "\n 오늘 집필할 책 수: " << numBooks << std::endl;
+
+    for (int i = 0; i < numBooks; ++i) {
+        auto book = BookFactory::createRandomBook();
+        inventory.addBook(book);
+        std::cout << "책 등록됨: " << book->getTitle() << std::endl;
     }
+
+    std::string ans;
+    std::cout << "인벤토리를 확인하시겠습니까? (y/n): ";
+    std::cin >> ans;
+    if (ans == "y") uiManager.displayInventory(inventory);
 }
 
-/**
- * @brief 사용자 모드 선택 입력 받기
- */
-int GameManager::selectMode() {
-    return uiManager.getUserInput(
-        "Enter choice (1-" + std::to_string(actionNames.size()) + "): "
-    );
-}
+void GameManager::performNPCPhase() {
+    uiManager.clearScreen();
+    std::cout << AsciiArt::getWelcomeArt() << std::endl; // NPC 화면으로 설정
+    int numNPC = rand() % 3 + 1;
+    std::cout << "\n 오늘 응대할 NPC 수: " << numNPC << std::endl;
 
-/**
- * @brief 선택된 모드 실행
- * @param idx 메뉴 번호(1-based)
- * @return bool 게임 계속 여부 (false면 종료)
- */
-bool GameManager::executeAction(int idx) {
-    if (idx < 1 || idx > static_cast<int>(actions.size())) {
-        std::cout << "Invalid choice, try again." << std::endl;
-        return true;
-    }
-    return actions[idx - 1]();
-}
+    for (int i = 0; i < numNPC; ++i) {
+        NPC* npc = new RandomNPC();
+        npcs.push_back(npc);
 
-/**
- * @brief 책 집필 기능
- */
-void GameManager::writeBook() {
-    auto book = BookFactory::createRandomBook();
-    inventory.addBook(book);
-}
+		uiManager.displayNPCInteraction(npc); // NPC와 상호작용 화면 설정
 
-/**
- * @brief NPC 응대 기능
- */
-void GameManager::serveNPCs() {
-    for (auto npc : npcs) {
+		// 먼저 NPC의 요청을 확인
+		// 책을 반납하는 것인지 요청하는 것인지에 따라 다르게 구현
+
+		// TODO: 책을 요청하는 것은 NPC의 요청에 따라 다르게 구현
+		// 예를 들어, 특정 장르나 분위기를 선호하는 NPC가 있을 수 있음
+		// 따라서 인벤토리에 없는 택을 요청할 수도 있음
+        // 매개 변수 삭제 해야 함
         auto book = npc->requestBook(inventory.getBooks());
+
         bool satisfied = false;
         if (book) {
             satisfied = npc->rateBook(book);
@@ -118,25 +86,31 @@ void GameManager::serveNPCs() {
         }
         scoreSystem.updateScore(satisfied);
     }
+
+    std::string ans;
+    std::cout << "인벤토리를 확인하시겠습니까? (y/n): ";
+    std::cin >> ans;
+    if (ans == "y") uiManager.displayInventory(inventory);
 }
 
-/**
- * @brief 인벤토리 조회 기능
- */
-void GameManager::viewInventory() {
-    uiManager.displayInventory(inventory);
+void GameManager::performSettlementPhase() {
+    std::cout << "\n 정산 단계 시작!\n";
+    for (auto& book : inventory.getBooks()) {
+        if (book->getCondition() == eBookCondition::Damaged) {
+            book->repair();
+            std::cout << book->getTitle() << " 복원 완료!" << std::endl;
+        }
+    }
+    auto book = BookFactory::createRandomBook();
+    inventory.addBook(book);
+    std::cout << "마지막 책 집필 완료: " << book->getTitle() << std::endl;
+
+    std::string ans;
+    std::cout << "인벤토리를 확인하시겠습니까? (y/n): ";
+    std::cin >> ans;
+    if (ans == "y") uiManager.displayInventory(inventory);
 }
 
-/**
- * @brief 일과 요약 기능
- */
-void GameManager::dailySummary() {
-    uiManager.displayAsciiArt("Day Summary");
-}
-
-/**
- * @brief 하루 종료 처리 및 레벨업 체크
- */
 void GameManager::endDay() {
     if (levelSystem.checkLevelUp()) {
         uiManager.displayLevelUpMessage(levelSystem.getLevel());
