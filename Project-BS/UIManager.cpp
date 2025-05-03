@@ -1,6 +1,7 @@
 #include "UIManager.h"   // UIManager 클래스 정의 헤더 포함
 #include "AsciiArtRepository.h" // ASCII 아트 저장소 헤더 포함
 #include <iostream>        // std::cout, std::cin 사용을 위한 iostream 헤더
+#include <cstdlib>
 
 /**
  * @brief 메인 메뉴를 콘솔에 출력
@@ -35,6 +36,8 @@ void UIManager::displayInventory(const Inventory& inventory) {
     for (size_t i = 0; i < books.size(); ++i) {
         std::cout << i << ": " << books[i]->getTitle() << std::endl;
     }
+	//TODO: 책 상세 정보 출력 기능 추가 구현
+	//TODO: 인벤토리 나가기 기능 추가 구현
 }
 
 /**
@@ -51,6 +54,7 @@ void UIManager::displayNPCInteraction(NPC* npc) {
         std::cout << " - 이름: "; // << npc->getName() << std::endl;
         // 필요시 선호 장르 등도 출력 가능
     }
+    //TODO: 상호작용 기능 추가 구현
 }
 
 /**
@@ -160,4 +164,12 @@ void UIManager::displayModeSelection() {
  */
 void UIManager::displayMiniGameResult(const std::string& result) {
     std::cout << "\n 미니게임 결과: " << result << std::endl;
+}
+
+void UIManager::clearScreen() {
+#ifdef _WIN32
+    std::system("cls");
+#else
+    std::system("clear");
+#endif
 }
