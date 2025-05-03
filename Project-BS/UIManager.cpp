@@ -1,4 +1,5 @@
 #include "UIManager.h"   // UIManager 클래스 정의 헤더 포함
+#include "AsciiArtRepository.h" // ASCII 아트 저장소 헤더 포함
 #include <iostream>        // std::cout, std::cin 사용을 위한 iostream 헤더
 
 /**
@@ -8,7 +9,12 @@
  * 플레이어에게 주요 명령 선택 인터페이스를 제공합니다.
  */
 void UIManager::displayMainMenu() {
-    std::cout << "=== Main Menu ===" << std::endl;
+    std::cout << "\n=== Main Menu ===" << std::endl;
+    std::cout << "1. 집필 모드" << std::endl;
+    std::cout << "2. NPC 응대" << std::endl;
+    std::cout << "3. 미니게임" << std::endl;
+    std::cout << "4. 인벤토리 확인" << std::endl;
+    std::cout << "5. 종료" << std::endl;
 }
 
 /**
@@ -20,12 +26,14 @@ void UIManager::displayMainMenu() {
  * 인덱스와 책 제목을 한 줄씩 출력합니다.
  */
 void UIManager::displayInventory(const Inventory& inventory) {
-    std::cout << "Inventory:" << std::endl;
-    // 각 책의 인덱스와 제목을 나열
-    for (size_t i = 0; i < inventory.getBooks().size(); ++i) {
-        std::cout << i << ": "
-            << inventory.getBooks()[i]->getTitle()
-            << std::endl;
+    std::cout << "\n 인벤토리 목록:" << std::endl;
+    const auto& books = inventory.getBooks();
+    if (books.empty()) {
+        std::cout << " - 등록된 책이 없습니다." << std::endl;
+        return;
+    }
+    for (size_t i = 0; i < books.size(); ++i) {
+        std::cout << i << ": " << books[i]->getTitle() << std::endl;
     }
 }
 
@@ -38,7 +46,11 @@ void UIManager::displayInventory(const Inventory& inventory) {
  * 추후 NPC 이름, 선호 정보 등을 추가로 표시할 수 있습니다.
  */
 void UIManager::displayNPCInteraction(NPC* npc) {
-    std::cout << "Interacting with NPC" << std::endl;
+    std::cout << "\n NPC와의 상호작용을 시작합니다..." << std::endl;
+    if (npc) {
+        std::cout << " - 이름: "; // << npc->getName() << std::endl;
+        // 필요시 선호 장르 등도 출력 가능
+    }
 }
 
 /**
@@ -50,9 +62,11 @@ void UIManager::displayNPCInteraction(NPC* npc) {
  * 책의 제목, 설명, 장르, 분위기, 상태 등을 출력합니다.
  */
 void UIManager::displayBookDetail(const Book* book) {
-    book->displayInfo();
+    if (book) {
+        std::cout << "\n 책 상세 정보:" << std::endl;
+        book->displayInfo();
+    }
 }
-
 /**
  * @brief 책 상태(Condition)를 콘솔에 출력
  *
@@ -62,11 +76,16 @@ void UIManager::displayBookDetail(const Book* book) {
  * enum-to-string 매핑을 구현하여 출력할 수도 있습니다.
  */
 void UIManager::displayBookCondition(eBookCondition bc) {
-    std::cout << "Condition: "
-        << static_cast<int>(bc)
-        << std::endl;
+    std::cout << "상태: ";
+    switch (bc) {
+    case eBookCondition::Perfect: std::cout << "최상"; break;
+    case eBookCondition::Worn: std::cout << "양호"; break;
+    case eBookCondition::Damaged: std::cout << "약간의 손상이 있음"; break;
+    case eBookCondition::Destroyed: std::cout << "훼손이 많이 됨 수리 필요"; break;
+    default: std::cout << "알 수 없음"; break;
+    }
+    std::cout << std::endl;
 }
-
 /**
  * @brief 골드 및 마력 페널티 정보를 출력
  *
@@ -76,9 +95,9 @@ void UIManager::displayBookCondition(eBookCondition bc) {
  * NPC 불만족 시 페널티 정보를 사용자에게 알려줍니다.
  */
 void UIManager::displayPenaltyInfo(int gold, int mp) {
-    std::cout << "Gold Penalty: " << gold
-        << ", MP Penalty: " << mp
-        << std::endl;
+    std::cout << "\n 페널티 발생!" << std::endl;
+    std::cout << " - 골드 감소: " << gold << std::endl;
+    std::cout << " - 마력 감소: " << mp << std::endl;
 }
 
 /**
@@ -89,7 +108,7 @@ void UIManager::displayPenaltyInfo(int gold, int mp) {
  * 일일 요약이나 특별 이벤트의 시각적 효과를 위해 사용합니다.
  */
 void UIManager::displayAsciiArt(const std::string& art) {
-    std::cout << art << std::endl;
+    std::cout << "\n" << art << std::endl;
 }
 
 /**
@@ -100,9 +119,9 @@ void UIManager::displayAsciiArt(const std::string& art) {
  * 레벨업 시 "Level Up! New Level: X" 형태로 표시합니다.
  */
 void UIManager::displayLevelUpMessage(int level) {
-    std::cout << "Level Up! New Level: " << level << std::endl;
+    std::cout << AsciiArt::getLevelUpArt() << std::endl;
+    std::cout << "\n 레벨 업! 새로운 레벨: " << level << std::endl;
 }
-
 /**
  * @brief 사용자로부터 정수 입력을 받는 함수
  *
@@ -116,6 +135,7 @@ int UIManager::getUserInput(const std::string& prompt) {
     std::cout << prompt;
     int input;
     std::cin >> input;
+    // TODO: 예외 처리 및 재입력 로직 구현 가능
     return input;
 }
 
@@ -125,9 +145,12 @@ int UIManager::getUserInput(const std::string& prompt) {
  * 플레이어가 수행할 수 있는 모드(집필, NPC 응대, 미니게임 등)를 안내합니다.
  */
 void UIManager::displayModeSelection() {
-    std::cout << "Select Mode:" << std::endl;
+    std::cout << "\n 모드를 선택하세요:" << std::endl;
+    std::cout << "1. 집필 모드" << std::endl;
+    std::cout << "2. NPC 응대" << std::endl;
+    std::cout << "3. 미니게임" << std::endl;
+    std::cout << "4. 돌아가기" << std::endl;
 }
-
 /**
  * @brief 미니게임 결과를 콘솔에 출력
  *
@@ -136,5 +159,5 @@ void UIManager::displayModeSelection() {
  * 미니게임 수행 후 결과를 사용자에게 알려줍니다.
  */
 void UIManager::displayMiniGameResult(const std::string& result) {
-    std::cout << "MiniGame Result: " << result << std::endl;
+    std::cout << "\n 미니게임 결과: " << result << std::endl;
 }

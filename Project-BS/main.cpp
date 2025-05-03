@@ -7,13 +7,11 @@ int main() {
 
     while (running) {
         game.startDay();
-        game.displayMenu();
 
         int choice = game.selectMode();
         running = game.executeAction(choice);
 
-        if (running)
-            game.endDay();
+        if (running)  game.endDay();
     }
 
     std::cout << "Thank you for playing!\n";

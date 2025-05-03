@@ -114,6 +114,9 @@
     <ClCompile Include="main.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="AsciiArtRepository.cpp">
+      <Filter>소스 파일\UI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CsvIO.h">
@@ -160,6 +163,9 @@
     </ClInclude>
     <ClInclude Include="StudentNPC.h">
       <Filter>헤더 파일\NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="AsciiArtRepository.h">
+      <Filter>헤더 파일\UI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
