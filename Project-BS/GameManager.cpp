@@ -1,4 +1,5 @@
 #include "GameManager.h"    // GameManager 클래스 정의 포함
+#include "AsciiArtRepository.h" // ASCII 아트 저장소 헤더 포함
 #include "BookFactory.h"     // 무작위 책 생성용 팩토리 클래스
 #include "PenaltySystem.h"   // 페널티 계산 시스템
 #include <iostream>           // std::cout 사용
@@ -52,6 +53,7 @@ void GameManager::initActions() {
         [this]() { dailySummary();  return true; },
         [this]() { return false;             }
     };
+    std::cout << AsciiArt::getWelcomeArt() << std::endl;
 }
 
 /**
@@ -59,16 +61,6 @@ void GameManager::initActions() {
  */
 void GameManager::startDay() {
     uiManager.displayMainMenu();
-}
-
-/**
- * @brief 메뉴를 화면에 출력
- */
-void GameManager::displayMenu() {
-    uiManager.displayModeSelection();
-    for (size_t i = 0; i < actionNames.size(); ++i) {
-        std::cout << ' ' << (i + 1) << ". " << actionNames[i] << '\n';
-    }
 }
 
 /**
@@ -97,6 +89,7 @@ bool GameManager::executeAction(int idx) {
  * @brief 책 집필 기능
  */
 void GameManager::writeBook() {
+    std::cout << AsciiArt::writeBookArt() << std::endl;
     auto book = BookFactory::createRandomBook();
     inventory.addBook(book);
 }
