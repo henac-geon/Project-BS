@@ -19,3 +19,79 @@ NPC::NPC(const std::string& name, eBookGenre genre, eBookMood mood, int gold, in
     // 예: 기본 인벤토리(Book 포인터)를 설정하거나,
     //     초기화 메시지 출력, 통계 증가 등
 }
+
+// NPC가 받은 책을 평가하는 함수
+bool NPC::rateBook(Book* book) const {
+    if (!book) return false;    // 추천 못 받았을 경우
+
+    switch (requestType) {
+    case eRequestType::GenreOnly:    // 장르만 추천받는 타입
+        return book->getGenre() == preferredGenre;
+    case eRequestType::MoodOnly:     // 무드만 추천받는 타입
+        return book->getMood() == preferredMood;
+    case eRequestType::GenreAndMood:     // 둘다 추천받는 타입
+        return book->getGenre() == preferredGenre && book->getMood() == preferredMood;
+    case eRequestType::AnyBook: // 장르, 무드 상관없이 추천만 받으면 OK
+        return true;
+    }
+
+    return false;   // 예외
+}
+
+/**
+* 
+* NPC.h에서 만들었던 get 함수와 set 함수 정의
+* 
+*/
+
+std::string NPC::getName() const {
+    return name;
+}
+
+void NPC::setName(const std::string& newName) {
+    name = newName;
+}
+
+eBookGenre NPC::getPreferredGenre() const {
+    return preferredGenre;
+}
+
+void NPC::setPreferredGenre(eBookGenre genre) {
+    preferredGenre = genre;
+}
+
+eBookMood NPC::getPreferredMood() const {
+    return preferredMood;
+}
+
+void NPC::setPreferredMood(eBookMood mood) {
+    preferredMood = mood;
+}
+
+const std::vector<Book*>& NPC::getInventory() const {
+    return inventory;
+}
+
+int NPC::getGold() const {
+    return gold;
+}
+
+void NPC::setGold(int newGold) {
+    gold = newGold;
+}
+
+int NPC::getMagicPower() const {
+    return magicPower;
+}
+
+void NPC::setMagicPower(int newMagicPower) {
+    magicPower = newMagicPower;
+}
+
+eRequestType NPC::getRequestType() const {
+    return requestType;
+}
+
+void NPC::setRequestType(eRequestType type) {
+    requestType = type;
+}
