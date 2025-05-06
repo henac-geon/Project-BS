@@ -81,6 +81,18 @@ public:
      * @return eBookCondition - 책의 상태
      */
     eBookCondition getCondition() const;
+
+    /**
+     * @brief 책 장르를 반환하는 getter
+     * @return eBookGenre - 책의 장르
+     */
+    eBookGenre getGenre() const;
+
+    /**
+     * @brief 책 분위기를 반환하는 getter
+     * @return eBookMood - 책의 분위기
+     */
+    eBookMood getMood() const;
 };
 
 #endif // BOOK_H

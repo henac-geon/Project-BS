@@ -54,3 +54,11 @@ std::string Book::getTitle() const {
 eBookCondition Book::getCondition() const {
     return condition;  // condition ¸â¹ö ¹ÝÈ¯
 }
+
+eBookGenre Book::getGenre() const {
+    return genre;
+}
+
+eBookMood Book::getMood() const {
+    return mood;
+}

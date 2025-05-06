@@ -155,6 +155,7 @@ void UIManager::displayModeSelection() {
     std::cout << "3. 미니게임" << std::endl;
     std::cout << "4. 돌아가기" << std::endl;
 }
+
 /**
  * @brief 미니게임 결과를 콘솔에 출력
  *
