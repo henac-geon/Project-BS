@@ -1,7 +1,7 @@
 #include "FantasyBook.h"
 
 FantasyBook::FantasyBook(const std::string& title, const std::string& description, int length)
-    : Book(title, description, eBookGenre::Fantasy, eBookMood::Whimsical, length, edge, etc) {
+    : Book(title, description, eBookGenre::Fantasy, eBookMood::Whimsical, length, eBookEdge::None, eBookEtc::None) {
 }
 
 void FantasyBook::repair() {
