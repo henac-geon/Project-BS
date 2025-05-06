@@ -2,6 +2,7 @@
 #include "AsciiArtRepository.h"
 #include "BookFactory.h"
 #include "PenaltySystem.h"
+#include "RandomNPC.h"
 #include <iostream>
 
 GameManager::GameManager()
@@ -61,7 +62,7 @@ void GameManager::performNPCPhase() {
     std::cout << "\n 오늘 응대할 NPC 수: " << numNPC << std::endl;
 
     for (int i = 0; i < numNPC; ++i) {
-        NPC* npc = new RandomNPC();
+        NPC* npc = RandomNPC::create();
         npcs.push_back(npc);
 
 		uiManager.displayNPCInteraction(npc); // NPC와 상호작용 화면 설정

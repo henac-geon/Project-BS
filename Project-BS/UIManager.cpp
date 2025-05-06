@@ -51,7 +51,7 @@ void UIManager::displayInventory(const Inventory& inventory) {
 void UIManager::displayNPCInteraction(NPC* npc) {
     std::cout << "\n NPC와의 상호작용을 시작합니다..." << std::endl;
     if (npc) {
-        std::cout << " - 이름: "; // << npc->getName() << std::endl;
+        std::cout << " - 이름: " << npc->getName() << std::endl;
         // 필요시 선호 장르 등도 출력 가능
     }
     //TODO: 상호작용 기능 추가 구현

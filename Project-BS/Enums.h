@@ -43,4 +43,12 @@ enum class eNPCType {
     Librarian
 };
 
+// NPC 요청 타입
+enum class eRequestType {       
+    GenreOnly,       // 장르만 요구
+    MoodOnly,        // 무드만 요구
+    GenreAndMood,    // 둘 다 요구
+    AnyBook          // 아무거나
+};
+
 #endif // ENUMS_H

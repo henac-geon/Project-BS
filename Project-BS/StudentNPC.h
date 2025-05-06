@@ -7,9 +7,13 @@
 
 class StudentNPC : public NPC {
 public:
-    StudentNPC(const std::string& name);
+    StudentNPC(const std::string& name,
+        eBookGenre genre,
+        eBookMood mood,
+        int gold,
+        int magicPower);
     Book* requestBook(const std::vector<Book*>& candidates) override;
-    bool rateBook(Book* book) override;
+    bool rateBook(Book* book) const override;
     void compensateForDamage(Book* book) override;
 };
 
