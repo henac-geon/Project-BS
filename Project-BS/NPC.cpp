@@ -26,11 +26,11 @@ bool NPC::rateBook(Book* book) const {
 
     switch (requestType) {
     case eRequestType::GenreOnly:    // 장르만 추천받는 타입
-        return book->getGenre() == preferredGenre;
+        return book->getGenre() == this->preferredGenre;
     case eRequestType::MoodOnly:     // 무드만 추천받는 타입
-        return book->getMood() == preferredMood;
+        return book->getMood() == this->preferredMood;
     case eRequestType::GenreAndMood:     // 둘다 추천받는 타입
-        return book->getGenre() == preferredGenre && book->getMood() == preferredMood;
+        return book->getGenre() == this->preferredGenre && book->getMood() == this->preferredMood;
     case eRequestType::AnyBook: // 장르, 무드 상관없이 추천만 받으면 OK
         return true;
     }
