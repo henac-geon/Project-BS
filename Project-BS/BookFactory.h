@@ -7,7 +7,7 @@
 class BookFactory {
 public:
     static Book* createRandomBook();
-    static Book* createBook(eBookGenre genre, eBookMood mood, int length);
+    static Book* createBook(eBookGenre genre, eBookMood mood, int length, eBookEdge edge, eBookEtc etc);
 };
 
 #endif // BOOKFACTORY_H

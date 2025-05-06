@@ -21,6 +21,8 @@ protected:
     eBookGenre genre;            // 책 장르 (Enums.h 참고)
     eBookMood mood;              // 책이 전달하는 분위기 (Enums.h 참고)
     int length;                  // 책의 분량 (페이지 수 또는 읽기 소요 시간)
+    eBookEdge edge;              // 책의 반전 요소
+    eBookEtc etc;                // 기타
     bool isDamaged;              // 책 손상 여부 (true: 손상됨, false: 양호)
     eDamageType damageType;      // 손상 유형 (Enums.h에 정의된 eDamageType)
     eBookCondition condition;    // 책 상태 (Enums.h에 정의된 eBookCondition)
@@ -33,6 +35,8 @@ public:
      * @param genre        책 장르
      * @param mood         책 분위기
      * @param length       책 분량
+     * @param edge         책 반전요소
+     * @param etc          책 기타
      *
      * 생성자에서는 전달받은 메타데이터로 멤버 변수를 초기화하고,
      * 기본적으로 손상 상태를 "양호"로 설정합니다.
@@ -41,7 +45,9 @@ public:
         const std::string& description,
         eBookGenre genre,
         eBookMood mood,
-        int length);
+        int length,
+        eBookEdge edge,
+        eBookEtc etc);
 
     /**
      * @brief 가상 소멸자

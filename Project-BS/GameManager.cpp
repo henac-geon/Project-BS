@@ -2,8 +2,17 @@
 #include "AsciiArtRepository.h"
 #include "BookFactory.h"
 #include "PenaltySystem.h"
+#include "RandomNPC.h"
 #include <iostream>
+#include <string>             // std::to_string ì‚¬ìš©
 
+/**
+ * @brief ê¸°ë³¸ ìƒì„±ì
+ *
+ * - dayë¥¼ 1ë¡œ ì´ˆê¸°í™”í•˜ì—¬ 1ì¼ì°¨ë¶€í„° ì‹œì‘
+ * - gold ë° magicPowerëŠ” 0ìœ¼ë¡œ ì´ˆê¸°í™”
+ * - actions ë° actionNames ì´ˆê¸°í™”
+ */
 GameManager::GameManager()
     : day(1), gold(0), magicPower(0) {
 
@@ -15,9 +24,10 @@ GameManager::~GameManager() {
 
 void GameManager::run() {
     std::string command;
-    std::cout << "°ÔÀÓÀ» ½ÃÀÛÇÏ·Á¸é '½ÃÀÛ'À» ÀÔ·ÂÇÏ¼¼¿ä: ";
+    std::cout << "ê²Œì„ì„ ì‹œì‘í•˜ë ¤ë©´ 'ì‹œì‘'ì„ ì…ë ¥í•˜ì„¸ìš”: ";
     std::cin >> command;
-    if (command != "½ÃÀÛ") return;
+    if (command != "ì‹œì‘") return;
+
 
     while (true) {
         startDay();
@@ -26,7 +36,7 @@ void GameManager::run() {
         performSettlementPhase();
         endDay();
 
-        std::cout << "´ÙÀ½ ³¯·Î ÁøÇàÇÏ½Ã°Ú½À´Ï±î? (y/n): ";
+        std::cout << "ë‹¤ìŒ ë‚ ë¡œ ì§„í–‰í•˜ì‹œê² ìŠµë‹ˆê¹Œ? (y/n): ";
         std::cin >> command;
         if (command != "y" && command != "Y") break;
     }
@@ -35,44 +45,44 @@ void GameManager::run() {
 void GameManager::startDay() {
     uiManager.clearScreen();
     std::cout << AsciiArt::getWelcomeArt() << std::endl;
-    std::cout << "\n Day " << day << " ½ÃÀÛ!\n";
+    std::cout << "\n Day " << day << " ì‹œì‘!\n";
 }
 
 void GameManager::performWritingPhase() {
     int numBooks = rand() % 3 + 1;
-    std::cout << "\n ¿À´Ã ÁıÇÊÇÒ Ã¥ ¼ö: " << numBooks << std::endl;
+    std::cout << "\n ì˜¤ëŠ˜ ì§‘í•„í•  ì±… ìˆ˜: " << numBooks << std::endl;
 
     for (int i = 0; i < numBooks; ++i) {
         auto book = BookFactory::createRandomBook();
         inventory.addBook(book);
-        std::cout << "Ã¥ µî·ÏµÊ: " << book->getTitle() << std::endl;
+        std::cout << "ì±… ë“±ë¡ë¨: " << book->getTitle() << std::endl;
     }
 
     std::string ans;
-    std::cout << "ÀÎº¥Åä¸®¸¦ È®ÀÎÇÏ½Ã°Ú½À´Ï±î? (y/n): ";
+    std::cout << "ì¸ë²¤í† ë¦¬ë¥¼ í™•ì¸í•˜ì‹œê² ìŠµë‹ˆê¹Œ? (y/n): ";
     std::cin >> ans;
     if (ans == "y") uiManager.displayInventory(inventory);
 }
 
 void GameManager::performNPCPhase() {
     uiManager.clearScreen();
-    std::cout << AsciiArt::getWelcomeArt() << std::endl; // NPC È­¸éÀ¸·Î ¼³Á¤
+    std::cout << AsciiArt::getWelcomeArt() << std::endl; // NPC í™”ë©´ìœ¼ë¡œ ì„¤ì •
     int numNPC = rand() % 3 + 1;
-    std::cout << "\n ¿À´Ã ÀÀ´ëÇÒ NPC ¼ö: " << numNPC << std::endl;
+    std::cout << "\n ì˜¤ëŠ˜ ì‘ëŒ€í•  NPC ìˆ˜: " << numNPC << std::endl;
 
     for (int i = 0; i < numNPC; ++i) {
-        NPC* npc = new RandomNPC();
+        NPC* npc = RandomNPC::create();
         npcs.push_back(npc);
 
-		uiManager.displayNPCInteraction(npc); // NPC¿Í »óÈ£ÀÛ¿ë È­¸é ¼³Á¤
+		uiManager.displayNPCInteraction(npc); // NPCì™€ ìƒí˜¸ì‘ìš© í™”ë©´ ì„¤ì •
 
-		// ¸ÕÀú NPCÀÇ ¿äÃ»À» È®ÀÎ
-		// Ã¥À» ¹İ³³ÇÏ´Â °ÍÀÎÁö ¿äÃ»ÇÏ´Â °ÍÀÎÁö¿¡ µû¶ó ´Ù¸£°Ô ±¸Çö
+		// ë¨¼ì € NPCì˜ ìš”ì²­ì„ í™•ì¸
+		// ì±…ì„ ë°˜ë‚©í•˜ëŠ” ê²ƒì¸ì§€ ìš”ì²­í•˜ëŠ” ê²ƒì¸ì§€ì— ë”°ë¼ ë‹¤ë¥´ê²Œ êµ¬í˜„
 
-		// TODO: Ã¥À» ¿äÃ»ÇÏ´Â °ÍÀº NPCÀÇ ¿äÃ»¿¡ µû¶ó ´Ù¸£°Ô ±¸Çö
-		// ¿¹¸¦ µé¾î, Æ¯Á¤ Àå¸£³ª ºĞÀ§±â¸¦ ¼±È£ÇÏ´Â NPC°¡ ÀÖÀ» ¼ö ÀÖÀ½
-		// µû¶ó¼­ ÀÎº¥Åä¸®¿¡ ¾ø´Â ÅÃÀ» ¿äÃ»ÇÒ ¼öµµ ÀÖÀ½
-        // ¸Å°³ º¯¼ö »èÁ¦ ÇØ¾ß ÇÔ
+		// TODO: ì±…ì„ ìš”ì²­í•˜ëŠ” ê²ƒì€ NPCì˜ ìš”ì²­ì— ë”°ë¼ ë‹¤ë¥´ê²Œ êµ¬í˜„
+		// ì˜ˆë¥¼ ë“¤ì–´, íŠ¹ì • ì¥ë¥´ë‚˜ ë¶„ìœ„ê¸°ë¥¼ ì„ í˜¸í•˜ëŠ” NPCê°€ ìˆì„ ìˆ˜ ìˆìŒ
+		// ë”°ë¼ì„œ ì¸ë²¤í† ë¦¬ì— ì—†ëŠ” íƒì„ ìš”ì²­í•  ìˆ˜ë„ ìˆìŒ
+        // ë§¤ê°œ ë³€ìˆ˜ ì‚­ì œ í•´ì•¼ í•¨
         auto book = npc->requestBook(inventory.getBooks());
 
         bool satisfied = false;
@@ -88,25 +98,25 @@ void GameManager::performNPCPhase() {
     }
 
     std::string ans;
-    std::cout << "ÀÎº¥Åä¸®¸¦ È®ÀÎÇÏ½Ã°Ú½À´Ï±î? (y/n): ";
+    std::cout << "ì¸ë²¤í† ë¦¬ë¥¼ í™•ì¸í•˜ì‹œê² ìŠµë‹ˆê¹Œ? (y/n): ";
     std::cin >> ans;
     if (ans == "y") uiManager.displayInventory(inventory);
 }
 
 void GameManager::performSettlementPhase() {
-    std::cout << "\n Á¤»ê ´Ü°è ½ÃÀÛ!\n";
+    std::cout << "\n ì •ì‚° ë‹¨ê³„ ì‹œì‘!\n";
     for (auto& book : inventory.getBooks()) {
         if (book->getCondition() == eBookCondition::Damaged) {
             book->repair();
-            std::cout << book->getTitle() << " º¹¿ø ¿Ï·á!" << std::endl;
+            std::cout << book->getTitle() << " ë³µì› ì™„ë£Œ!" << std::endl;
         }
     }
     auto book = BookFactory::createRandomBook();
     inventory.addBook(book);
-    std::cout << "¸¶Áö¸· Ã¥ ÁıÇÊ ¿Ï·á: " << book->getTitle() << std::endl;
+    std::cout << "ë§ˆì§€ë§‰ ì±… ì§‘í•„ ì™„ë£Œ: " << book->getTitle() << std::endl;
 
     std::string ans;
-    std::cout << "ÀÎº¥Åä¸®¸¦ È®ÀÎÇÏ½Ã°Ú½À´Ï±î? (y/n): ";
+    std::cout << "ì¸ë²¤í† ë¦¬ë¥¼ í™•ì¸í•˜ì‹œê² ìŠµë‹ˆê¹Œ? (y/n): ";
     std::cin >> ans;
     if (ans == "y") uiManager.displayInventory(inventory);
 }
