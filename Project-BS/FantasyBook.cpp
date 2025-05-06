@@ -1,5 +1,5 @@
 #include "FantasyBook.h"
-
+#include "ConsolePrinter.h"
 
 //장르까진 그러려니 하는데 무드나 딴거는 어떻게 떙겨올지 생각해봐야함.
 FantasyBook::FantasyBook(const std::string& title, const std::string& description, int length)
@@ -12,5 +12,5 @@ void FantasyBook::repair() {
 }
 
 void FantasyBook::displayInfo() const {
-    std::cout << "Fantasy Book: " << title << " - " << description << " (" << length << " pages)" << std::endl;
+    ConsolePrinter::println("Fantasy Book: " + title + " - " + description + " (" + std::to_string(length) + " pages)");
 }

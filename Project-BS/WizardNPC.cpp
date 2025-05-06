@@ -1,6 +1,6 @@
 #include "NPC.h"
 #include "WizardNPC.h"
-
+#include "ConsolePrinter.h"
 
 /**
 
@@ -27,6 +27,6 @@ bool WizardNPC::rateBook(Book* book) const {
 }
 
 void WizardNPC::compensateForDamage(Book* book) {
-    std::cout << getName() << " uses magic to compensate." << std::endl;
+    ConsolePrinter::println(getName() + " compensates 10 gold.");
     setMagicPower(getMagicPower() - 5);
 }

@@ -1,5 +1,6 @@
 #include "NPC.h"
 #include "StudentNPC.h"
+#include "ConsolePrinter.h"
 
 /**
 
@@ -27,6 +28,6 @@ bool StudentNPC::rateBook(Book* book) const {
 }
 
 void StudentNPC::compensateForDamage(Book* book) {
-    std::cout << getName() << " compensates 10 gold." << std::endl;
+    ConsolePrinter::println(getName() + " compensates 10 gold.");
     setGold(getGold() - 10);
 }

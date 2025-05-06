@@ -130,6 +130,7 @@
     <ClCompile Include="AsciiArtRepository.cpp" />
     <ClCompile Include="Book.cpp" />
     <ClCompile Include="BookFactory.cpp" />
+    <ClCompile Include="ConsolePrinter.cpp" />
     <ClCompile Include="CsvIO.cpp" />
     <ClCompile Include="FantasyBook.cpp" />
     <ClCompile Include="Inventory.cpp" />
@@ -151,6 +152,7 @@
     <ClInclude Include="AsciiArtRepository.h" />
     <ClInclude Include="Book.h" />
     <ClInclude Include="BookFactory.h" />
+    <ClInclude Include="ConsolePrinter.h" />
     <ClInclude Include="CsvIO.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="FantasyBook.h" />

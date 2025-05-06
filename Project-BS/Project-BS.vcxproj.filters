@@ -120,6 +120,9 @@
     <ClCompile Include="RandomNPC.cpp">
       <Filter>소스 파일\NPC</Filter>
     </ClCompile>
+    <ClCompile Include="ConsolePrinter.cpp">
+      <Filter>소스 파일\Utility</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CsvIO.h">
@@ -172,6 +175,9 @@
     </ClInclude>
     <ClInclude Include="RandomNPC.h">
       <Filter>헤더 파일\NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="ConsolePrinter.h">
+      <Filter>헤더 파일\Utility</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

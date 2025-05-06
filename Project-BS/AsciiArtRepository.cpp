@@ -3,7 +3,7 @@
 namespace AsciiArt {
 
     std::string getWelcomeArt() {
-        return R"(
+        return u8R"(
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⣰⣾⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣀⣶⣿⣿⠿⠟⠛⠀⠈⢛⣶⣤⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
 ⠀⠀⠀⠀⢀⣰⣶⣾⣿⡿⠿⠛⠉⠁⠀⢀⣠⣴⣾⣿⡿⢿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
@@ -30,7 +30,7 @@ namespace AsciiArt {
 
 
     std::string writeBookArt() {
-        return R"(
+        return u8R"(
 @@@@@@@@@@@@@@#@@@@@@@@@@##@@@@@@@@@@@@@
 @@@@@@@@@;       ~@@@@:       ;@@@@@@@@@
 @@@@@@-            @@            -@@@@@@
@@ -54,7 +54,7 @@ namespace AsciiArt {
 
 
     std::string getLevelUpArt() {
-        return R"(
+        return u8R"(
       *     *    *
      *        *     *
     *  LEVEL UP!   *
@@ -66,7 +66,7 @@ namespace AsciiArt {
 
 
     std::string getGameOverArt() {
-        return R"(
+        return u8R"(
    _____                         ____                 
   / ____|                       / __ \                
  | |  __  __ _ _ __ ___   ___ | |  | |_   _____ _ __ 
