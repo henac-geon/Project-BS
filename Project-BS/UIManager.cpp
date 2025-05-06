@@ -1,163 +1,175 @@
-#include "UIManager.h"   // UIManager Å¬·¡½º Á¤ÀÇ Çì´õ Æ÷ÇÔ
-#include "AsciiArtRepository.h" // ASCII ¾ÆÆ® ÀúÀå¼Ò Çì´õ Æ÷ÇÔ
-#include <iostream>        // std::cout, std::cin »ç¿ëÀ» À§ÇÑ iostream Çì´õ
+#include "UIManager.h"   // UIManager í´ë˜ìŠ¤ ì •ì˜ í—¤ë” í¬í•¨
+#include "AsciiArtRepository.h" // ASCII ì•„íŠ¸ ì €ì¥ì†Œ í—¤ë” í¬í•¨
+#include <iostream>        // std::cout, std::cin ì‚¬ìš©ì„ ìœ„í•œ iostream í—¤ë”
+#include <cstdlib>
 
 /**
- * @brief ¸ŞÀÎ ¸Ş´º¸¦ ÄÜ¼Ö¿¡ Ãâ·Â
+ * @brief ë©”ì¸ ë©”ë‰´ë¥¼ ì½˜ì†”ì— ì¶œë ¥
  *
- * "=== Main Menu ===" Çì´õ¸¦ »ç¿ëÇÏ¿©
- * ÇÃ·¹ÀÌ¾î¿¡°Ô ÁÖ¿ä ¸í·É ¼±ÅÃ ÀÎÅÍÆäÀÌ½º¸¦ Á¦°øÇÕ´Ï´Ù.
+ * "=== Main Menu ===" í—¤ë”ë¥¼ ì‚¬ìš©í•˜ì—¬
+ * í”Œë ˆì´ì–´ì—ê²Œ ì£¼ìš” ëª…ë ¹ ì„ íƒ ì¸í„°í˜ì´ìŠ¤ë¥¼ ì œê³µí•©ë‹ˆë‹¤.
  */
 void UIManager::displayMainMenu() {
     std::cout << "\n=== Main Menu ===" << std::endl;
-    std::cout << "1. ÁıÇÊ ¸ğµå" << std::endl;
-    std::cout << "2. NPC ÀÀ´ë" << std::endl;
-    std::cout << "3. ¹Ì´Ï°ÔÀÓ" << std::endl;
-    std::cout << "4. ÀÎº¥Åä¸® È®ÀÎ" << std::endl;
-    std::cout << "5. Á¾·á" << std::endl;
+    std::cout << "1. ì§‘í•„ ëª¨ë“œ" << std::endl;
+    std::cout << "2. NPC ì‘ëŒ€" << std::endl;
+    std::cout << "3. ë¯¸ë‹ˆê²Œì„" << std::endl;
+    std::cout << "4. ì¸ë²¤í† ë¦¬ í™•ì¸" << std::endl;
+    std::cout << "5. ì¢…ë£Œ" << std::endl;
 }
 
 /**
- * @brief ÀÎº¥Åä¸® Ã¥ ¸ñ·ÏÀ» ÄÜ¼Ö¿¡ Ãâ·Â
+ * @brief ì¸ë²¤í† ë¦¬ ì±… ëª©ë¡ì„ ì½˜ì†”ì— ì¶œë ¥
  *
- * @param inventory  Ãâ·ÂÇÒ Inventory °´Ã¼
+ * @param inventory  ì¶œë ¥í•  Inventory ê°ì²´
  *
- * inventory.getBooks()·Î Ã¥ ¸ñ·ÏÀ» °¡Á®¿Í
- * ÀÎµ¦½º¿Í Ã¥ Á¦¸ñÀ» ÇÑ ÁÙ¾¿ Ãâ·ÂÇÕ´Ï´Ù.
+ * inventory.getBooks()ë¡œ ì±… ëª©ë¡ì„ ê°€ì ¸ì™€
+ * ì¸ë±ìŠ¤ì™€ ì±… ì œëª©ì„ í•œ ì¤„ì”© ì¶œë ¥í•©ë‹ˆë‹¤.
  */
 void UIManager::displayInventory(const Inventory& inventory) {
-    std::cout << "\n ÀÎº¥Åä¸® ¸ñ·Ï:" << std::endl;
+    std::cout << "\n ì¸ë²¤í† ë¦¬ ëª©ë¡:" << std::endl;
     const auto& books = inventory.getBooks();
     if (books.empty()) {
-        std::cout << " - µî·ÏµÈ Ã¥ÀÌ ¾ø½À´Ï´Ù." << std::endl;
+        std::cout << " - ë“±ë¡ëœ ì±…ì´ ì—†ìŠµë‹ˆë‹¤." << std::endl;
         return;
     }
     for (size_t i = 0; i < books.size(); ++i) {
         std::cout << i << ": " << books[i]->getTitle() << std::endl;
     }
+	//TODO: ì±… ìƒì„¸ ì •ë³´ ì¶œë ¥ ê¸°ëŠ¥ ì¶”ê°€ êµ¬í˜„
+	//TODO: ì¸ë²¤í† ë¦¬ ë‚˜ê°€ê¸° ê¸°ëŠ¥ ì¶”ê°€ êµ¬í˜„
 }
 
 /**
- * @brief NPC¿Í »óÈ£ÀÛ¿ëÀ» ½ÃÀÛÇÒ ¶§ ¸Ş½ÃÁö Ãâ·Â
+ * @brief NPCì™€ ìƒí˜¸ì‘ìš©ì„ ì‹œì‘í•  ë•Œ ë©”ì‹œì§€ ì¶œë ¥
  *
- * @param npc  »óÈ£ÀÛ¿ëÇÒ NPC Æ÷ÀÎÅÍ
+ * @param npc  ìƒí˜¸ì‘ìš©í•  NPC í¬ì¸í„°
  *
- * °£´ÜÇÑ ¾È³» ¸Ş½ÃÁö¸¦ Ãâ·ÂÇÏ¸ç,
- * ÃßÈÄ NPC ÀÌ¸§, ¼±È£ Á¤º¸ µîÀ» Ãß°¡·Î Ç¥½ÃÇÒ ¼ö ÀÖ½À´Ï´Ù.
+ * ê°„ë‹¨í•œ ì•ˆë‚´ ë©”ì‹œì§€ë¥¼ ì¶œë ¥í•˜ë©°,
+ * ì¶”í›„ NPC ì´ë¦„, ì„ í˜¸ ì •ë³´ ë“±ì„ ì¶”ê°€ë¡œ í‘œì‹œí•  ìˆ˜ ìˆìŠµë‹ˆë‹¤.
  */
 void UIManager::displayNPCInteraction(NPC* npc) {
-    std::cout << "\n NPC¿ÍÀÇ »óÈ£ÀÛ¿ëÀ» ½ÃÀÛÇÕ´Ï´Ù..." << std::endl;
+    std::cout << "\n NPCì™€ì˜ ìƒí˜¸ì‘ìš©ì„ ì‹œì‘í•©ë‹ˆë‹¤..." << std::endl;
     if (npc) {
-        std::cout << " - ÀÌ¸§: "; // << npc->getName() << std::endl;
-        // ÇÊ¿ä½Ã ¼±È£ Àå¸£ µîµµ Ãâ·Â °¡´É
+        std::cout << " - ì´ë¦„: " << npc->getName() << std::endl;
+        // í•„ìš”ì‹œ ì„ í˜¸ ì¥ë¥´ ë“±ë„ ì¶œë ¥ ê°€ëŠ¥
     }
+    //TODO: ìƒí˜¸ì‘ìš© ê¸°ëŠ¥ ì¶”ê°€ êµ¬í˜„
 }
 
 /**
- * @brief Ã¥ »ó¼¼ Á¤º¸¸¦ ÄÜ¼Ö¿¡ Ãâ·Â
+ * @brief ì±… ìƒì„¸ ì •ë³´ë¥¼ ì½˜ì†”ì— ì¶œë ¥
  *
- * @param book  Á¤º¸¸¦ Ç¥½ÃÇÒ Book Æ÷ÀÎÅÍ
+ * @param book  ì •ë³´ë¥¼ í‘œì‹œí•  Book í¬ì¸í„°
  *
- * Book::displayInfo()¸¦ È£ÃâÇÏ¿©
- * Ã¥ÀÇ Á¦¸ñ, ¼³¸í, Àå¸£, ºĞÀ§±â, »óÅÂ µîÀ» Ãâ·ÂÇÕ´Ï´Ù.
+ * Book::displayInfo()ë¥¼ í˜¸ì¶œí•˜ì—¬
+ * ì±…ì˜ ì œëª©, ì„¤ëª…, ì¥ë¥´, ë¶„ìœ„ê¸°, ìƒíƒœ ë“±ì„ ì¶œë ¥í•©ë‹ˆë‹¤.
  */
 void UIManager::displayBookDetail(const Book* book) {
     if (book) {
-        std::cout << "\n Ã¥ »ó¼¼ Á¤º¸:" << std::endl;
+        std::cout << "\n ì±… ìƒì„¸ ì •ë³´:" << std::endl;
         book->displayInfo();
     }
 }
 /**
- * @brief Ã¥ »óÅÂ(Condition)¸¦ ÄÜ¼Ö¿¡ Ãâ·Â
+ * @brief ì±… ìƒíƒœ(Condition)ë¥¼ ì½˜ì†”ì— ì¶œë ¥
  *
- * @param bc  eBookCondition ¿­°ÅÇü °ª
+ * @param bc  eBookCondition ì—´ê±°í˜• ê°’
  *
- * Á¤¼öÇüÀ¸·Î º¯È¯ÇÏ¿© »óÅÂ °ªÀ» Ç¥½ÃÇÏ¸ç,
- * enum-to-string ¸ÅÇÎÀ» ±¸ÇöÇÏ¿© Ãâ·ÂÇÒ ¼öµµ ÀÖ½À´Ï´Ù.
+ * ì •ìˆ˜í˜•ìœ¼ë¡œ ë³€í™˜í•˜ì—¬ ìƒíƒœ ê°’ì„ í‘œì‹œí•˜ë©°,
+ * enum-to-string ë§¤í•‘ì„ êµ¬í˜„í•˜ì—¬ ì¶œë ¥í•  ìˆ˜ë„ ìˆìŠµë‹ˆë‹¤.
  */
 void UIManager::displayBookCondition(eBookCondition bc) {
-    std::cout << "»óÅÂ: ";
+    std::cout << "ìƒíƒœ: ";
     switch (bc) {
-    case eBookCondition::Perfect: std::cout << "ÃÖ»ó"; break;
-    case eBookCondition::Worn: std::cout << "¾çÈ£"; break;
-    case eBookCondition::Damaged: std::cout << "¾à°£ÀÇ ¼Õ»óÀÌ ÀÖÀ½"; break;
-    case eBookCondition::Destroyed: std::cout << "ÈÑ¼ÕÀÌ ¸¹ÀÌ µÊ ¼ö¸® ÇÊ¿ä"; break;
-    default: std::cout << "¾Ë ¼ö ¾øÀ½"; break;
+    case eBookCondition::Perfect: std::cout << "ìµœìƒ"; break;
+    case eBookCondition::Worn: std::cout << "ì–‘í˜¸"; break;
+    case eBookCondition::Damaged: std::cout << "ì•½ê°„ì˜ ì†ìƒì´ ìˆìŒ"; break;
+    case eBookCondition::Destroyed: std::cout << "í›¼ì†ì´ ë§ì´ ë¨ ìˆ˜ë¦¬ í•„ìš”"; break;
+    default: std::cout << "ì•Œ ìˆ˜ ì—†ìŒ"; break;
     }
     std::cout << std::endl;
 }
 /**
- * @brief °ñµå ¹× ¸¶·Â Æä³ÎÆ¼ Á¤º¸¸¦ Ãâ·Â
+ * @brief ê³¨ë“œ ë° ë§ˆë ¥ í˜ë„í‹° ì •ë³´ë¥¼ ì¶œë ¥
  *
- * @param gold  Â÷°¨µÇ´Â °ñµå ¾ç
- * @param mp    Â÷°¨µÇ´Â ¸¶·Â ¾ç
+ * @param gold  ì°¨ê°ë˜ëŠ” ê³¨ë“œ ì–‘
+ * @param mp    ì°¨ê°ë˜ëŠ” ë§ˆë ¥ ì–‘
  *
- * NPC ºÒ¸¸Á· ½Ã Æä³ÎÆ¼ Á¤º¸¸¦ »ç¿ëÀÚ¿¡°Ô ¾Ë·ÁÁİ´Ï´Ù.
+ * NPC ë¶ˆë§Œì¡± ì‹œ í˜ë„í‹° ì •ë³´ë¥¼ ì‚¬ìš©ìì—ê²Œ ì•Œë ¤ì¤ë‹ˆë‹¤.
  */
 void UIManager::displayPenaltyInfo(int gold, int mp) {
-    std::cout << "\n Æä³ÎÆ¼ ¹ß»ı!" << std::endl;
-    std::cout << " - °ñµå °¨¼Ò: " << gold << std::endl;
-    std::cout << " - ¸¶·Â °¨¼Ò: " << mp << std::endl;
+    std::cout << "\n í˜ë„í‹° ë°œìƒ!" << std::endl;
+    std::cout << " - ê³¨ë“œ ê°ì†Œ: " << gold << std::endl;
+    std::cout << " - ë§ˆë ¥ ê°ì†Œ: " << mp << std::endl;
 }
 
 /**
- * @brief ASCII ¾ÆÆ®¸¦ ÄÜ¼Ö¿¡ Ãâ·Â
+ * @brief ASCII ì•„íŠ¸ë¥¼ ì½˜ì†”ì— ì¶œë ¥
  *
- * @param art  Ãâ·ÂÇÒ ASCII ¾ÆÆ® ¹®ÀÚ¿­
+ * @param art  ì¶œë ¥í•  ASCII ì•„íŠ¸ ë¬¸ìì—´
  *
- * ÀÏÀÏ ¿ä¾àÀÌ³ª Æ¯º° ÀÌº¥Æ®ÀÇ ½Ã°¢Àû È¿°ú¸¦ À§ÇØ »ç¿ëÇÕ´Ï´Ù.
+ * ì¼ì¼ ìš”ì•½ì´ë‚˜ íŠ¹ë³„ ì´ë²¤íŠ¸ì˜ ì‹œê°ì  íš¨ê³¼ë¥¼ ìœ„í•´ ì‚¬ìš©í•©ë‹ˆë‹¤.
  */
 void UIManager::displayAsciiArt(const std::string& art) {
     std::cout << "\n" << art << std::endl;
 }
 
 /**
- * @brief ·¹º§¾÷ ÃàÇÏ ¸Ş½ÃÁö¸¦ ÄÜ¼Ö¿¡ Ãâ·Â
+ * @brief ë ˆë²¨ì—… ì¶•í•˜ ë©”ì‹œì§€ë¥¼ ì½˜ì†”ì— ì¶œë ¥
  *
- * @param level  »õ·Î¿î ·¹º§ °ª
+ * @param level  ìƒˆë¡œìš´ ë ˆë²¨ ê°’
  *
- * ·¹º§¾÷ ½Ã "Level Up! New Level: X" ÇüÅÂ·Î Ç¥½ÃÇÕ´Ï´Ù.
+ * ë ˆë²¨ì—… ì‹œ "Level Up! New Level: X" í˜•íƒœë¡œ í‘œì‹œí•©ë‹ˆë‹¤.
  */
 void UIManager::displayLevelUpMessage(int level) {
     std::cout << AsciiArt::getLevelUpArt() << std::endl;
-    std::cout << "\n ·¹º§ ¾÷! »õ·Î¿î ·¹º§: " << level << std::endl;
+    std::cout << "\n ë ˆë²¨ ì—…! ìƒˆë¡œìš´ ë ˆë²¨: " << level << std::endl;
 }
 /**
- * @brief »ç¿ëÀÚ·ÎºÎÅÍ Á¤¼ö ÀÔ·ÂÀ» ¹Ş´Â ÇÔ¼ö
+ * @brief ì‚¬ìš©ìë¡œë¶€í„° ì •ìˆ˜ ì…ë ¥ì„ ë°›ëŠ” í•¨ìˆ˜
  *
- * @param prompt  ÀÔ·Â ¿äÃ» ¸Ş½ÃÁö
- * @return int    ÀÔ·ÂµÈ Á¤¼ö °ª
+ * @param prompt  ì…ë ¥ ìš”ì²­ ë©”ì‹œì§€
+ * @return int    ì…ë ¥ëœ ì •ìˆ˜ ê°’
  *
- * prompt ¸Ş½ÃÁö¸¦ Ãâ·ÂÇÑ ÈÄ std::cinÀ¸·Î ÀÔ·ÂÀ» ¹Ş°í,
- * °ªÀ» ¹İÈ¯ÇÕ´Ï´Ù. ÀÔ·Â °ËÁõ ·ÎÁ÷Àº º°µµ ±¸Çö ÇÊ¿äÇÕ´Ï´Ù.
+ * prompt ë©”ì‹œì§€ë¥¼ ì¶œë ¥í•œ í›„ std::cinìœ¼ë¡œ ì…ë ¥ì„ ë°›ê³ ,
+ * ê°’ì„ ë°˜í™˜í•©ë‹ˆë‹¤. ì…ë ¥ ê²€ì¦ ë¡œì§ì€ ë³„ë„ êµ¬í˜„ í•„ìš”í•©ë‹ˆë‹¤.
  */
 int UIManager::getUserInput(const std::string& prompt) {
     std::cout << prompt;
     int input;
     std::cin >> input;
-    // TODO: ¿¹¿Ü Ã³¸® ¹× ÀçÀÔ·Â ·ÎÁ÷ ±¸Çö °¡´É
+    // TODO: ì˜ˆì™¸ ì²˜ë¦¬ ë° ì¬ì…ë ¥ ë¡œì§ êµ¬í˜„ ê°€ëŠ¥
     return input;
 }
 
 /**
- * @brief ¸ğµå ¼±ÅÃ È­¸éÀ» ÄÜ¼Ö¿¡ Ãâ·Â
+ * @brief ëª¨ë“œ ì„ íƒ í™”ë©´ì„ ì½˜ì†”ì— ì¶œë ¥
  *
- * ÇÃ·¹ÀÌ¾î°¡ ¼öÇàÇÒ ¼ö ÀÖ´Â ¸ğµå(ÁıÇÊ, NPC ÀÀ´ë, ¹Ì´Ï°ÔÀÓ µî)¸¦ ¾È³»ÇÕ´Ï´Ù.
+ * í”Œë ˆì´ì–´ê°€ ìˆ˜í–‰í•  ìˆ˜ ìˆëŠ” ëª¨ë“œ(ì§‘í•„, NPC ì‘ëŒ€, ë¯¸ë‹ˆê²Œì„ ë“±)ë¥¼ ì•ˆë‚´í•©ë‹ˆë‹¤.
  */
 void UIManager::displayModeSelection() {
-    std::cout << "\n ¸ğµå¸¦ ¼±ÅÃÇÏ¼¼¿ä:" << std::endl;
-    std::cout << "1. ÁıÇÊ ¸ğµå" << std::endl;
-    std::cout << "2. NPC ÀÀ´ë" << std::endl;
-    std::cout << "3. ¹Ì´Ï°ÔÀÓ" << std::endl;
-    std::cout << "4. µ¹¾Æ°¡±â" << std::endl;
+    std::cout << "\n ëª¨ë“œë¥¼ ì„ íƒí•˜ì„¸ìš”:" << std::endl;
+    std::cout << "1. ì§‘í•„ ëª¨ë“œ" << std::endl;
+    std::cout << "2. NPC ì‘ëŒ€" << std::endl;
+    std::cout << "3. ë¯¸ë‹ˆê²Œì„" << std::endl;
+    std::cout << "4. ëŒì•„ê°€ê¸°" << std::endl;
 }
 /**
- * @brief ¹Ì´Ï°ÔÀÓ °á°ú¸¦ ÄÜ¼Ö¿¡ Ãâ·Â
+ * @brief ë¯¸ë‹ˆê²Œì„ ê²°ê³¼ë¥¼ ì½˜ì†”ì— ì¶œë ¥
  *
- * @param result  °ÔÀÓ °á°ú ¹®ÀÚ¿­ ("Win" ¶Ç´Â "Lose" µî)
+ * @param result  ê²Œì„ ê²°ê³¼ ë¬¸ìì—´ ("Win" ë˜ëŠ” "Lose" ë“±)
  *
- * ¹Ì´Ï°ÔÀÓ ¼öÇà ÈÄ °á°ú¸¦ »ç¿ëÀÚ¿¡°Ô ¾Ë·ÁÁİ´Ï´Ù.
+ * ë¯¸ë‹ˆê²Œì„ ìˆ˜í–‰ í›„ ê²°ê³¼ë¥¼ ì‚¬ìš©ìì—ê²Œ ì•Œë ¤ì¤ë‹ˆë‹¤.
  */
 void UIManager::displayMiniGameResult(const std::string& result) {
-    std::cout << "\n ¹Ì´Ï°ÔÀÓ °á°ú: " << result << std::endl;
+    std::cout << "\n ë¯¸ë‹ˆê²Œì„ ê²°ê³¼: " << result << std::endl;
+}
+
+void UIManager::clearScreen() {
+#ifdef _WIN32
+    std::system("cls");
+#else
+    std::system("clear");
+#endif
 }

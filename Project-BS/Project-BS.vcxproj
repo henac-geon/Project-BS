@@ -140,6 +140,7 @@
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="PenaltySystem.cpp" />
     <ClCompile Include="PenaltySystem.h" />
+    <ClCompile Include="RandomNPC.cpp" />
     <ClCompile Include="ScoreSystem.cpp" />
     <ClCompile Include="StudentNPC.cpp" />
     <ClCompile Include="UIManager.cpp" />
@@ -157,6 +158,7 @@
     <ClInclude Include="MiniGame.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="LevelSystem.h" />
+    <ClInclude Include="RandomNPC.h" />
     <ClInclude Include="ScienceBook.h" />
     <ClInclude Include="ScoreSystem.h" />
     <ClInclude Include="StudentNPC.h" />
