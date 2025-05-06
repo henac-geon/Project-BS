@@ -65,6 +65,7 @@ void GameManager::performWritingPhase() {
 }
 
 void GameManager::performNPCPhase() {
+    /*
     uiManager.clearScreen();
     std::cout << AsciiArt::getWelcomeArt() << std::endl; // NPC 화면으로 설정
     int numNPC = rand() % 3 + 1;
@@ -101,6 +102,7 @@ void GameManager::performNPCPhase() {
     std::cout << "인벤토리를 확인하시겠습니까? (y/n): ";
     std::cin >> ans;
     if (ans == "y") uiManager.displayInventory(inventory);
+    */
 }
 
 void GameManager::performSettlementPhase() {
