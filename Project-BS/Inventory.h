@@ -1,60 +1,60 @@
-#pragma once
+ï»¿#pragma once
 #ifndef INVENTORY_H
 #define INVENTORY_H
 
-#include <vector>    // std::vector »ç¿ëÀ» À§ÇÑ Çì´õ
-#include <string>    // std::string »ç¿ëÀ» À§ÇÑ Çì´õ
-#include "Book.h"   // Book Å¬·¡½º Á¤ÀÇ Æ÷ÇÔ
+#include <vector>    // std::vector ì‚¬ìš©ì„ ìœ„í•œ í—¤ë”
+#include <string>    // std::string ì‚¬ìš©ì„ ìœ„í•œ í—¤ë”
+#include "Book.h"   // Book í´ëž˜ìŠ¤ ì •ì˜ í¬í•¨
 
 /**
  * @class Inventory
- * @brief Ã¥(Book) °´Ã¼¸¦ °ü¸®ÇÏ´Â ÀÎº¥Åä¸® Å¬·¡½º
+ * @brief ì±…(Book) ê°ì²´ë¥¼ ê´€ë¦¬í•˜ëŠ” ì¸ë²¤í† ë¦¬ í´ëž˜ìŠ¤
  *
- * Ã¥À» Ãß°¡(addBook), Á¦°Å(removeBook), °Ë»ö(findBook)ÇÏ´Â
- * ±â´ÉÀ» Á¦°øÇÏ¸ç, ÇöÀç º¸À¯ ÁßÀÎ Ã¥ ¸ñ·ÏÀ» ¹ÝÈ¯(getBooks)ÇÕ´Ï´Ù.
+ * ì±…ì„ ì¶”ê°€(addBook), ì œê±°(removeBook), ê²€ìƒ‰(findBook)í•˜ëŠ”
+ * ê¸°ëŠ¥ì„ ì œê³µí•˜ë©°, í˜„ìž¬ ë³´ìœ  ì¤‘ì¸ ì±… ëª©ë¡ì„ ë°˜í™˜(getBooks)í•©ë‹ˆë‹¤.
  */
 class Inventory {
 private:
-    std::vector<Book*> books;  // ÀÎº¥Åä¸®¿¡ º¸°üµÈ Book Æ÷ÀÎÅÍ ¸ñ·Ï
+    std::vector<Book*> books;  // ì¸ë²¤í† ë¦¬ì— ë³´ê´€ëœ Book í¬ì¸í„° ëª©ë¡
 
 public:
     /**
-     * @brief Ã¥À» ÀÎº¥Åä¸®¿¡ Ãß°¡
+     * @brief ì±…ì„ ì¸ë²¤í† ë¦¬ì— ì¶”ê°€
      *
-     * @param book  Ãß°¡ÇÒ Book °´Ã¼ÀÇ Æ÷ÀÎÅÍ
+     * @param book  ì¶”ê°€í•  Book ê°ì²´ì˜ í¬ì¸í„°
      *
-     * books º¤ÅÍÀÇ ³¡¿¡ Àü´ÞµÈ book Æ÷ÀÎÅÍ¸¦ push_back ÇÕ´Ï´Ù.
+     * books ë²¡í„°ì˜ ëì— ì „ë‹¬ëœ book í¬ì¸í„°ë¥¼ push_back í•©ë‹ˆë‹¤.
      */
     void addBook(Book* book);
 
     /**
-     * @brief ÀÎµ¦½º·Î Ã¥À» ÀÎº¥Åä¸®¿¡¼­ Á¦°Å
+     * @brief ì¸ë±ìŠ¤ë¡œ ì±…ì„ ì¸ë²¤í† ë¦¬ì—ì„œ ì œê±°
      *
-     * @param index  Á¦°ÅÇÒ Ã¥ÀÇ ÀÎµ¦½º (0ºÎÅÍ ½ÃÀÛ)
+     * @param index  ì œê±°í•  ì±…ì˜ ì¸ë±ìŠ¤ (0ë¶€í„° ì‹œìž‘)
      *
-     * À¯È¿ÇÑ ÀÎµ¦½º ¹üÀ§(0 <= index < books.size())ÀÎ °æ¿ì,
-     * ÇØ´ç À§Ä¡ÀÇ ¿ä¼Ò¸¦ books º¤ÅÍ¿¡¼­ erase ÇÕ´Ï´Ù.
-     * °æ°è °Ë»ç ¹× ¿¹¿Ü Ã³¸® ·ÎÁ÷Àº ±¸ÇöºÎ¿¡¼­ Ãß°¡ÇÒ ¼ö ÀÖ½À´Ï´Ù.
+     * ìœ íš¨í•œ ì¸ë±ìŠ¤ ë²”ìœ„(0 <= index < books.size())ì¸ ê²½ìš°,
+     * í•´ë‹¹ ìœ„ì¹˜ì˜ ìš”ì†Œë¥¼ books ë²¡í„°ì—ì„œ erase í•©ë‹ˆë‹¤.
+     * ê²½ê³„ ê²€ì‚¬ ë° ì˜ˆì™¸ ì²˜ë¦¬ ë¡œì§ì€ êµ¬í˜„ë¶€ì—ì„œ ì¶”ê°€í•  ìˆ˜ ìžˆìŠµë‹ˆë‹¤.
      */
     void removeBook(int index);
 
     /**
-     * @brief Á¦¸ñÀ¸·Î Ã¥À» °Ë»ö
+     * @brief ì œëª©ìœ¼ë¡œ ì±…ì„ ê²€ìƒ‰
      *
-     * @param title  Ã£°íÀÚ ÇÏ´Â Ã¥ÀÇ Á¦¸ñ
-     * @return Book* - Á¦¸ñÀÌ ÀÏÄ¡ÇÏ´Â Ã¹ ¹øÂ° Book Æ÷ÀÎÅÍ, ¾øÀ¸¸é nullptr
+     * @param title  ì°¾ê³ ìž í•˜ëŠ” ì±…ì˜ ì œëª©
+     * @return Book* - ì œëª©ì´ ì¼ì¹˜í•˜ëŠ” ì²« ë²ˆì§¸ Book í¬ì¸í„°, ì—†ìœ¼ë©´ nullptr
      *
-     * books º¤ÅÍ¸¦ ¼øÈ¸ÇÏ¸é¼­ getTitle()°ú ºñ±³ÇÏ¿©
-     * ÀÏÄ¡ÇÏ´Â Ã¥À» ¹ÝÈ¯ÇÕ´Ï´Ù.
+     * books ë²¡í„°ë¥¼ ìˆœíšŒí•˜ë©´ì„œ getTitle()ê³¼ ë¹„êµí•˜ì—¬
+     * ì¼ì¹˜í•˜ëŠ” ì±…ì„ ë°˜í™˜í•©ë‹ˆë‹¤.
      */
     Book* findBook(const std::string& title) const;
 
     /**
-     * @brief ÇöÀç º¸À¯ ÁßÀÎ Ã¥ ¸ñ·Ï ¹ÝÈ¯
+     * @brief í˜„ìž¬ ë³´ìœ  ì¤‘ì¸ ì±… ëª©ë¡ ë°˜í™˜
      *
-     * @return const std::vector<Book*>& - ³»ºÎ books º¤ÅÍ¿¡ ´ëÇÑ const ÂüÁ¶
+     * @return const std::vector<Book*>& - ë‚´ë¶€ books ë²¡í„°ì— ëŒ€í•œ const ì°¸ì¡°
      *
-     * ¿ÜºÎ¿¡¼­ ÀÎº¥Åä¸®¿¡ ´ã±ä ¸ðµç Book Æ÷ÀÎÅÍ¸¦ ÀÐ±â Àü¿ëÀ¸·Î Á¢±ÙÇÒ ¶§ »ç¿ëÇÕ´Ï´Ù.
+     * ì™¸ë¶€ì—ì„œ ì¸ë²¤í† ë¦¬ì— ë‹´ê¸´ ëª¨ë“  Book í¬ì¸í„°ë¥¼ ì½ê¸° ì „ìš©ìœ¼ë¡œ ì ‘ê·¼í•  ë•Œ ì‚¬ìš©í•©ë‹ˆë‹¤.
      */
     const std::vector<Book*>& getBooks() const;
 };

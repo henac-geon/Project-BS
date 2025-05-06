@@ -1,4 +1,4 @@
-#include "NPC.h"
+Ôªø#include "NPC.h"
 #include "WizardNPC.h"
 #include "ConsolePrinter.h"
 
@@ -23,7 +23,7 @@ Book* WizardNPC::requestBook(const std::vector<Book*>& candidates) {
 }
 
 bool WizardNPC::rateBook(Book* book) const {
-    return NPC::rateBook(book); // ∏∂π˝ªÁ NPC √• ∆Ú∞°
+    return NPC::rateBook(book); // ÎßàÎ≤ïÏÇ¨ NPC Ï±Ö ÌèâÍ∞Ä
 }
 
 void WizardNPC::compensateForDamage(Book* book) {

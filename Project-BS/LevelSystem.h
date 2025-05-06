@@ -1,54 +1,54 @@
-#pragma once
+ï»¿#pragma once
 #ifndef LEVELSYSTEM_H
 #define LEVELSYSTEM_H
 
 /**
  * @class LevelSystem
- * @brief ÇÃ·¹ÀÌ¾îÀÇ °æÇèÄ¡(Experience)¿Í ·¹º§(Level)À» °ü¸®ÇÏ´Â Å¬·¡½º
+ * @brief í”Œë ˆì´ì–´ì˜ ê²½í—˜ì¹˜(Experience)ì™€ ë ˆë²¨(Level)ì„ ê´€ë¦¬í•˜ëŠ” í´ëž˜ìŠ¤
  *
- * °æÇèÄ¡¸¦ È¹µæ(gainExp)ÇÏ¸é ³»ºÎÀûÀ¸·Î °æÇèÄ¡¸¦ ´©ÀûÇÏ°í,
- * ·¹º§¾÷ Á¶°ÇÀ» ¸¸Á·ÇÏ´ÂÁö È®ÀÎ(checkLevelUp)ÇÏ¿© ·¹º§À» ¿Ã¸³´Ï´Ù.
+ * ê²½í—˜ì¹˜ë¥¼ íšë“(gainExp)í•˜ë©´ ë‚´ë¶€ì ìœ¼ë¡œ ê²½í—˜ì¹˜ë¥¼ ëˆ„ì í•˜ê³ ,
+ * ë ˆë²¨ì—… ì¡°ê±´ì„ ë§Œì¡±í•˜ëŠ”ì§€ í™•ì¸(checkLevelUp)í•˜ì—¬ ë ˆë²¨ì„ ì˜¬ë¦½ë‹ˆë‹¤.
  */
 class LevelSystem {
 private:
-    int experience;  // ÇöÀç ´©Àû °æÇèÄ¡
-    int level;       // ÇöÀç ·¹º§ (±âº»°ª 1 ÀÌ»ó)
+    int experience;  // í˜„ìž¬ ëˆ„ì  ê²½í—˜ì¹˜
+    int level;       // í˜„ìž¬ ë ˆë²¨ (ê¸°ë³¸ê°’ 1 ì´ìƒ)
 
 public:
     /**
-     * @brief ±âº» »ý¼ºÀÚ
+     * @brief ê¸°ë³¸ ìƒì„±ìž
      *
-     * experience¿Í levelÀ» ±âº»°ªÀ¸·Î ÃÊ±âÈ­ÇÕ´Ï´Ù:
-     * - experience: 0 (°ÔÀÓ ½ÃÀÛ ½Ã °æÇèÄ¡ ¾øÀ½)
-     * - level: 1      (°ÔÀÓ ½ÃÀÛ ½Ã ·¹º§ 1)
+     * experienceì™€ levelì„ ê¸°ë³¸ê°’ìœ¼ë¡œ ì´ˆê¸°í™”í•©ë‹ˆë‹¤:
+     * - experience: 0 (ê²Œìž„ ì‹œìž‘ ì‹œ ê²½í—˜ì¹˜ ì—†ìŒ)
+     * - level: 1      (ê²Œìž„ ì‹œìž‘ ì‹œ ë ˆë²¨ 1)
      */
     LevelSystem();
 
     /**
-     * @brief °æÇèÄ¡¸¦ È¹µæÇÏ¿© ´©ÀûÇÏ´Â ÇÔ¼ö
+     * @brief ê²½í—˜ì¹˜ë¥¼ íšë“í•˜ì—¬ ëˆ„ì í•˜ëŠ” í•¨ìˆ˜
      *
-     * @param amount  È¹µæÇÒ °æÇèÄ¡ ¾ç
+     * @param amount  íšë“í•  ê²½í—˜ì¹˜ ì–‘
      *
-     * amount¸¸Å­ experience¸¦ Áõ°¡½ÃÅµ´Ï´Ù.
-     * ÇÊ¿ä ½Ã ³»ºÎ¿¡¼­ Áï½Ã ·¹º§¾÷ Á¶°ÇÀ» È®ÀÎÇÏ°Å³ª,
-     * ¿ÜºÎ¿¡¼­ checkLevelUp()À» È£ÃâÇÏ¿© ·¹º§¾÷ ¿©ºÎ¸¦ ÆÇ´ÜÇÒ ¼ö ÀÖ½À´Ï´Ù.
+     * amountë§Œí¼ experienceë¥¼ ì¦ê°€ì‹œí‚µë‹ˆë‹¤.
+     * í•„ìš” ì‹œ ë‚´ë¶€ì—ì„œ ì¦‰ì‹œ ë ˆë²¨ì—… ì¡°ê±´ì„ í™•ì¸í•˜ê±°ë‚˜,
+     * ì™¸ë¶€ì—ì„œ checkLevelUp()ì„ í˜¸ì¶œí•˜ì—¬ ë ˆë²¨ì—… ì—¬ë¶€ë¥¼ íŒë‹¨í•  ìˆ˜ ìžˆìŠµë‹ˆë‹¤.
      */
     void gainExp(int amount);
 
     /**
-     * @brief ·¹º§¾÷ °¡´É ¿©ºÎ¸¦ °Ë»çÇÏ°í, °¡´ÉÇÏ¸é ·¹º§¾÷À» ¼öÇà
+     * @brief ë ˆë²¨ì—… ê°€ëŠ¥ ì—¬ë¶€ë¥¼ ê²€ì‚¬í•˜ê³ , ê°€ëŠ¥í•˜ë©´ ë ˆë²¨ì—…ì„ ìˆ˜í–‰
      *
-     * @return bool  ·¹º§¾÷ÀÌ ¹ß»ýÇßÀ¸¸é true, ±×·¸Áö ¾ÊÀ¸¸é false
+     * @return bool  ë ˆë²¨ì—…ì´ ë°œìƒí–ˆìœ¼ë©´ true, ê·¸ë ‡ì§€ ì•Šìœ¼ë©´ false
      *
-     * ³»ºÎ °æÇèÄ¡°¡ ·¹º§¾÷ ÀÓ°è°ª(threshold)À» ³Ñ¾ú´ÂÁö È®ÀÎÇÏ°í,
-     * ³Ñ¾ú´Ù¸é levelÀ» Áõ°¡½ÃÅ°°í ÃÊ°ú °æÇèÄ¡¸¦ ³²°ÜµÑ ¼ö ÀÖ½À´Ï´Ù.
-     * ±¸Ã¼ÀûÀÎ ÀÓ°è°ª ¹× º¸³Ê½º ·ÎÁ÷Àº ±¸Çö¿¡¼­ Á¤ÀÇÇÕ´Ï´Ù.
+     * ë‚´ë¶€ ê²½í—˜ì¹˜ê°€ ë ˆë²¨ì—… ìž„ê³„ê°’(threshold)ì„ ë„˜ì—ˆëŠ”ì§€ í™•ì¸í•˜ê³ ,
+     * ë„˜ì—ˆë‹¤ë©´ levelì„ ì¦ê°€ì‹œí‚¤ê³  ì´ˆê³¼ ê²½í—˜ì¹˜ë¥¼ ë‚¨ê²¨ë‘˜ ìˆ˜ ìžˆìŠµë‹ˆë‹¤.
+     * êµ¬ì²´ì ì¸ ìž„ê³„ê°’ ë° ë³´ë„ˆìŠ¤ ë¡œì§ì€ êµ¬í˜„ì—ì„œ ì •ì˜í•©ë‹ˆë‹¤.
      */
     bool checkLevelUp();
 
     /**
-     * @brief ÇöÀç ·¹º§À» ¹ÝÈ¯ÇÏ´Â Getter
-     * @return int - ÇöÀç level °ª
+     * @brief í˜„ìž¬ ë ˆë²¨ì„ ë°˜í™˜í•˜ëŠ” Getter
+     * @return int - í˜„ìž¬ level ê°’
      */
     int getLevel() const;
 };

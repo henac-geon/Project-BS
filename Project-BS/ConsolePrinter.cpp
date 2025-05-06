@@ -1,8 +1,8 @@
-#include "ConsolePrinter.h"
+ï»¿#include "ConsolePrinter.h"
 
 void ConsolePrinter::init() {
-    SetConsoleOutputCP(CP_UTF8);              // ÄÜ¼Ö ÀÎÄÚµùÀ» UTF-8·Î ¼³Á¤
-    std::wcout.imbue(std::locale(""));        // ·ÎÄÉÀÏ ¼³Á¤ (ÇÑ±Û Ãâ·Â °¡´É)
+    SetConsoleOutputCP(CP_UTF8);              // ì½˜ì†” ì¸ì½”ë”©ì„ UTF-8ë¡œ ì„¤ì •
+    std::wcout.imbue(std::locale(""));        // ë¡œì¼€ì¼ ì„¤ì • (í•œê¸€ ì¶œë ¥ ê°€ëŠ¥)
 }
 
 void ConsolePrinter::print(const std::string& text) {

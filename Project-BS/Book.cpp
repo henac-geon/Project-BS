@@ -1,18 +1,18 @@
-#include "Book.h"    // Book Å¬·¡½º Á¤ÀÇ Çì´õ Æ÷ÇÔ
+ï»¿#include "Book.h"    // Book í´ë˜ìŠ¤ ì •ì˜ í—¤ë” í¬í•¨
 
 /**
- * @brief Book Å¬·¡½º »ı¼ºÀÚ ±¸Çö
+ * @brief Book í´ë˜ìŠ¤ ìƒì„±ì êµ¬í˜„
  *
- * @param title        Ã¥ Á¦¸ñ
- * @param description  Ã¥ ¼³¸í ¶Ç´Â ¿ä¾à
- * @param genre        Ã¥ Àå¸£ (Enums.h¿¡ Á¤ÀÇµÈ eBookGenre)
- * @param mood         Ã¥ ºĞÀ§±â (Enums.h¿¡ Á¤ÀÇµÈ eBookMood)
- * @param length       Ã¥ ºĞ·® (ÆäÀÌÁö ¼ö È¤Àº ÀĞ±â¿¡ ÇÊ¿äÇÑ ºĞ·®)
- * @param edge         Ã¥ ¾ÜÁö¿ä¼Ò
- * @param etc          Ã¥ ±âÅ¸¿ä¼Ò
- * »ı¼ºÀÚ¿¡¼­´Â ¸â¹ö ÃÊ±âÈ­ ¸®½ºÆ®¸¦ »ç¿ëÇÏ¿© ¸ğµç ¸â¹ö¸¦ ¾ÈÀüÇÏ°Ô ÃÊ±âÈ­ÇÕ´Ï´Ù.
- * ±âº»ÀûÀ¸·Î isDamaged´Â false·Î ¼³Á¤ÇÏ¿© ¼Õ»óµÇÁö ¾ÊÀº »óÅÂ·Î ½ÃÀÛÇÏ¸ç,
- * damageTypeÀº eDamageType::None(¼Õ»ó ¾øÀ½), conditionÀº eBookCondition::Perfect(¿ÏÀü)·Î ÃÊ±âÈ­ÇÕ´Ï´Ù.
+ * @param title        ì±… ì œëª©
+ * @param description  ì±… ì„¤ëª… ë˜ëŠ” ìš”ì•½
+ * @param genre        ì±… ì¥ë¥´ (Enums.hì— ì •ì˜ëœ eBookGenre)
+ * @param mood         ì±… ë¶„ìœ„ê¸° (Enums.hì— ì •ì˜ëœ eBookMood)
+ * @param length       ì±… ë¶„ëŸ‰ (í˜ì´ì§€ ìˆ˜ í˜¹ì€ ì½ê¸°ì— í•„ìš”í•œ ë¶„ëŸ‰)
+ * @param edge         ì±… ì•³ì§€ìš”ì†Œ
+ * @param etc          ì±… ê¸°íƒ€ìš”ì†Œ
+ * ìƒì„±ìì—ì„œëŠ” ë©¤ë²„ ì´ˆê¸°í™” ë¦¬ìŠ¤íŠ¸ë¥¼ ì‚¬ìš©í•˜ì—¬ ëª¨ë“  ë©¤ë²„ë¥¼ ì•ˆì „í•˜ê²Œ ì´ˆê¸°í™”í•©ë‹ˆë‹¤.
+ * ê¸°ë³¸ì ìœ¼ë¡œ isDamagedëŠ” falseë¡œ ì„¤ì •í•˜ì—¬ ì†ìƒë˜ì§€ ì•Šì€ ìƒíƒœë¡œ ì‹œì‘í•˜ë©°,
+ * damageTypeì€ eDamageType::None(ì†ìƒ ì—†ìŒ), conditionì€ eBookCondition::Perfect(ì™„ì „)ë¡œ ì´ˆê¸°í™”í•©ë‹ˆë‹¤.
  */
 Book::Book(const std::string& title,
     const std::string& description,
@@ -21,38 +21,38 @@ Book::Book(const std::string& title,
     int length,
     eBookEdge edge,
     eBookEtc etc)
-    : title(title),               // Á¦¸ñ ÃÊ±âÈ­
-    description(description),   // ¼³¸í ÃÊ±âÈ­
-    genre(genre),               // Àå¸£ ÃÊ±âÈ­
-    mood(mood),                 // ºĞÀ§±â ÃÊ±âÈ­
-    length(length),             // ºĞ·® ÃÊ±âÈ­
+    : title(title),               // ì œëª© ì´ˆê¸°í™”
+    description(description),   // ì„¤ëª… ì´ˆê¸°í™”
+    genre(genre),               // ì¥ë¥´ ì´ˆê¸°í™”
+    mood(mood),                 // ë¶„ìœ„ê¸° ì´ˆê¸°í™”
+    length(length),             // ë¶„ëŸ‰ ì´ˆê¸°í™”
     edge(edge),
     etc(etc),
-    isDamaged(false),           // ±âº» ¼Õ»ó ¿©ºÎ: ¾øÀ½
-    damageType(eDamageType::None),       // ±âº» ¼Õ»ó À¯Çü: ¾øÀ½
-    condition(eBookCondition::Perfect)   // ±âº» »óÅÂ: ¿ÏÀü
+    isDamaged(false),           // ê¸°ë³¸ ì†ìƒ ì—¬ë¶€: ì—†ìŒ
+    damageType(eDamageType::None),       // ê¸°ë³¸ ì†ìƒ ìœ í˜•: ì—†ìŒ
+    condition(eBookCondition::Perfect)   // ê¸°ë³¸ ìƒíƒœ: ì™„ì „
 {
-    // TODO: ÇÊ¿ä¿¡ µû¶ó Ãß°¡ ÃÊ±âÈ­ ·ÎÁ÷ ±¸Çö
+    // TODO: í•„ìš”ì— ë”°ë¼ ì¶”ê°€ ì´ˆê¸°í™” ë¡œì§ êµ¬í˜„
 }
 
 /**
- * @brief Ã¥ Á¦¸ñÀ» ¹İÈ¯ÇÏ´Â Getter
+ * @brief ì±… ì œëª©ì„ ë°˜í™˜í•˜ëŠ” Getter
  *
- * @return std::string - Ã¥ÀÇ Á¦¸ñ
+ * @return std::string - ì±…ì˜ ì œëª©
  */
 std::string Book::getTitle() const {
-    return title;  // title ¸â¹ö ¹İÈ¯
+    return title;  // title ë©¤ë²„ ë°˜í™˜
 }
 
 /**
- * @brief Ã¥ »óÅÂ¸¦ ¹İÈ¯ÇÏ´Â Getter
+ * @brief ì±… ìƒíƒœë¥¼ ë°˜í™˜í•˜ëŠ” Getter
  *
- * @return eBookCondition - Ã¥ÀÇ ÇöÀç »óÅÂ
+ * @return eBookCondition - ì±…ì˜ í˜„ì¬ ìƒíƒœ
  *
- * condition ¸â¹ö º¯¼ö °ªÀ» ±×´ë·Î ¹İÈ¯ÇÕ´Ï´Ù.
+ * condition ë©¤ë²„ ë³€ìˆ˜ ê°’ì„ ê·¸ëŒ€ë¡œ ë°˜í™˜í•©ë‹ˆë‹¤.
  */
 eBookCondition Book::getCondition() const {
-    return condition;  // condition ¸â¹ö ¹İÈ¯
+    return condition;  // condition ë©¤ë²„ ë°˜í™˜
 }
 
 eBookGenre Book::getGenre() const {

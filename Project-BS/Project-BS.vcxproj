@@ -133,19 +133,18 @@
     <ClCompile Include="ConsolePrinter.cpp" />
     <ClCompile Include="CsvIO.cpp" />
     <ClCompile Include="FantasyBook.cpp" />
-    <ClCompile Include="Inventory.cpp" />
+    <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="inventory.cpp" />
     <ClCompile Include="LevelSystem.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MiniGame.cpp" />
     <ClCompile Include="NPC.cpp" />
-    <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="PenaltySystem.cpp" />
-    <ClCompile Include="PenaltySystem.h" />
     <ClCompile Include="RandomNPC.cpp" />
+    <ClCompile Include="ScienceBook.cpp" />
     <ClCompile Include="ScoreSystem.cpp" />
     <ClCompile Include="StudentNPC.cpp" />
     <ClCompile Include="UIManager.cpp" />
-    <ClCompile Include="ScienceBook.cpp" />
     <ClCompile Include="WizardNPC.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -156,16 +155,17 @@
     <ClInclude Include="CsvIO.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="FantasyBook.h" />
-    <ClInclude Include="NPC.h" />
-    <ClInclude Include="MiniGame.h" />
     <ClInclude Include="GameManager.h" />
+    <ClInclude Include="Inventory.h" />
     <ClInclude Include="LevelSystem.h" />
+    <ClInclude Include="MiniGame.h" />
+    <ClInclude Include="NPC.h" />
+    <ClInclude Include="PenaltySystem.h" />
     <ClInclude Include="RandomNPC.h" />
     <ClInclude Include="ScienceBook.h" />
     <ClInclude Include="ScoreSystem.h" />
     <ClInclude Include="StudentNPC.h" />
     <ClInclude Include="UIManager.h" />
-    <ClInclude Include="Inventory.h" />
     <ClInclude Include="WizardNPC.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

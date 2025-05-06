@@ -1,4 +1,4 @@
-#pragma once
+ï»¿#pragma once
 #include <iostream>
 #include <locale>
 #include <string>
@@ -6,44 +6,44 @@
 
 /**
  * @class ConsolePrinter
- * @brief ÄÜ¼Ö Ãâ·Â Ã³¸®¸¦ Àü´ãÇÏ´Â Á¤Àû Å¬·¡½º
+ * @brief ì½˜ì†” ì¶œë ¥ ì²˜ë¦¬ë¥¼ ì „ë‹´í•˜ëŠ” ì •ì  í´ë˜ìŠ¤
  *
- * UTF-8 ¼³Á¤ ¹× ÇÑ±Û/¿µ¹® Ãâ·Â ¹®Á¦¸¦ ÇØ°áÇÏ¸ç,
- * std::string ¹× std::wstring ¸ğµÎ¸¦ ¾ÈÀüÇÏ°Ô Ãâ·ÂÇÒ ¼ö ÀÖµµ·Ï Áö¿øÇÕ´Ï´Ù.
+ * UTF-8 ì„¤ì • ë° í•œê¸€/ì˜ë¬¸ ì¶œë ¥ ë¬¸ì œë¥¼ í•´ê²°í•˜ë©°,
+ * std::string ë° std::wstring ëª¨ë‘ë¥¼ ì•ˆì „í•˜ê²Œ ì¶œë ¥í•  ìˆ˜ ìˆë„ë¡ ì§€ì›í•©ë‹ˆë‹¤.
  */
 class ConsolePrinter {
 public:
     /**
-     * @brief ÄÜ¼Ö Ãâ·Â È¯°æ ÃÊ±âÈ­
+     * @brief ì½˜ì†” ì¶œë ¥ í™˜ê²½ ì´ˆê¸°í™”
      *
-     * - Windows ÄÜ¼ÖÀÇ Ãâ·Â ÀÎÄÚµùÀ» UTF-8·Î ¼³Á¤
-     * - std::wcout ·ÎÄÉÀÏÀ» ±âº» ·ÎÄÉÀÏ·Î ¼³Á¤ (ÇÑ±Û Ãâ·Â Çã¿ë)
+     * - Windows ì½˜ì†”ì˜ ì¶œë ¥ ì¸ì½”ë”©ì„ UTF-8ë¡œ ì„¤ì •
+     * - std::wcout ë¡œì¼€ì¼ì„ ê¸°ë³¸ ë¡œì¼€ì¼ë¡œ ì„¤ì • (í•œê¸€ ì¶œë ¥ í—ˆìš©)
      *
-     * ¹İµå½Ã main ÇÔ¼ö ¶Ç´Â ÇÁ·Î±×·¥ ½ÃÀÛ ½Ã 1È¸ È£ÃâÇØ¾ß ÇÔ.
+     * ë°˜ë“œì‹œ main í•¨ìˆ˜ ë˜ëŠ” í”„ë¡œê·¸ë¨ ì‹œì‘ ì‹œ 1íšŒ í˜¸ì¶œí•´ì•¼ í•¨.
      */
     static void init();
 
     /**
-     * @brief std::string ¹®ÀÚ¿­À» Ãâ·Â (ÁÙ¹Ù²Ş ¾øÀ½)
-     * @param text Ãâ·ÂÇÒ ¹®ÀÚ¿­
+     * @brief std::string ë¬¸ìì—´ì„ ì¶œë ¥ (ì¤„ë°”ê¿ˆ ì—†ìŒ)
+     * @param text ì¶œë ¥í•  ë¬¸ìì—´
      */
     static void print(const std::string& text);
 
     /**
-     * @brief std::wstring ¹®ÀÚ¿­À» Ãâ·Â (ÁÙ¹Ù²Ş ¾øÀ½)
-     * @param text Ãâ·ÂÇÒ ¿ÍÀÌµå ¹®ÀÚ¿­
+     * @brief std::wstring ë¬¸ìì—´ì„ ì¶œë ¥ (ì¤„ë°”ê¿ˆ ì—†ìŒ)
+     * @param text ì¶œë ¥í•  ì™€ì´ë“œ ë¬¸ìì—´
      */
     static void print(const std::wstring& text);
 
     /**
-     * @brief std::string ¹®ÀÚ¿­À» Ãâ·ÂÇÏ°í ÁÙ¹Ù²Ş
-     * @param text Ãâ·ÂÇÒ ¹®ÀÚ¿­
+     * @brief std::string ë¬¸ìì—´ì„ ì¶œë ¥í•˜ê³  ì¤„ë°”ê¿ˆ
+     * @param text ì¶œë ¥í•  ë¬¸ìì—´
      */
     static void println(const std::string& text);
 
     /**
-     * @brief std::wstring ¹®ÀÚ¿­À» Ãâ·ÂÇÏ°í ÁÙ¹Ù²Ş
-     * @param text Ãâ·ÂÇÒ ¿ÍÀÌµå ¹®ÀÚ¿­
+     * @brief std::wstring ë¬¸ìì—´ì„ ì¶œë ¥í•˜ê³  ì¤„ë°”ê¿ˆ
+     * @param text ì¶œë ¥í•  ì™€ì´ë“œ ë¬¸ìì—´
      */
     static void println(const std::wstring& text);
 };

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #ifndef GAME_MANAGER_H
 #define GAME_MANAGER_H

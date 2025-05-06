@@ -1,124 +1,124 @@
-#pragma once
+ï»¿#pragma once
 #ifndef UIMANAGER_H
 #define UIMANAGER_H
 
-#include <string>          // std::string »ç¿ëÀ» À§ÇÑ Çì´õ
-#include "Inventory.h"     // Inventory Å¬·¡½º Á¤ÀÇ Æ÷ÇÔ
-#include "NPC.h"           // NPC Å¬·¡½º Á¤ÀÇ Æ÷ÇÔ
-#include "Book.h"          // Book Å¬·¡½º Á¤ÀÇ Æ÷ÇÔ
-#include "Enums.h"         // eBookCondition µî ¿­°ÅÇü Á¤ÀÇ Æ÷ÇÔ
+#include <string>          // std::string ì‚¬ìš©ì„ ìœ„í•œ í—¤ë”
+#include "Inventory.h"     // Inventory í´ëž˜ìŠ¤ ì •ì˜ í¬í•¨
+#include "NPC.h"           // NPC í´ëž˜ìŠ¤ ì •ì˜ í¬í•¨
+#include "Book.h"          // Book í´ëž˜ìŠ¤ ì •ì˜ í¬í•¨
+#include "Enums.h"         // eBookCondition ë“± ì—´ê±°í˜• ì •ì˜ í¬í•¨
 
 /**
  * @class UIManager
- * @brief »ç¿ëÀÚ ÀÎÅÍÆäÀÌ½º(UI) Ãâ·ÂÀ» ´ã´çÇÏ´Â Å¬·¡½º
+ * @brief ì‚¬ìš©ìž ì¸í„°íŽ˜ì´ìŠ¤(UI) ì¶œë ¥ì„ ë‹´ë‹¹í•˜ëŠ” í´ëž˜ìŠ¤
  *
- * °ÔÀÓÀÇ °¢ ´Ü°è¿¡¼­ ÇÃ·¹ÀÌ¾î¿¡°Ô Á¤º¸¸¦ Ç¥½ÃÇÏ°í,
- * ÀÔ·ÂÀ» ¹ÞÀ» ¼ö ÀÖ´Â ±â´ÉÀ» Á¦°øÇÕ´Ï´Ù.
+ * ê²Œìž„ì˜ ê° ë‹¨ê³„ì—ì„œ í”Œë ˆì´ì–´ì—ê²Œ ì •ë³´ë¥¼ í‘œì‹œí•˜ê³ ,
+ * ìž…ë ¥ì„ ë°›ì„ ìˆ˜ ìžˆëŠ” ê¸°ëŠ¥ì„ ì œê³µí•©ë‹ˆë‹¤.
  */
 class UIManager {
 public:
     /**
-     * @brief ¸ÞÀÎ ¸Þ´º È­¸éÀ» Ãâ·Â
+     * @brief ë©”ì¸ ë©”ë‰´ í™”ë©´ì„ ì¶œë ¥
      *
-     * °ÔÀÓ ½ÃÀÛ ¶Ç´Â ÇÏ·ç ½ÃÀÛ ½Ã È£ÃâÇÏ¿©
-     * ÇÃ·¹ÀÌ¾î°¡ ¼±ÅÃÇÒ ¼ö ÀÖ´Â ÁÖ¿ä ¸ðµå¸¦ ¾È³»ÇÕ´Ï´Ù.
+     * ê²Œìž„ ì‹œìž‘ ë˜ëŠ” í•˜ë£¨ ì‹œìž‘ ì‹œ í˜¸ì¶œí•˜ì—¬
+     * í”Œë ˆì´ì–´ê°€ ì„ íƒí•  ìˆ˜ ìžˆëŠ” ì£¼ìš” ëª¨ë“œë¥¼ ì•ˆë‚´í•©ë‹ˆë‹¤.
      */
     void displayMainMenu();
 
     /**
-     * @brief ÀÎº¥Åä¸® È­¸éÀ» Ãâ·Â
+     * @brief ì¸ë²¤í† ë¦¬ í™”ë©´ì„ ì¶œë ¥
      *
-     * @param inventory  ÇöÀç ÇÃ·¹ÀÌ¾îÀÇ ÀÎº¥Åä¸® Á¤º¸
+     * @param inventory  í˜„ìž¬ í”Œë ˆì´ì–´ì˜ ì¸ë²¤í† ë¦¬ ì •ë³´
      *
-     * Inventory °´Ã¼¸¦ ÂüÁ¶ÇÏ¿© º¸À¯ ÁßÀÎ Ã¥ ¸ñ·ÏÀ»
-     * Á¦¸ñ°ú °£´ÜÇÑ Á¤º¸¿Í ÇÔ²² Ç¥½ÃÇÕ´Ï´Ù.
+     * Inventory ê°ì²´ë¥¼ ì°¸ì¡°í•˜ì—¬ ë³´ìœ  ì¤‘ì¸ ì±… ëª©ë¡ì„
+     * ì œëª©ê³¼ ê°„ë‹¨í•œ ì •ë³´ì™€ í•¨ê»˜ í‘œì‹œí•©ë‹ˆë‹¤.
      */
     void displayInventory(const Inventory& inventory);
 
     /**
-     * @brief NPC »óÈ£ÀÛ¿ë È­¸éÀ» Ãâ·Â
+     * @brief NPC ìƒí˜¸ìž‘ìš© í™”ë©´ì„ ì¶œë ¥
      *
-     * @param npc  »óÈ£ÀÛ¿ëÇÒ NPC °´Ã¼ Æ÷ÀÎÅÍ
+     * @param npc  ìƒí˜¸ìž‘ìš©í•  NPC ê°ì²´ í¬ì¸í„°
      *
-     * NPCÀÇ ÀÌ¸§, ¼±È£ Àå¸£/ºÐÀ§±â µîÀ» Ç¥½ÃÇÏ¿©
-     * ÇÃ·¹ÀÌ¾î°¡ NPCÀÇ ¿äÃ»À» ÀÌÇØÇÏµµ·Ï µ½½À´Ï´Ù.
+     * NPCì˜ ì´ë¦„, ì„ í˜¸ ìž¥ë¥´/ë¶„ìœ„ê¸° ë“±ì„ í‘œì‹œí•˜ì—¬
+     * í”Œë ˆì´ì–´ê°€ NPCì˜ ìš”ì²­ì„ ì´í•´í•˜ë„ë¡ ë•ìŠµë‹ˆë‹¤.
      */
     void displayNPCInteraction(NPC* npc);
 
     /**
-     * @brief Ã¥ »ó¼¼ Á¤º¸¸¦ Ãâ·Â
+     * @brief ì±… ìƒì„¸ ì •ë³´ë¥¼ ì¶œë ¥
      *
-     * @param book  »ó¼¼ Á¤º¸¸¦ Ç¥½ÃÇÒ Book °´Ã¼ Æ÷ÀÎÅÍ
+     * @param book  ìƒì„¸ ì •ë³´ë¥¼ í‘œì‹œí•  Book ê°ì²´ í¬ì¸í„°
      *
-     * Ã¥ÀÇ Á¦¸ñ, ¼³¸í, Àå¸£, ºÐÀ§±â, ºÐ·®, »óÅÂ µîÀ»
-     * »ç¿ëÀÚ¿¡°Ô º¸¿©ÁÝ´Ï´Ù.
+     * ì±…ì˜ ì œëª©, ì„¤ëª…, ìž¥ë¥´, ë¶„ìœ„ê¸°, ë¶„ëŸ‰, ìƒíƒœ ë“±ì„
+     * ì‚¬ìš©ìžì—ê²Œ ë³´ì—¬ì¤ë‹ˆë‹¤.
      */
     void displayBookDetail(const Book* book);
 
     /**
-     * @brief Ã¥ »óÅÂ(Condition)¸¦ Ãâ·Â
+     * @brief ì±… ìƒíƒœ(Condition)ë¥¼ ì¶œë ¥
      *
-     * @param bc  Ã¥ »óÅÂ ¿­°ÅÇü °ª(eBookCondition)
+     * @param bc  ì±… ìƒíƒœ ì—´ê±°í˜• ê°’(eBookCondition)
      *
-     * eBookCondition °ª¿¡ µû¶ó "Perfect", "Worn", "Damaged" µîÀÇ
-     * »óÅÂ ¸Þ½ÃÁö ¹× ¾ÆÀÌÄÜÀ» Ç¥½ÃÇÕ´Ï´Ù.
+     * eBookCondition ê°’ì— ë”°ë¼ "Perfect", "Worn", "Damaged" ë“±ì˜
+     * ìƒíƒœ ë©”ì‹œì§€ ë° ì•„ì´ì½˜ì„ í‘œì‹œí•©ë‹ˆë‹¤.
      */
     void displayBookCondition(eBookCondition bc);
 
     /**
-     * @brief Æä³ÎÆ¼ Á¤º¸¸¦ Ãâ·Â
+     * @brief íŽ˜ë„í‹° ì •ë³´ë¥¼ ì¶œë ¥
      *
-     * @param gold  Â÷°¨µÉ °ñµå ¾ç
-     * @param mp    Â÷°¨µÉ ¸¶·Â ¾ç
+     * @param gold  ì°¨ê°ë  ê³¨ë“œ ì–‘
+     * @param mp    ì°¨ê°ë  ë§ˆë ¥ ì–‘
      *
-     * NPC°¡ ºÒ¸¸Á·ÇßÀ» ¶§ ¹ß»ýÇÏ´Â Æä³ÎÆ¼ Á¤º¸¸¦
-     * ÇÃ·¹ÀÌ¾î¿¡°Ô ¾È³»ÇÕ´Ï´Ù.
+     * NPCê°€ ë¶ˆë§Œì¡±í–ˆì„ ë•Œ ë°œìƒí•˜ëŠ” íŽ˜ë„í‹° ì •ë³´ë¥¼
+     * í”Œë ˆì´ì–´ì—ê²Œ ì•ˆë‚´í•©ë‹ˆë‹¤.
      */
     void displayPenaltyInfo(int gold, int mp);
 
     /**
-     * @brief ASCII ¾ÆÆ®¸¦ È­¸é¿¡ Ãâ·Â
+     * @brief ASCII ì•„íŠ¸ë¥¼ í™”ë©´ì— ì¶œë ¥
      *
-     * @param art  Ãâ·ÂÇÒ ASCII ¾ÆÆ® ¹®ÀÚ¿­
+     * @param art  ì¶œë ¥í•  ASCII ì•„íŠ¸ ë¬¸ìžì—´
      *
-     * ÀÏÀÏ ¿ä¾à µîÀÇ ½Ã°¢Àû È¿°ú¸¦ À§ÇØ »ç¿ëÇÕ´Ï´Ù.
+     * ì¼ì¼ ìš”ì•½ ë“±ì˜ ì‹œê°ì  íš¨ê³¼ë¥¼ ìœ„í•´ ì‚¬ìš©í•©ë‹ˆë‹¤.
      */
     void displayAsciiArt(const std::string& art);
 
     /**
-     * @brief ·¹º§¾÷ ¸Þ½ÃÁö¸¦ Ãâ·Â
+     * @brief ë ˆë²¨ì—… ë©”ì‹œì§€ë¥¼ ì¶œë ¥
      *
-     * @param level  »õ·Î¿î ·¹º§ °ª
+     * @param level  ìƒˆë¡œìš´ ë ˆë²¨ ê°’
      *
-     * ÇÃ·¹ÀÌ¾î°¡ ·¹º§¾÷ÇßÀ» ¶§ ÃàÇÏ ¸Þ½ÃÁö¿Í ÇÔ²²
-     * »õ·Î¿î ·¹º§À» Ç¥½ÃÇÕ´Ï´Ù.
+     * í”Œë ˆì´ì–´ê°€ ë ˆë²¨ì—…í–ˆì„ ë•Œ ì¶•í•˜ ë©”ì‹œì§€ì™€ í•¨ê»˜
+     * ìƒˆë¡œìš´ ë ˆë²¨ì„ í‘œì‹œí•©ë‹ˆë‹¤.
      */
     void displayLevelUpMessage(int level);
 
     /**
-     * @brief »ç¿ëÀÚ·ÎºÎÅÍ ÀÔ·ÂÀ» ¹Þ´Â ÇÔ¼ö
+     * @brief ì‚¬ìš©ìžë¡œë¶€í„° ìž…ë ¥ì„ ë°›ëŠ” í•¨ìˆ˜
      *
-     * @param prompt  ÀÔ·Â ¿äÃ» ¸Þ½ÃÁö
-     * @return int    »ç¿ëÀÚ°¡ ÀÔ·ÂÇÑ Á¤¼ö °ª
+     * @param prompt  ìž…ë ¥ ìš”ì²­ ë©”ì‹œì§€
+     * @return int    ì‚¬ìš©ìžê°€ ìž…ë ¥í•œ ì •ìˆ˜ ê°’
      *
-     * ¸Þ´º ¼±ÅÃ µî ¼ýÀÚ ÀÔ·ÂÀÌ ÇÊ¿äÇÑ °æ¿ì È£ÃâÇÕ´Ï´Ù.
+     * ë©”ë‰´ ì„ íƒ ë“± ìˆ«ìž ìž…ë ¥ì´ í•„ìš”í•œ ê²½ìš° í˜¸ì¶œí•©ë‹ˆë‹¤.
      */
     int getUserInput(const std::string& prompt);
 
     /**
-     * @brief ¸ðµå ¼±ÅÃ È­¸éÀ» Ãâ·Â
+     * @brief ëª¨ë“œ ì„ íƒ í™”ë©´ì„ ì¶œë ¥
      *
-     * ¹Ì´Ï°ÔÀÓ ¶Ç´Â ÁýÇÊ µî ÇÃ·¹ÀÌ¾î°¡ ¼öÇàÇÒ ¼ö ÀÖ´Â
-     * ´Ù¾çÇÑ ¸ðµå¸¦ ¾È³»ÇÕ´Ï´Ù.
+     * ë¯¸ë‹ˆê²Œìž„ ë˜ëŠ” ì§‘í•„ ë“± í”Œë ˆì´ì–´ê°€ ìˆ˜í–‰í•  ìˆ˜ ìžˆëŠ”
+     * ë‹¤ì–‘í•œ ëª¨ë“œë¥¼ ì•ˆë‚´í•©ë‹ˆë‹¤.
      */
     void displayModeSelection();
 
     /**
-     * @brief ¹Ì´Ï°ÔÀÓ °á°ú¸¦ Ãâ·Â
+     * @brief ë¯¸ë‹ˆê²Œìž„ ê²°ê³¼ë¥¼ ì¶œë ¥
      *
-     * @param result  °ÔÀÓ °á°ú ¸Þ½ÃÁö ("Win" ¶Ç´Â "Lose" µî)
+     * @param result  ê²Œìž„ ê²°ê³¼ ë©”ì‹œì§€ ("Win" ë˜ëŠ” "Lose" ë“±)
      *
-     * ¹Ì´Ï°ÔÀÓ ¼öÇà ÈÄ ¼º°ø/½ÇÆÐ °á°ú¸¦ »ç¿ëÀÚ¿¡°Ô ¾Ë·ÁÁÝ´Ï´Ù.
+     * ë¯¸ë‹ˆê²Œìž„ ìˆ˜í–‰ í›„ ì„±ê³µ/ì‹¤íŒ¨ ê²°ê³¼ë¥¼ ì‚¬ìš©ìžì—ê²Œ ì•Œë ¤ì¤ë‹ˆë‹¤.
      */
     void displayMiniGameResult(const std::string& result);
 

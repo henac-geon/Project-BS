@@ -1,9 +1,9 @@
-#pragma once
+ï»¿#pragma once
 
 #ifndef ENUMS_H
 #define ENUMS_H
 
-//Ã¥Àå¸£
+//ì±…ì¥ë¥´
 enum class eBookGenre {
     Fantasy,
     Romance,
@@ -13,7 +13,7 @@ enum class eBookGenre {
     NonFiction
 };
 
-//Ã¥ºĞÀ§±â
+//ì±…ë¶„ìœ„ê¸°
 enum class eBookMood {
     Dark,
     Light,
@@ -22,7 +22,7 @@ enum class eBookMood {
     Whimsical
 };
 
-//Ã¥ÄÁµğ¼Ç
+//ì±…ì»¨ë””ì…˜
 enum class eBookCondition {
     Perfect,   // 100% - like new
     Worn,      // 80-99%
@@ -30,18 +30,18 @@ enum class eBookCondition {
     Destroyed  // 0-39%
 };
 
-//¿§Áö¿ä¼Ò
+//ì—£ì§€ìš”ì†Œ
 enum class eBookEdge {
-    None,       //¾øÀ½
-    Reversal    //¹İÀü
+    None,       //ì—†ìŒ
+    Reversal    //ë°˜ì „
 };
 
-//±âÅ¸
+//ê¸°íƒ€
 enum class eBookEtc {
-    None    //¾øÀ½
+    None    //ì—†ìŒ
 };
 
-//¼Õ»óÅ¸ÀÔ
+//ì†ìƒíƒ€ì…
 enum class eDamageType {
     Water,
     Fire,
@@ -59,12 +59,12 @@ enum class eNPCType {
     Librarian
 };
 
-// NPC ¿äÃ» Å¸ÀÔ
+// NPC ìš”ì²­ íƒ€ì…
 enum class eRequestType {       
-    GenreOnly,       // Àå¸£¸¸ ¿ä±¸
-    MoodOnly,        // ¹«µå¸¸ ¿ä±¸
-    GenreAndMood,    // µÑ ´Ù ¿ä±¸
-    AnyBook          // ¾Æ¹«°Å³ª
+    GenreOnly,       // ì¥ë¥´ë§Œ ìš”êµ¬
+    MoodOnly,        // ë¬´ë“œë§Œ ìš”êµ¬
+    GenreAndMood,    // ë‘˜ ë‹¤ ìš”êµ¬
+    AnyBook          // ì•„ë¬´ê±°ë‚˜
 };
 
 #endif // ENUMS_H

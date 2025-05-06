@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 
 #ifndef ASCII_ART_REPOSITORY_H
 #define ASCII_ART_REPOSITORY_H

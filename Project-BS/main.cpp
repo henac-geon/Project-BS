@@ -1,13 +1,13 @@
-#include "ConsolePrinter.h"
+ï»¿#include "ConsolePrinter.h"
 #include "GameManager.h"
 
 /**
- * @brief ÇÁ·Î±×·¥ ÁøÀÔÁ¡
+ * @brief í”„ë¡œê·¸ë¨ ì§„ì…ì 
  *
- * ÄÜ¼Ö Ãâ·Â È¯°æÀ» ÃÊ±âÈ­ÇÑ ÈÄ GameManager¸¦ ½ÇÇàÇÕ´Ï´Ù.
+ * ì½˜ì†” ì¶œë ¥ í™˜ê²½ì„ ì´ˆê¸°í™”í•œ í›„ GameManagerë¥¼ ì‹¤í–‰í•©ë‹ˆë‹¤.
  */
 int main() {
-    ConsolePrinter::init();  // ÄÜ¼Ö ÀÎÄÚµù ¹× ·ÎÄÉÀÏ ÃÊ±âÈ­
+    ConsolePrinter::init();  // ì½˜ì†” ì¸ì½”ë”© ë° ë¡œì¼€ì¼ ì´ˆê¸°í™”
 
     GameManager game;
     game.run();

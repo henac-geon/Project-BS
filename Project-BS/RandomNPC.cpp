@@ -1,4 +1,4 @@
-#include "RandomNPC.h"
+ï»¿#include "RandomNPC.h"
 #include "WizardNPC.h"
 #include "StudentNPC.h"
 #include <cstdlib>
@@ -6,18 +6,18 @@
 #include <vector>
 
 NPC* RandomNPC::create() {
-    std::vector<std::string> names = { "¸¶¹ı»ç", "ÇĞ»ı" };
+    std::vector<std::string> names = { "ë§ˆë²•ì‚¬", "í•™ìƒ" };
     int nameIndex = rand() % names.size();
 
     std::string name = names[nameIndex];
-    eBookGenre genre = static_cast<eBookGenre>(rand() % 6);  // 0~5 Áß ·£´ı °ª
-    eBookMood mood = static_cast<eBookMood>(rand() % 5);      // 0~4 Áß ·£´ı °ª
-    int gold = rand() % 101 + 50;   // 50 ~ 150 Áß ·£´ı °ª (ÀÓ½Ã º¸À¯ °ñµå °ª)
-    int magic = rand() % 51 + 20;   // 20 ~ 70 Áß ·£´ı °ª (ÀÓ½Ã º¸À¯ ¸¶¹ı·Â °ª)
+    eBookGenre genre = static_cast<eBookGenre>(rand() % 6);  // 0~5 ì¤‘ ëœë¤ ê°’
+    eBookMood mood = static_cast<eBookMood>(rand() % 5);      // 0~4 ì¤‘ ëœë¤ ê°’
+    int gold = rand() % 101 + 50;   // 50 ~ 150 ì¤‘ ëœë¤ ê°’ (ì„ì‹œ ë³´ìœ  ê³¨ë“œ ê°’)
+    int magic = rand() % 51 + 20;   // 20 ~ 70 ì¤‘ ëœë¤ ê°’ (ì„ì‹œ ë³´ìœ  ë§ˆë²•ë ¥ ê°’)
 
-    // eRequestType type = static_cast<eRequestType>(rand() % 4); // NPC Ã¥ ¿äÃ» Å¸ÀÔÀ» ·£´ıÀ¸·Î ¹Ù²ãÁÖ´Â ÄÚµå
+    // eRequestType type = static_cast<eRequestType>(rand() % 4); // NPC ì±… ìš”ì²­ íƒ€ì…ì„ ëœë¤ìœ¼ë¡œ ë°”ê¿”ì£¼ëŠ” ì½”ë“œ
 
-    int r = rand() % 2; // ¸¶¹ı»ç or ÇĞ»ı ¼±ÅÃ º¯¼ö -> ³ªÁß¿¡ NPC Ãß°¡µÇ¸é º¯°æ
+    int r = rand() % 2; // ë§ˆë²•ì‚¬ or í•™ìƒ ì„ íƒ ë³€ìˆ˜ -> ë‚˜ì¤‘ì— NPC ì¶”ê°€ë˜ë©´ ë³€ê²½
 
     if (r == 0) return new WizardNPC(name, genre, mood, gold, magic);
     else        return new StudentNPC(name, genre, mood, gold, magic);
@@ -25,7 +25,7 @@ NPC* RandomNPC::create() {
 
 /*
 
-À§¿¡ ·£´ı ÄÚµå¸¦ »ç¿ë ÇÒ ¶§ º¯°æÇÏ±â
+ìœ„ì— ëœë¤ ì½”ë“œë¥¼ ì‚¬ìš© í•  ë•Œ ë³€ê²½í•˜ê¸°
 
 
 if (r == 0) {

@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #ifndef STUDENTNPC_H
 #define STUDENTNPC_H
 

@@ -1,59 +1,59 @@
-#include "LevelSystem.h"  // LevelSystem Å¬·¡½º Á¤ÀÇ Çì´õ Æ÷ÇÔ
+ï»¿#include "LevelSystem.h"  // LevelSystem í´ë˜ìŠ¤ ì •ì˜ í—¤ë” í¬í•¨
 
 /**
- * @brief ±âº» »ı¼ºÀÚ
+ * @brief ê¸°ë³¸ ìƒì„±ì
  *
- * experience¸¦ 0À¸·Î, levelÀ» 1·Î ÃÊ±âÈ­ÇÕ´Ï´Ù.
- * - experience: 0 (°ÔÀÓ ½ÃÀÛ ½Ã °æÇèÄ¡ ¾øÀ½)
- * - level: 1      (°ÔÀÓ ½ÃÀÛ ½Ã ±âº» ·¹º§)
+ * experienceë¥¼ 0ìœ¼ë¡œ, levelì„ 1ë¡œ ì´ˆê¸°í™”í•©ë‹ˆë‹¤.
+ * - experience: 0 (ê²Œì„ ì‹œì‘ ì‹œ ê²½í—˜ì¹˜ ì—†ìŒ)
+ * - level: 1      (ê²Œì„ ì‹œì‘ ì‹œ ê¸°ë³¸ ë ˆë²¨)
  */
 LevelSystem::LevelSystem()
-    : experience(0),  // ÃÊ±â °æÇèÄ¡ ¼³Á¤
-    level(1)        // ÃÊ±â ·¹º§ ¼³Á¤
+    : experience(0),  // ì´ˆê¸° ê²½í—˜ì¹˜ ì„¤ì •
+    level(1)        // ì´ˆê¸° ë ˆë²¨ ì„¤ì •
 {
-    // »ı¼ºÀÚ º»¹®Àº ºñ¾î ÀÖÀ¸¸ç, ¸â¹ö ÃÊ±âÈ­ ¸®½ºÆ®·Î¸¸ ÃÊ±âÈ­ ¼öÇà
+    // ìƒì„±ì ë³¸ë¬¸ì€ ë¹„ì–´ ìˆìœ¼ë©°, ë©¤ë²„ ì´ˆê¸°í™” ë¦¬ìŠ¤íŠ¸ë¡œë§Œ ì´ˆê¸°í™” ìˆ˜í–‰
 }
 
 /**
- * @brief °æÇèÄ¡¸¦ È¹µæÇÏ¿© ´©ÀûÇÏ´Â ÇÔ¼ö
+ * @brief ê²½í—˜ì¹˜ë¥¼ íšë“í•˜ì—¬ ëˆ„ì í•˜ëŠ” í•¨ìˆ˜
  *
- * @param amount  È¹µæÇÒ °æÇèÄ¡ ¾ç
+ * @param amount  íšë“í•  ê²½í—˜ì¹˜ ì–‘
  *
- * Àü´ŞµÈ amount ¸¸Å­ experience¿¡ ´õÇÕ´Ï´Ù.
- * ÀÌ ÇÔ¼ö´Â ´Ü¼ø ´©Àû ±â´É¸¸ ¼öÇàÇÏ¸ç,
- * ·¹º§¾÷ ¿©ºÎ´Â checkLevelUp() È£Ãâ·Î ÆÇ´ÜÇÕ´Ï´Ù.
+ * ì „ë‹¬ëœ amount ë§Œí¼ experienceì— ë”í•©ë‹ˆë‹¤.
+ * ì´ í•¨ìˆ˜ëŠ” ë‹¨ìˆœ ëˆ„ì  ê¸°ëŠ¥ë§Œ ìˆ˜í–‰í•˜ë©°,
+ * ë ˆë²¨ì—… ì—¬ë¶€ëŠ” checkLevelUp() í˜¸ì¶œë¡œ íŒë‹¨í•©ë‹ˆë‹¤.
  */
 void LevelSystem::gainExp(int amount) {
-    experience += amount;  // °æÇèÄ¡ Áõ°¡
+    experience += amount;  // ê²½í—˜ì¹˜ ì¦ê°€
 }
 
 /**
- * @brief ·¹º§¾÷ °¡´É ¿©ºÎ¸¦ °Ë»çÇÏ°í, °¡´É ½Ã ·¹º§¾÷ ¼öÇà
+ * @brief ë ˆë²¨ì—… ê°€ëŠ¥ ì—¬ë¶€ë¥¼ ê²€ì‚¬í•˜ê³ , ê°€ëŠ¥ ì‹œ ë ˆë²¨ì—… ìˆ˜í–‰
  *
- * @return bool  ·¹º§¾÷ÀÌ ¹ß»ıÇßÀ¸¸é true, ±×·¸Áö ¾ÊÀ¸¸é false
+ * @return bool  ë ˆë²¨ì—…ì´ ë°œìƒí–ˆìœ¼ë©´ true, ê·¸ë ‡ì§€ ì•Šìœ¼ë©´ false
  *
- * - threshold: ÇöÀç ·¹º§¿¡ 100À» °öÇÑ °ªÀ¸·Î ¼³Á¤ (¿¹: ·¹º§ 2ÀÌ¸é 200)
- * - experience°¡ threshold ÀÌ»óÀÌ¸é:
- *     1) levelÀ» 1 Áõ°¡½ÃÅ´
- *     2) experience¿¡¼­ threshold¸¦ Â÷°¨ÇÏ¿© ÃÊ°ú °æÇèÄ¡´Â ´ÙÀ½ ·¹º§¿¡ ¹İ¿µ
- *     3) true ¹İÈ¯
- * - ±×·¸Áö ¾ÊÀ¸¸é false ¹İÈ¯
+ * - threshold: í˜„ì¬ ë ˆë²¨ì— 100ì„ ê³±í•œ ê°’ìœ¼ë¡œ ì„¤ì • (ì˜ˆ: ë ˆë²¨ 2ì´ë©´ 200)
+ * - experienceê°€ threshold ì´ìƒì´ë©´:
+ *     1) levelì„ 1 ì¦ê°€ì‹œí‚´
+ *     2) experienceì—ì„œ thresholdë¥¼ ì°¨ê°í•˜ì—¬ ì´ˆê³¼ ê²½í—˜ì¹˜ëŠ” ë‹¤ìŒ ë ˆë²¨ì— ë°˜ì˜
+ *     3) true ë°˜í™˜
+ * - ê·¸ë ‡ì§€ ì•Šìœ¼ë©´ false ë°˜í™˜
  */
 bool LevelSystem::checkLevelUp() {
-    int threshold = level * 100;            // ÇöÀç ·¹º§ ±â¹İ ÀÓ°è°ª °è»ê
+    int threshold = level * 100;            // í˜„ì¬ ë ˆë²¨ ê¸°ë°˜ ì„ê³„ê°’ ê³„ì‚°
     if (experience >= threshold) {
-        level++;                            // ·¹º§¾÷
-        experience -= threshold;           // ÃÊ°ú °æÇèÄ¡ ³²±â±â
-        return true;                       // ·¹º§¾÷ ¹ß»ı
+        level++;                            // ë ˆë²¨ì—…
+        experience -= threshold;           // ì´ˆê³¼ ê²½í—˜ì¹˜ ë‚¨ê¸°ê¸°
+        return true;                       // ë ˆë²¨ì—… ë°œìƒ
     }
-    return false;                          // ·¹º§¾÷ ¾øÀ½
+    return false;                          // ë ˆë²¨ì—… ì—†ìŒ
 }
 
 /**
- * @brief ÇöÀç ·¹º§À» ¹İÈ¯ÇÏ´Â Getter
+ * @brief í˜„ì¬ ë ˆë²¨ì„ ë°˜í™˜í•˜ëŠ” Getter
  *
- * @return int - ÇöÀç level °ª
+ * @return int - í˜„ì¬ level ê°’
  */
 int LevelSystem::getLevel() const {
-    return level;  // level ¸â¹ö ¹İÈ¯
+    return level;  // level ë©¤ë²„ ë°˜í™˜
 }

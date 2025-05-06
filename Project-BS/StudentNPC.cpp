@@ -1,4 +1,4 @@
-#include "NPC.h"
+﻿#include "NPC.h"
 #include "StudentNPC.h"
 #include "ConsolePrinter.h"
 
@@ -24,7 +24,7 @@ Book* StudentNPC::requestBook(const std::vector<Book*>& candidates) {
 }
 
 bool StudentNPC::rateBook(Book* book) const {
-    return NPC::rateBook(book);  // �л� NPC å ��
+    return NPC::rateBook(book);  // 학생 NPC 책 평가
 }
 
 void StudentNPC::compensateForDamage(Book* book) {

@@ -1,33 +1,33 @@
-#include "BookFactory.h"
-#include "FantasyBook.h"  // FantasyBook Å¬·¡½º Á¤ÀÇ Çì´õ Æ÷ÇÔ
-#include "ScienceBook.h"  // ScienceBook Å¬·¡½º Á¤ÀÇ Çì´õ Æ÷ÇÔ
-#include <cstdlib>  // rand() ÇÔ¼ö »ç¿ëÀ» À§ÇÑ Çì´õ
+ï»¿#include "BookFactory.h"
+#include "FantasyBook.h"  // FantasyBook í´ë˜ìŠ¤ ì •ì˜ í—¤ë” í¬í•¨
+#include "ScienceBook.h"  // ScienceBook í´ë˜ìŠ¤ ì •ì˜ í—¤ë” í¬í•¨
+#include <cstdlib>  // rand() í•¨ìˆ˜ ì‚¬ìš©ì„ ìœ„í•œ í—¤ë”
 
 /**
- * @brief ·£´ıÇÑ Ã¥À» »ı¼ºÇÏ´Â ÆÑÅä¸® ÇÔ¼ö
+ * @brief ëœë¤í•œ ì±…ì„ ìƒì„±í•˜ëŠ” íŒ©í† ë¦¬ í•¨ìˆ˜
  *
- * @return Book* - »ı¼ºµÈ ·£´ı Ã¥ °´Ã¼ Æ÷ÀÎÅÍ
+ * @return Book* - ìƒì„±ëœ ëœë¤ ì±… ê°ì²´ í¬ì¸í„°
  *
- * ±æÀÌ´Â 50~149 »çÀÌÀÇ ·£´ı °ªÀ¸·Î ¼³Á¤µÇ¸ç,
- * Àå¸£´Â ÆÇÅ¸Áö(Fantasy), ºĞÀ§±â´Â ±â¹ßÇÑ(Whimsical)À¸·Î °íÁ¤ÇÕ´Ï´Ù.
+ * ê¸¸ì´ëŠ” 50~149 ì‚¬ì´ì˜ ëœë¤ ê°’ìœ¼ë¡œ ì„¤ì •ë˜ë©°,
+ * ì¥ë¥´ëŠ” íŒíƒ€ì§€(Fantasy), ë¶„ìœ„ê¸°ëŠ” ê¸°ë°œí•œ(Whimsical)ìœ¼ë¡œ ê³ ì •í•©ë‹ˆë‹¤.
  */
 Book* BookFactory::createRandomBook() {
-    int len = rand() % 100 + 50;  // 0~99 »çÀÌ ·£´ı +50 => 50~149
-    // °íÁ¤µÈ Àå¸£¿Í ºĞÀ§±â·Î Ã¥ »ı¼º
+    int len = rand() % 100 + 50;  // 0~99 ì‚¬ì´ ëœë¤ +50 => 50~149
+    // ê³ ì •ëœ ì¥ë¥´ì™€ ë¶„ìœ„ê¸°ë¡œ ì±… ìƒì„±
     return createBook(eBookGenre::Fantasy, eBookMood::Whimsical, len, eBookEdge::None, eBookEtc::None);
 }
 
 /**
- * @brief ÁöÁ¤µÈ ¼Ó¼ºÀÇ Ã¥À» »ı¼ºÇÏ´Â ÆÑÅä¸® ÇÔ¼ö
+ * @brief ì§€ì •ëœ ì†ì„±ì˜ ì±…ì„ ìƒì„±í•˜ëŠ” íŒ©í† ë¦¬ í•¨ìˆ˜
  *
- * @param genre   »ı¼ºÇÒ Ã¥ÀÇ Àå¸£
- * @param mood    »ı¼ºÇÒ Ã¥ÀÇ ºĞÀ§±â
- * @param length  Ã¥ÀÇ ºĞ·®(ÆäÀÌÁö ¼ö µî)
- * @return Book* - »ı¼ºµÈ Ã¥ °´Ã¼ Æ÷ÀÎÅÍ
+ * @param genre   ìƒì„±í•  ì±…ì˜ ì¥ë¥´
+ * @param mood    ìƒì„±í•  ì±…ì˜ ë¶„ìœ„ê¸°
+ * @param length  ì±…ì˜ ë¶„ëŸ‰(í˜ì´ì§€ ìˆ˜ ë“±)
+ * @return Book* - ìƒì„±ëœ ì±… ê°ì²´ í¬ì¸í„°
  *
- * Àå¸£¿¡ µû¶ó ÆÄ»ı Å¬·¡½º(FantasyBook, ScienceBook µî)¸¦ °áÁ¤ÇÏ¿©
- * ÇØ´ç °´Ã¼¸¦ µ¿ÀûÀ¸·Î ÇÒ´ç ÈÄ ¹İÈ¯ÇÕ´Ï´Ù.
- * Áö¿øÇÏÁö ¾Ê´Â Àå¸£ÀÇ °æ¿ì ±âº» ÆÇÅ¸Áö Ã¥À» »ı¼ºÇÕ´Ï´Ù.
+ * ì¥ë¥´ì— ë”°ë¼ íŒŒìƒ í´ë˜ìŠ¤(FantasyBook, ScienceBook ë“±)ë¥¼ ê²°ì •í•˜ì—¬
+ * í•´ë‹¹ ê°ì²´ë¥¼ ë™ì ìœ¼ë¡œ í• ë‹¹ í›„ ë°˜í™˜í•©ë‹ˆë‹¤.
+ * ì§€ì›í•˜ì§€ ì•ŠëŠ” ì¥ë¥´ì˜ ê²½ìš° ê¸°ë³¸ íŒíƒ€ì§€ ì±…ì„ ìƒì„±í•©ë‹ˆë‹¤.
  */
 Book* BookFactory::createBook(eBookGenre genre,
     eBookMood mood,
@@ -37,25 +37,25 @@ Book* BookFactory::createBook(eBookGenre genre,
     ) {
     switch (genre) {
     case eBookGenre::Fantasy:
-        // ÆÇÅ¸Áö Àå¸£¿ë Ã¥ »ı¼º
+        // íŒíƒ€ì§€ ì¥ë¥´ìš© ì±… ìƒì„±
         return new FantasyBook(
-            "Random Fantasy",      // Á¦¸ñ
-            "A random fantasy book", // ¼³¸í
+            "Random Fantasy",      // ì œëª©
+            "A random fantasy book", // ì„¤ëª…
             length
-            );                // ºĞ·®
+            );                // ë¶„ëŸ‰
 
     case eBookGenre::SciFi:
-        // °ø»ó°úÇĞ Àå¸£¿ë Ã¥ »ı¼º
+        // ê³µìƒê³¼í•™ ì¥ë¥´ìš© ì±… ìƒì„±
         return new ScienceBook(
-            "Random SciFi",         // Á¦¸ñ
-            "A random science book", // ¼³¸í
-            length);                // ºĞ·®
+            "Random SciFi",         // ì œëª©
+            "A random science book", // ì„¤ëª…
+            length);                // ë¶„ëŸ‰
 
     default:
-        // Áö¿øÇÏÁö ¾Ê´Â Àå¸£´Â ±âº» ÆÇÅ¸Áö Ã¥À¸·Î Ã³¸®
+        // ì§€ì›í•˜ì§€ ì•ŠëŠ” ì¥ë¥´ëŠ” ê¸°ë³¸ íŒíƒ€ì§€ ì±…ìœ¼ë¡œ ì²˜ë¦¬
         return new FantasyBook(
-            "Default Fantasy",      // Á¦¸ñ
-            "Default",              // ¼³¸í
-            length);                // ºĞ·®
+            "Default Fantasy",      // ì œëª©
+            "Default",              // ì„¤ëª…
+            length);                // ë¶„ëŸ‰
     }
 }

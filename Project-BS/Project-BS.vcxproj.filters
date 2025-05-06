@@ -63,17 +63,20 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="AsciiArtRepository.cpp">
+      <Filter>소스 파일\UI</Filter>
+    </ClCompile>
     <ClCompile Include="Book.cpp">
       <Filter>소스 파일\Book</Filter>
     </ClCompile>
-    <ClCompile Include="NPC.cpp">
-      <Filter>소스 파일\NPC</Filter>
+    <ClCompile Include="BookFactory.cpp">
+      <Filter>소스 파일\Book</Filter>
     </ClCompile>
-    <ClCompile Include="CsvIO.cpp">
-      <Filter>소스 파일\Utility</Filter>
+    <ClCompile Include="FantasyBook.cpp">
+      <Filter>소스 파일\Book</Filter>
     </ClCompile>
-    <ClCompile Include="MiniGame.cpp">
-      <Filter>소스 파일\MiniGame</Filter>
+    <ClCompile Include="ScienceBook.cpp">
+      <Filter>소스 파일\Book</Filter>
     </ClCompile>
     <ClCompile Include="GameManager.cpp">
       <Filter>소스 파일\Core</Filter>
@@ -84,23 +87,11 @@
     <ClCompile Include="ScoreSystem.cpp">
       <Filter>소스 파일\Core</Filter>
     </ClCompile>
-    <ClCompile Include="Inventory.cpp">
-      <Filter>소스 파일\Systems</Filter>
+    <ClCompile Include="MiniGame.cpp">
+      <Filter>소스 파일\MiniGame</Filter>
     </ClCompile>
-    <ClCompile Include="PenaltySystem.h">
-      <Filter>헤더 파일\Systems</Filter>
-    </ClCompile>
-    <ClCompile Include="PenaltySystem.cpp">
-      <Filter>소스 파일\Systems</Filter>
-    </ClCompile>
-    <ClCompile Include="UIManager.cpp">
-      <Filter>소스 파일\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="FantasyBook.cpp">
-      <Filter>소스 파일\Book</Filter>
-    </ClCompile>
-    <ClCompile Include="ScienceBook.cpp">
-      <Filter>소스 파일\Book</Filter>
+    <ClCompile Include="NPC.cpp">
+      <Filter>소스 파일\NPC</Filter>
     </ClCompile>
     <ClCompile Include="WizardNPC.cpp">
       <Filter>소스 파일\NPC</Filter>
@@ -108,76 +99,85 @@
     <ClCompile Include="StudentNPC.cpp">
       <Filter>소스 파일\NPC</Filter>
     </ClCompile>
-    <ClCompile Include="BookFactory.cpp">
-      <Filter>소스 파일\Book</Filter>
+    <ClCompile Include="RandomNPC.cpp">
+      <Filter>소스 파일\NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="inventory.cpp">
+      <Filter>소스 파일\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="PenaltySystem.cpp">
+      <Filter>소스 파일\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="CsvIO.cpp">
+      <Filter>소스 파일\Utility</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="AsciiArtRepository.cpp">
+    <ClCompile Include="UIManager.cpp">
       <Filter>소스 파일\UI</Filter>
-    </ClCompile>
-    <ClCompile Include="RandomNPC.cpp">
-      <Filter>소스 파일\NPC</Filter>
     </ClCompile>
     <ClCompile Include="ConsolePrinter.cpp">
       <Filter>소스 파일\Utility</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="CsvIO.h">
-      <Filter>헤더 파일\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="Book.h">
       <Filter>헤더 파일\Book</Filter>
-    </ClInclude>
-    <ClInclude Include="NPC.h">
-      <Filter>헤더 파일\NPC</Filter>
-    </ClInclude>
-    <ClInclude Include="MiniGame.h">
-      <Filter>헤더 파일\MiniGame</Filter>
-    </ClInclude>
-    <ClInclude Include="Enums.h">
-      <Filter>헤더 파일\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="GameManager.h">
-      <Filter>헤더 파일\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="LevelSystem.h">
-      <Filter>헤더 파일\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="ScoreSystem.h">
-      <Filter>헤더 파일\Core</Filter>
-    </ClInclude>
-    <ClInclude Include="UIManager.h">
-      <Filter>헤더 파일\UI</Filter>
-    </ClInclude>
-    <ClInclude Include="Inventory.h">
-      <Filter>헤더 파일\Systems</Filter>
     </ClInclude>
     <ClInclude Include="BookFactory.h">
       <Filter>헤더 파일\Book</Filter>
     </ClInclude>
+    <ClInclude Include="ConsolePrinter.h">
+      <Filter>헤더 파일\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="CsvIO.h">
+      <Filter>헤더 파일\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="Enums.h">
+      <Filter>헤더 파일\Common</Filter>
+    </ClInclude>
     <ClInclude Include="FantasyBook.h">
       <Filter>헤더 파일\Book</Filter>
+    </ClInclude>
+    <ClInclude Include="GameManager.h">
+      <Filter>헤더 파일\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Inventory.h">
+      <Filter>헤더 파일\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="LevelSystem.h">
+      <Filter>헤더 파일\Core</Filter>
+    </ClInclude>
+    <ClInclude Include="MiniGame.h">
+      <Filter>헤더 파일\MiniGame</Filter>
+    </ClInclude>
+    <ClInclude Include="PenaltySystem.h">
+      <Filter>헤더 파일\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="RandomNPC.h">
+      <Filter>헤더 파일\NPC</Filter>
     </ClInclude>
     <ClInclude Include="ScienceBook.h">
       <Filter>헤더 파일\Book</Filter>
     </ClInclude>
-    <ClInclude Include="WizardNPC.h">
-      <Filter>헤더 파일\NPC</Filter>
+    <ClInclude Include="ScoreSystem.h">
+      <Filter>헤더 파일\Core</Filter>
     </ClInclude>
     <ClInclude Include="StudentNPC.h">
+      <Filter>헤더 파일\NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="UIManager.h">
+      <Filter>헤더 파일\UI</Filter>
+    </ClInclude>
+    <ClInclude Include="WizardNPC.h">
       <Filter>헤더 파일\NPC</Filter>
     </ClInclude>
     <ClInclude Include="AsciiArtRepository.h">
       <Filter>헤더 파일\UI</Filter>
     </ClInclude>
-    <ClInclude Include="RandomNPC.h">
+    <ClInclude Include="NPC.h">
       <Filter>헤더 파일\NPC</Filter>
-    </ClInclude>
-    <ClInclude Include="ConsolePrinter.h">
-      <Filter>헤더 파일\Utility</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

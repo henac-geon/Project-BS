@@ -1,46 +1,46 @@
-#include "NPC.h"    // NPC Å¬·¡½º Á¤ÀÇ Çì´õ Æ÷ÇÔ
+ï»¿#include "NPC.h"    // NPC í´ë˜ìŠ¤ ì •ì˜ í—¤ë” í¬í•¨
 
 /**
- * @brief NPC Å¬·¡½º »ı¼ºÀÚ ±¸Çö
+ * @brief NPC í´ë˜ìŠ¤ ìƒì„±ì êµ¬í˜„
  *
- * @param name        NPCÀÇ °íÀ¯ ÀÌ¸§
- * @param genre       NPC°¡ ¼±È£ÇÏ´Â Ã¥ Àå¸£ (Enums.h¿¡ Á¤ÀÇµÈ eBookGenre)
- * @param mood        NPC°¡ ¼±È£ÇÏ´Â Ã¥ ºĞÀ§±â (Enums.h¿¡ Á¤ÀÇµÈ eBookMood)
- * @param gold        ÃÊ±â ±İÈ­·® (°ÔÀÓ ³» °æÁ¦ ½Ã½ºÅÛ¿¡¼­ »ç¿ë)
- * @param magicPower  ÃÊ±â ¸¶¹ı·Â (Æ¯Á¤ »óÈ£ÀÛ¿ëÀÌ³ª º¸»ó ½Ã½ºÅÛ¿¡¼­ »ç¿ë)
+ * @param name        NPCì˜ ê³ ìœ  ì´ë¦„
+ * @param genre       NPCê°€ ì„ í˜¸í•˜ëŠ” ì±… ì¥ë¥´ (Enums.hì— ì •ì˜ëœ eBookGenre)
+ * @param mood        NPCê°€ ì„ í˜¸í•˜ëŠ” ì±… ë¶„ìœ„ê¸° (Enums.hì— ì •ì˜ëœ eBookMood)
+ * @param gold        ì´ˆê¸° ê¸ˆí™”ëŸ‰ (ê²Œì„ ë‚´ ê²½ì œ ì‹œìŠ¤í…œì—ì„œ ì‚¬ìš©)
+ * @param magicPower  ì´ˆê¸° ë§ˆë²•ë ¥ (íŠ¹ì • ìƒí˜¸ì‘ìš©ì´ë‚˜ ë³´ìƒ ì‹œìŠ¤í…œì—ì„œ ì‚¬ìš©)
  *
- * º» »ı¼ºÀÚ¿¡¼­´Â ¸â¹ö ÃÊ±âÈ­ ¸®½ºÆ®¸¦ »ç¿ëÇÏ¿© °¢ ¸â¹ö º¯¼ö¸¦
- * Àü´Ş¹ŞÀº ÀÎ¼ö·Î °£°áÇÏ°í ¾ÈÀüÇÏ°Ô ÃÊ±âÈ­ÇÕ´Ï´Ù.
+ * ë³¸ ìƒì„±ìì—ì„œëŠ” ë©¤ë²„ ì´ˆê¸°í™” ë¦¬ìŠ¤íŠ¸ë¥¼ ì‚¬ìš©í•˜ì—¬ ê° ë©¤ë²„ ë³€ìˆ˜ë¥¼
+ * ì „ë‹¬ë°›ì€ ì¸ìˆ˜ë¡œ ê°„ê²°í•˜ê³  ì•ˆì „í•˜ê²Œ ì´ˆê¸°í™”í•©ë‹ˆë‹¤.
  */
 NPC::NPC(const std::string& name, eBookGenre genre, eBookMood mood, int gold, int magicPower)
     : name(name), preferredGenre(genre), preferredMood(mood), gold(gold), magicPower(magicPower)
 {
-    // TODO: ÇÊ¿ä ½Ã ÃÊ±âÈ­ ÈÄ Ãß°¡ ·ÎÁ÷À» ¿©±â¿¡ ±¸Çö
-    // ¿¹: ±âº» ÀÎº¥Åä¸®(Book Æ÷ÀÎÅÍ)¸¦ ¼³Á¤ÇÏ°Å³ª,
-    //     ÃÊ±âÈ­ ¸Ş½ÃÁö Ãâ·Â, Åë°è Áõ°¡ µî
+    // TODO: í•„ìš” ì‹œ ì´ˆê¸°í™” í›„ ì¶”ê°€ ë¡œì§ì„ ì—¬ê¸°ì— êµ¬í˜„
+    // ì˜ˆ: ê¸°ë³¸ ì¸ë²¤í† ë¦¬(Book í¬ì¸í„°)ë¥¼ ì„¤ì •í•˜ê±°ë‚˜,
+    //     ì´ˆê¸°í™” ë©”ì‹œì§€ ì¶œë ¥, í†µê³„ ì¦ê°€ ë“±
 }
 
-// NPC°¡ ¹ŞÀº Ã¥À» Æò°¡ÇÏ´Â ÇÔ¼ö
+// NPCê°€ ë°›ì€ ì±…ì„ í‰ê°€í•˜ëŠ” í•¨ìˆ˜
 bool NPC::rateBook(Book* book) const {
-    if (!book) return false;    // ÃßÃµ ¸ø ¹Ş¾ÒÀ» °æ¿ì
+    if (!book) return false;    // ì¶”ì²œ ëª» ë°›ì•˜ì„ ê²½ìš°
 
     switch (requestType) {
-    case eRequestType::GenreOnly:    // Àå¸£¸¸ ÃßÃµ¹Ş´Â Å¸ÀÔ
+    case eRequestType::GenreOnly:    // ì¥ë¥´ë§Œ ì¶”ì²œë°›ëŠ” íƒ€ì…
         return book->getGenre() == this->preferredGenre;
-    case eRequestType::MoodOnly:     // ¹«µå¸¸ ÃßÃµ¹Ş´Â Å¸ÀÔ
+    case eRequestType::MoodOnly:     // ë¬´ë“œë§Œ ì¶”ì²œë°›ëŠ” íƒ€ì…
         return book->getMood() == this->preferredMood;
-    case eRequestType::GenreAndMood:     // µÑ´Ù ÃßÃµ¹Ş´Â Å¸ÀÔ
+    case eRequestType::GenreAndMood:     // ë‘˜ë‹¤ ì¶”ì²œë°›ëŠ” íƒ€ì…
         return book->getGenre() == this->preferredGenre && book->getMood() == this->preferredMood;
-    case eRequestType::AnyBook: // Àå¸£, ¹«µå »ó°ü¾øÀÌ ÃßÃµ¸¸ ¹ŞÀ¸¸é OK
+    case eRequestType::AnyBook: // ì¥ë¥´, ë¬´ë“œ ìƒê´€ì—†ì´ ì¶”ì²œë§Œ ë°›ìœ¼ë©´ OK
         return true;
     }
 
-    return false;   // ¿¹¿Ü
+    return false;   // ì˜ˆì™¸
 }
 
 /**
 * 
-* NPC.h¿¡¼­ ¸¸µé¾ú´ø get ÇÔ¼ö¿Í set ÇÔ¼ö Á¤ÀÇ
+* NPC.hì—ì„œ ë§Œë“¤ì—ˆë˜ get í•¨ìˆ˜ì™€ set í•¨ìˆ˜ ì •ì˜
 * 
 */
 

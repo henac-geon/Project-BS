@@ -1,4 +1,4 @@
-#ifndef PENALTYSYSTEM_H
+﻿#ifndef PENALTYSYSTEM_H
 #define PENALTYSYSTEM_H
 
 #include "Book.h"

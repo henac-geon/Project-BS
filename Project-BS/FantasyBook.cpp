@@ -1,7 +1,7 @@
-#include "FantasyBook.h"
+ï»¿#include "FantasyBook.h"
 #include "ConsolePrinter.h"
 
-//Àå¸£±îÁø ±×·¯·Á´Ï ÇÏ´Âµ¥ ¹«µå³ª µı°Å´Â ¾î¶»°Ô ‹¯°Ü¿ÃÁö »ı°¢ÇØºÁ¾ßÇÔ.
+//ì¥ë¥´ê¹Œì§„ ê·¸ëŸ¬ë ¤ë‹ˆ í•˜ëŠ”ë° ë¬´ë“œë‚˜ ë”´ê±°ëŠ” ì–´ë–»ê²Œ ë–™ê²¨ì˜¬ì§€ ìƒê°í•´ë´ì•¼í•¨.
 FantasyBook::FantasyBook(const std::string& title, const std::string& description, int length)
     : Book(title, description, eBookGenre::Fantasy, eBookMood::Whimsical, length, eBookEdge::None, eBookEtc::None) {
 }

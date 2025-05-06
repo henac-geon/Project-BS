@@ -1,80 +1,80 @@
-// CsvIO.cpp
+ï»¿// CsvIO.cpp
 #include "CsvIO.h"
-#include <fstream>   // ÆÄÀÏ ÀÔÃâ·Â ½ºÆ®¸²
-#include <sstream>   // ¹®ÀÚ¿­ ½ºÆ®¸²
-#include <stdexcept> // ¿¹¿Ü Ã³¸®¿ë Ç¥ÁØ ¶óÀÌºê·¯¸®
+#include <fstream>   // íŒŒì¼ ì…ì¶œë ¥ ìŠ¤íŠ¸ë¦¼
+#include <sstream>   // ë¬¸ìì—´ ìŠ¤íŠ¸ë¦¼
+#include <stdexcept> // ì˜ˆì™¸ ì²˜ë¦¬ìš© í‘œì¤€ ë¼ì´ë¸ŒëŸ¬ë¦¬
 
 /**
- * @brief CSV ÆÄÀÏ·Î µ¥ÀÌÅÍ¸¦ ³»º¸³¿ (Export)
+ * @brief CSV íŒŒì¼ë¡œ ë°ì´í„°ë¥¼ ë‚´ë³´ëƒ„ (Export)
  *
- * ÁÖ¾îÁø 2Â÷¿ø ¹®ÀÚ¿­ º¤ÅÍ µ¥ÀÌÅÍ¸¦ CSV Æ÷¸ËÀ¸·Î ÀúÀåÇÑ´Ù.
- * °¢ ÇàÀº ÇÑ ÁÙ·Î Ãâ·ÂµÇ¸ç, ¿­Àº ½°Ç¥·Î ±¸ºĞµÈ´Ù.
+ * ì£¼ì–´ì§„ 2ì°¨ì› ë¬¸ìì—´ ë²¡í„° ë°ì´í„°ë¥¼ CSV í¬ë§·ìœ¼ë¡œ ì €ì¥í•œë‹¤.
+ * ê° í–‰ì€ í•œ ì¤„ë¡œ ì¶œë ¥ë˜ë©°, ì—´ì€ ì‰¼í‘œë¡œ êµ¬ë¶„ëœë‹¤.
  *
- * @param filename ÀúÀåÇÒ CSV ÆÄÀÏÀÇ °æ·Î ¹× ÀÌ¸§
- * @param data ÀúÀåÇÒ µ¥ÀÌÅÍ (Çà ´ÜÀ§·Î ±¸¼ºµÈ ¹®ÀÚ¿­ º¤ÅÍ)
+ * @param filename ì €ì¥í•  CSV íŒŒì¼ì˜ ê²½ë¡œ ë° ì´ë¦„
+ * @param data ì €ì¥í•  ë°ì´í„° (í–‰ ë‹¨ìœ„ë¡œ êµ¬ì„±ëœ ë¬¸ìì—´ ë²¡í„°)
  *
- * @throws std::runtime_error ÆÄÀÏÀÌ ¿­¸®Áö ¾ÊÀ» °æ¿ì ¿¹¿Ü ¹ß»ı
+ * @throws std::runtime_error íŒŒì¼ì´ ì—´ë¦¬ì§€ ì•Šì„ ê²½ìš° ì˜ˆì™¸ ë°œìƒ
  */
 void CsvIO::exportToCsv(const std::string& filename, const std::vector<std::vector<std::string>>& data)
 {
-    std::ofstream file(filename); // Ãâ·Â ÆÄÀÏ ½ºÆ®¸² »ı¼º
+    std::ofstream file(filename); // ì¶œë ¥ íŒŒì¼ ìŠ¤íŠ¸ë¦¼ ìƒì„±
 
     if (!file.is_open())
-        throw std::runtime_error("ÆÄÀÏÀ» ¿­ ¼ö ¾ø½À´Ï´Ù: " + filename);
+        throw std::runtime_error("íŒŒì¼ì„ ì—´ ìˆ˜ ì—†ìŠµë‹ˆë‹¤: " + filename);
 
-    // °¢ ÇàÀ» ¹İº¹ÇÏ¿© ÆÄÀÏ¿¡ ÀÛ¼º
+    // ê° í–‰ì„ ë°˜ë³µí•˜ì—¬ íŒŒì¼ì— ì‘ì„±
     for (const auto& row : data)
     {
         for (size_t i = 0; i < row.size(); ++i)
         {
-            file << row[i]; // µ¥ÀÌÅÍ Ãâ·Â
+            file << row[i]; // ë°ì´í„° ì¶œë ¥
 
-            // ¸¶Áö¸· ¿­ÀÌ ¾Æ´Ï¶ó¸é ½°Ç¥ Ãß°¡
+            // ë§ˆì§€ë§‰ ì—´ì´ ì•„ë‹ˆë¼ë©´ ì‰¼í‘œ ì¶”ê°€
             if (i != row.size() - 1)
                 file << ",";
         }
-        file << "\n"; // ÇÑ ÇàÀÇ ³¡¿¡ ÁÙ ¹Ù²Ş Ãß°¡
+        file << "\n"; // í•œ í–‰ì˜ ëì— ì¤„ ë°”ê¿ˆ ì¶”ê°€
     }
 
-    file.close(); // ÆÄÀÏ ½ºÆ®¸² ´İ±â
+    file.close(); // íŒŒì¼ ìŠ¤íŠ¸ë¦¼ ë‹«ê¸°
 }
 
 /**
- * @brief CSV ÆÄÀÏ·ÎºÎÅÍ µ¥ÀÌÅÍ¸¦ ÀĞ¾î¿È (Import)
+ * @brief CSV íŒŒì¼ë¡œë¶€í„° ë°ì´í„°ë¥¼ ì½ì–´ì˜´ (Import)
  *
- * ÁöÁ¤µÈ CSV ÆÄÀÏÀ» ¿­°í, °¢ ÇàÀ» ÀĞ¾î 2Â÷¿ø ¹®ÀÚ¿­ º¤ÅÍ·Î ¹İÈ¯ÇÑ´Ù.
- * °¢ ÁÙÀº ½°Ç¥ ±âÁØÀ¸·Î ºĞ¸®µÇ¾î °³º° ¼¿·Î ÀúÀåµÈ´Ù.
+ * ì§€ì •ëœ CSV íŒŒì¼ì„ ì—´ê³ , ê° í–‰ì„ ì½ì–´ 2ì°¨ì› ë¬¸ìì—´ ë²¡í„°ë¡œ ë°˜í™˜í•œë‹¤.
+ * ê° ì¤„ì€ ì‰¼í‘œ ê¸°ì¤€ìœ¼ë¡œ ë¶„ë¦¬ë˜ì–´ ê°œë³„ ì…€ë¡œ ì €ì¥ëœë‹¤.
  *
- * @param filename ÀĞÀ» CSV ÆÄÀÏÀÇ °æ·Î ¹× ÀÌ¸§
- * @return std::vector<std::vector<std::string>> ÀĞ¾îµéÀÎ CSV µ¥ÀÌÅÍ
+ * @param filename ì½ì„ CSV íŒŒì¼ì˜ ê²½ë¡œ ë° ì´ë¦„
+ * @return std::vector<std::vector<std::string>> ì½ì–´ë“¤ì¸ CSV ë°ì´í„°
  *
- * @throws std::runtime_error ÆÄÀÏÀÌ ¿­¸®Áö ¾ÊÀ» °æ¿ì ¿¹¿Ü ¹ß»ı
+ * @throws std::runtime_error íŒŒì¼ì´ ì—´ë¦¬ì§€ ì•Šì„ ê²½ìš° ì˜ˆì™¸ ë°œìƒ
  */
 std::vector<std::vector<std::string>> CsvIO::importFromCsv(const std::string& filename)
 {
-    std::ifstream file(filename); // ÀÔ·Â ÆÄÀÏ ½ºÆ®¸² »ı¼º
+    std::ifstream file(filename); // ì…ë ¥ íŒŒì¼ ìŠ¤íŠ¸ë¦¼ ìƒì„±
     if (!file.is_open())
-        throw std::runtime_error("ÆÄÀÏÀ» ¿­ ¼ö ¾ø½À´Ï´Ù: " + filename);
+        throw std::runtime_error("íŒŒì¼ì„ ì—´ ìˆ˜ ì—†ìŠµë‹ˆë‹¤: " + filename);
 
-    std::vector<std::vector<std::string>> result; // ¹İÈ¯ÇÒ µ¥ÀÌÅÍ ÀúÀå¿ë ÄÁÅ×ÀÌ³Ê
-    std::string line;                             // ÇÑ ÁÙÀ» ÀúÀåÇÒ º¯¼ö
+    std::vector<std::vector<std::string>> result; // ë°˜í™˜í•  ë°ì´í„° ì €ì¥ìš© ì»¨í…Œì´ë„ˆ
+    std::string line;                             // í•œ ì¤„ì„ ì €ì¥í•  ë³€ìˆ˜
 
-    // ÆÄÀÏ ³¡±îÁö ÇÑ ÁÙ¾¿ ÀĞ±â
+    // íŒŒì¼ ëê¹Œì§€ í•œ ì¤„ì”© ì½ê¸°
     while (std::getline(file, line))
     {
-        std::vector<std::string> row; // ÇöÀç ÁÙ¿¡ ´ëÇÑ ¼¿ º¤ÅÍ
-        std::stringstream ss(line);   // ÁÙÀ» ½°Ç¥·Î ³ª´©±â À§ÇÑ ½ºÆ®¸²
-        std::string cell;             // °³º° ¼¿ µ¥ÀÌÅÍ ÀúÀå º¯¼ö
+        std::vector<std::string> row; // í˜„ì¬ ì¤„ì— ëŒ€í•œ ì…€ ë²¡í„°
+        std::stringstream ss(line);   // ì¤„ì„ ì‰¼í‘œë¡œ ë‚˜ëˆ„ê¸° ìœ„í•œ ìŠ¤íŠ¸ë¦¼
+        std::string cell;             // ê°œë³„ ì…€ ë°ì´í„° ì €ì¥ ë³€ìˆ˜
 
-        // ½°Ç¥¸¦ ±âÁØÀ¸·Î ¼¿ ºĞ¸®
+        // ì‰¼í‘œë¥¼ ê¸°ì¤€ìœ¼ë¡œ ì…€ ë¶„ë¦¬
         while (std::getline(ss, cell, ','))
         {
             row.push_back(cell);
         }
 
-        result.push_back(row); // ÇÑ ÁÙ(row)À» ÀüÃ¼ µ¥ÀÌÅÍ¿¡ Ãß°¡
+        result.push_back(row); // í•œ ì¤„(row)ì„ ì „ì²´ ë°ì´í„°ì— ì¶”ê°€
     }
 
-    file.close(); // ÆÄÀÏ ½ºÆ®¸² ´İ±â
+    file.close(); // íŒŒì¼ ìŠ¤íŠ¸ë¦¼ ë‹«ê¸°
     return result;
 }

@@ -1,4 +1,4 @@
-#include "PenaltySystem.h"
+﻿#include "PenaltySystem.h"
 #include "Book.h"
 
 int PenaltySystem::calculateGoldPenalty(const Book& book) {

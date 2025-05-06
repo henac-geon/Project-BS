@@ -1,4 +1,4 @@
-#include "ScienceBook.h"
+﻿#include "ScienceBook.h"
 #include "ConsolePrinter.h"
 
 ScienceBook::ScienceBook(const std::string& title, const std::string& description, int length)
