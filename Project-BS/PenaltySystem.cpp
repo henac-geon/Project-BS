@@ -1,5 +1,5 @@
 #include "PenaltySystem.h"
-
+#include "Book.h"
 
 int PenaltySystem::calculateGoldPenalty(const Book& book) {
     return book.getCondition() == eBookCondition::Damaged ? 20 : 10;

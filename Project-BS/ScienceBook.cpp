@@ -1,7 +1,7 @@
 #include "ScienceBook.h"
 
 ScienceBook::ScienceBook(const std::string& title, const std::string& description, int length)
-    : Book(title, description, eBookGenre::SciFi, eBookMood::Emotional, length) {
+    : Book(title, description, eBookGenre::SciFi, eBookMood::Emotional, length, edge, etc) {
 }
 
 void ScienceBook::repair() {

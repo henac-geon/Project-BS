@@ -14,7 +14,7 @@
 Book* BookFactory::createRandomBook() {
     int len = rand() % 100 + 50;  // 0~99 사이 랜덤 +50 => 50~149
     // 고정된 장르와 분위기로 책 생성
-    return createBook(eBookGenre::Fantasy, eBookMood::Whimsical, len);
+    return createBook(eBookGenre::Fantasy, eBookMood::Whimsical, len, eBookEdge::None, eBookEtc::None);
 }
 
 /**
@@ -31,14 +31,18 @@ Book* BookFactory::createRandomBook() {
  */
 Book* BookFactory::createBook(eBookGenre genre,
     eBookMood mood,
-    int length) {
+    int length,
+    eBookEdge edge,
+    eBookEtc etc
+    ) {
     switch (genre) {
     case eBookGenre::Fantasy:
         // 판타지 장르용 책 생성
         return new FantasyBook(
             "Random Fantasy",      // 제목
             "A random fantasy book", // 설명
-            length);                // 분량
+            length
+            );                // 분량
 
     case eBookGenre::SciFi:
         // 공상과학 장르용 책 생성
