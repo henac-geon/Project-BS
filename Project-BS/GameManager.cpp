@@ -1,105 +1,90 @@
-#include "GameManager.h"    // GameManager Å¬·¡½º Á¤ÀÇ Æ÷ÇÔ
-#include "AsciiArtRepository.h" // ASCII ¾ÆÆ® ÀúÀå¼Ò Çì´õ Æ÷ÇÔ
-#include "BookFactory.h"     // ¹«ÀÛÀ§ Ã¥ »ı¼º¿ë ÆÑÅä¸® Å¬·¡½º
-#include "PenaltySystem.h"   // Æä³ÎÆ¼ °è»ê ½Ã½ºÅÛ
-#include <iostream>           // std::cout »ç¿ë
-#include <string>             // std::to_string »ç¿ë
+#include "GameManager.h"
+#include "AsciiArtRepository.h"
+#include "BookFactory.h"
+#include "PenaltySystem.h"
+#include "RandomNPC.h"
+#include <iostream>
+#include <string>             // std::to_string ì‚¬ìš©
 
 /**
- * @brief ±âº» »ı¼ºÀÚ
+ * @brief ê¸°ë³¸ ìƒì„±ì
  *
- * - day¸¦ 1·Î ÃÊ±âÈ­ÇÏ¿© 1ÀÏÂ÷ºÎÅÍ ½ÃÀÛ
- * - gold ¹× magicPower´Â 0À¸·Î ÃÊ±âÈ­
- * - actions ¹× actionNames ÃÊ±âÈ­
+ * - dayë¥¼ 1ë¡œ ì´ˆê¸°í™”í•˜ì—¬ 1ì¼ì°¨ë¶€í„° ì‹œì‘
+ * - gold ë° magicPowerëŠ” 0ìœ¼ë¡œ ì´ˆê¸°í™”
+ * - actions ë° actionNames ì´ˆê¸°í™”
  */
 GameManager::GameManager()
-    : day(1),        // °ÔÀÓ ½ÃÀÛ ÀÏ¼ö ¼³Á¤
-    gold(0),
-    magicPower(0)
-{
-    initActions();
+    : day(1), gold(0), magicPower(0) {
+
 }
 
-/**
- * @brief ¼Ò¸êÀÚ
- *
- * µ¿Àû ÇÒ´çµÈ NPC ¹× MiniGame °´Ã¼¸¦ ÇØÁ¦ÇÏ¿© ¸Ş¸ğ¸® ´©¼ö¸¦ ¹æÁöÇÕ´Ï´Ù.
- */
 GameManager::~GameManager() {
-    for (auto npc : npcs) {
-        delete npc;
-    }
-    for (auto mg : miniGames) {
-        delete mg;
+    for (auto npc : npcs) delete npc;
+}
+
+void GameManager::run() {
+    std::string command;
+    std::cout << "ê²Œì„ì„ ì‹œì‘í•˜ë ¤ë©´ 'ì‹œì‘'ì„ ì…ë ¥í•˜ì„¸ìš”: ";
+    std::cin >> command;
+    if (command != "ì‹œì‘") return;
+
+
+    while (true) {
+        startDay();
+        performWritingPhase();
+        performNPCPhase();
+        performSettlementPhase();
+        endDay();
+
+        std::cout << "ë‹¤ìŒ ë‚ ë¡œ ì§„í–‰í•˜ì‹œê² ìŠµë‹ˆê¹Œ? (y/n): ";
+        std::cin >> command;
+        if (command != "y" && command != "Y") break;
     }
 }
 
-/**
- * @brief actions ¹× actionNames ÃÊ±âÈ­
- */
-void GameManager::initActions() {
-    actionNames = {
-        "Write Book",
-        "Serve NPCs",
-        "View Inventory",
-        "Daily Summary",
-        "Exit"
-    };
-
-    actions = {
-        [this]() { writeBook();     return true; },
-        [this]() { serveNPCs();     return true; },
-        [this]() { viewInventory(); return true; },
-        [this]() { dailySummary();  return true; },
-        [this]() { return false;             }
-    };
-    std::cout << AsciiArt::getWelcomeArt() << std::endl;
-}
-
-/**
- * @brief ÇÏ·ç¸¦ ½ÃÀÛÇÏ¸ç ¸ŞÀÎ ¸Ş´º¸¦ UI¿¡ Ç¥½Ã
- */
 void GameManager::startDay() {
-    uiManager.displayMainMenu();
+    uiManager.clearScreen();
+    std::cout << AsciiArt::getWelcomeArt() << std::endl;
+    std::cout << "\n Day " << day << " ì‹œì‘!\n";
 }
 
-/**
- * @brief »ç¿ëÀÚ ¸ğµå ¼±ÅÃ ÀÔ·Â ¹Ş±â
- */
-int GameManager::selectMode() {
-    return uiManager.getUserInput(
-        "Enter choice (1-" + std::to_string(actionNames.size()) + "): "
-    );
-}
+void GameManager::performWritingPhase() {
+    int numBooks = rand() % 3 + 1;
+    std::cout << "\n ì˜¤ëŠ˜ ì§‘í•„í•  ì±… ìˆ˜: " << numBooks << std::endl;
 
-/**
- * @brief ¼±ÅÃµÈ ¸ğµå ½ÇÇà
- * @param idx ¸Ş´º ¹øÈ£(1-based)
- * @return bool °ÔÀÓ °è¼Ó ¿©ºÎ (false¸é Á¾·á)
- */
-bool GameManager::executeAction(int idx) {
-    if (idx < 1 || idx > static_cast<int>(actions.size())) {
-        std::cout << "Invalid choice, try again." << std::endl;
-        return true;
+    for (int i = 0; i < numBooks; ++i) {
+        auto book = BookFactory::createRandomBook();
+        inventory.addBook(book);
+        std::cout << "ì±… ë“±ë¡ë¨: " << book->getTitle() << std::endl;
     }
-    return actions[idx - 1]();
+
+    std::string ans;
+    std::cout << "ì¸ë²¤í† ë¦¬ë¥¼ í™•ì¸í•˜ì‹œê² ìŠµë‹ˆê¹Œ? (y/n): ";
+    std::cin >> ans;
+    if (ans == "y") uiManager.displayInventory(inventory);
 }
 
-/**
- * @brief Ã¥ ÁıÇÊ ±â´É
- */
-void GameManager::writeBook() {
-    std::cout << AsciiArt::writeBookArt() << std::endl;
-    auto book = BookFactory::createRandomBook();
-    inventory.addBook(book);
-}
+void GameManager::performNPCPhase() {
+    uiManager.clearScreen();
+    std::cout << AsciiArt::getWelcomeArt() << std::endl; // NPC í™”ë©´ìœ¼ë¡œ ì„¤ì •
+    int numNPC = rand() % 3 + 1;
+    std::cout << "\n ì˜¤ëŠ˜ ì‘ëŒ€í•  NPC ìˆ˜: " << numNPC << std::endl;
 
-/**
- * @brief NPC ÀÀ´ë ±â´É
- */
-void GameManager::serveNPCs() {
-    for (auto npc : npcs) {
+    for (int i = 0; i < numNPC; ++i) {
+        NPC* npc = RandomNPC::create();
+        npcs.push_back(npc);
+
+		uiManager.displayNPCInteraction(npc); // NPCì™€ ìƒí˜¸ì‘ìš© í™”ë©´ ì„¤ì •
+
+		// ë¨¼ì € NPCì˜ ìš”ì²­ì„ í™•ì¸
+		// ì±…ì„ ë°˜ë‚©í•˜ëŠ” ê²ƒì¸ì§€ ìš”ì²­í•˜ëŠ” ê²ƒì¸ì§€ì— ë”°ë¼ ë‹¤ë¥´ê²Œ êµ¬í˜„
+
+		// TODO: ì±…ì„ ìš”ì²­í•˜ëŠ” ê²ƒì€ NPCì˜ ìš”ì²­ì— ë”°ë¼ ë‹¤ë¥´ê²Œ êµ¬í˜„
+		// ì˜ˆë¥¼ ë“¤ì–´, íŠ¹ì • ì¥ë¥´ë‚˜ ë¶„ìœ„ê¸°ë¥¼ ì„ í˜¸í•˜ëŠ” NPCê°€ ìˆì„ ìˆ˜ ìˆìŒ
+		// ë”°ë¼ì„œ ì¸ë²¤í† ë¦¬ì— ì—†ëŠ” íƒì„ ìš”ì²­í•  ìˆ˜ë„ ìˆìŒ
+        // ë§¤ê°œ ë³€ìˆ˜ ì‚­ì œ í•´ì•¼ í•¨
         auto book = npc->requestBook(inventory.getBooks());
+
         bool satisfied = false;
         if (book) {
             satisfied = npc->rateBook(book);
@@ -111,25 +96,31 @@ void GameManager::serveNPCs() {
         }
         scoreSystem.updateScore(satisfied);
     }
+
+    std::string ans;
+    std::cout << "ì¸ë²¤í† ë¦¬ë¥¼ í™•ì¸í•˜ì‹œê² ìŠµë‹ˆê¹Œ? (y/n): ";
+    std::cin >> ans;
+    if (ans == "y") uiManager.displayInventory(inventory);
 }
 
-/**
- * @brief ÀÎº¥Åä¸® Á¶È¸ ±â´É
- */
-void GameManager::viewInventory() {
-    uiManager.displayInventory(inventory);
+void GameManager::performSettlementPhase() {
+    std::cout << "\n ì •ì‚° ë‹¨ê³„ ì‹œì‘!\n";
+    for (auto& book : inventory.getBooks()) {
+        if (book->getCondition() == eBookCondition::Damaged) {
+            book->repair();
+            std::cout << book->getTitle() << " ë³µì› ì™„ë£Œ!" << std::endl;
+        }
+    }
+    auto book = BookFactory::createRandomBook();
+    inventory.addBook(book);
+    std::cout << "ë§ˆì§€ë§‰ ì±… ì§‘í•„ ì™„ë£Œ: " << book->getTitle() << std::endl;
+
+    std::string ans;
+    std::cout << "ì¸ë²¤í† ë¦¬ë¥¼ í™•ì¸í•˜ì‹œê² ìŠµë‹ˆê¹Œ? (y/n): ";
+    std::cin >> ans;
+    if (ans == "y") uiManager.displayInventory(inventory);
 }
 
-/**
- * @brief ÀÏ°ú ¿ä¾à ±â´É
- */
-void GameManager::dailySummary() {
-    uiManager.displayAsciiArt("Day Summary");
-}
-
-/**
- * @brief ÇÏ·ç Á¾·á Ã³¸® ¹× ·¹º§¾÷ Ã¼Å©
- */
 void GameManager::endDay() {
     if (levelSystem.checkLevelUp()) {
         uiManager.displayLevelUpMessage(levelSystem.getLevel());

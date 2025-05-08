@@ -18,6 +18,7 @@ protected:
     std::vector<Book*> inventory;   // NPC가 소유하거나 대여 가능한 책 목록
     int gold;                       // NPC가 보유한 금화 (경제 시스템에서 사용)
     int magicPower;                 // NPC의 마법력 (특정 보상 또는 상호작용에 활용)
+    eRequestType requestType = eRequestType::GenreAndMood;  // NPC가 원하는 책 추천 조건
 
 public:
     /**
@@ -54,7 +55,7 @@ public:
      * @return      평가 결과 (true: 만족, false: 불만족)
      * @note NPC의 선호도에 따라 평가 로직을 구현합니다.
      */
-    virtual bool rateBook(Book* book) = 0;
+    virtual bool rateBook(Book* book) const;
 
     /**
      * @brief NPC가 손상된 책에 대해 보상하는 함수
@@ -62,6 +63,39 @@ public:
      * @note 책 상태에 따라 금화나 마법력으로 보상을 처리할 로직을 구현합니다.
      */
     virtual void compensateForDamage(Book* book) = 0;
+
+    /**
+    * 
+    * 외부에서 접근 할 수 있게 만들어주는 get 함수와 set 함수
+    * 
+    */
+
+    // 이름
+    std::string getName() const;
+    void setName(const std::string& newName);
+
+    // 장르
+    eBookGenre getPreferredGenre() const;
+    void setPreferredGenre(eBookGenre genre);
+
+    // 무드
+    eBookMood getPreferredMood() const;
+    void setPreferredMood(eBookMood mood);
+
+    // 인벤토리 확인
+    const std::vector<Book*>& getInventory() const;
+
+    // 골드
+    int getGold() const;
+    void setGold(int newGold);
+
+    // 마법력
+    int getMagicPower() const;
+    void setMagicPower(int newMagicPower);
+
+    // 요청 타입
+    eRequestType getRequestType() const;
+    void setRequestType(eRequestType type);
 };
 
 #endif // NPC_H

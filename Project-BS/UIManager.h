@@ -121,6 +121,8 @@ public:
      * 미니게임 수행 후 성공/실패 결과를 사용자에게 알려줍니다.
      */
     void displayMiniGameResult(const std::string& result);
+
+    void clearScreen();
 };
 
 #endif // UIMANAGER_H
