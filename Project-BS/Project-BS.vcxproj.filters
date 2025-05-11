@@ -120,6 +120,9 @@
     <ClCompile Include="ConsolePrinter.cpp">
       <Filter>소스 파일\Utility</Filter>
     </ClCompile>
+    <ClCompile Include="TypingGame.cpp">
+      <Filter>소스 파일\MiniGame</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Book.h">
@@ -178,6 +181,9 @@
     </ClInclude>
     <ClInclude Include="NPC.h">
       <Filter>헤더 파일\NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="TypingGame.h">
+      <Filter>헤더 파일\MiniGame</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

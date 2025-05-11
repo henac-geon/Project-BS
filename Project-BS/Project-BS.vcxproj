@@ -144,6 +144,7 @@
     <ClCompile Include="ScienceBook.cpp" />
     <ClCompile Include="ScoreSystem.cpp" />
     <ClCompile Include="StudentNPC.cpp" />
+    <ClCompile Include="TypingGame.cpp" />
     <ClCompile Include="UIManager.cpp" />
     <ClCompile Include="WizardNPC.cpp" />
   </ItemGroup>
@@ -165,6 +166,7 @@
     <ClInclude Include="ScienceBook.h" />
     <ClInclude Include="ScoreSystem.h" />
     <ClInclude Include="StudentNPC.h" />
+    <ClInclude Include="TypingGame.h" />
     <ClInclude Include="UIManager.h" />
     <ClInclude Include="WizardNPC.h" />
   </ItemGroup>
