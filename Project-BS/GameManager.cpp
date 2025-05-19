@@ -1,4 +1,4 @@
-#include "GameManager.h"
+﻿#include "GameManager.h"
 #include "AsciiArtRepository.h"
 #include "BookFactory.h"
 #include "PenaltySystem.h"
@@ -24,9 +24,9 @@ GameManager::~GameManager() {
 
 void GameManager::run() {
     std::string command;
-    ConsolePrinter::print("게임을 시작하려면 '시작'을 입력하세요: ");
-    std::cin >> command;
-    if (command != "시작") return;
+    //ConsolePrinter::print("게임을 시작하려면 '시작'을 입력하세요: ");
+    //std::cin >> command;
+    //if (command != "시작") return;
 
     while (true) {
         startDay();
@@ -54,6 +54,7 @@ void GameManager::performWritingPhase() {
     for (int i = 0; i < numBooks; ++i) {
         auto book = BookFactory::createRandomBook();
         inventory.addBook(book);
+        ConsolePrinter::println(AsciiArt::writeBookArt());
         ConsolePrinter::println("책 등록됨: " + book->getTitle());
     }
 
@@ -64,8 +65,14 @@ void GameManager::performWritingPhase() {
 }
 
 void GameManager::performNPCPhase() {
+    std::string ans;
+    ConsolePrinter::print("손님 응대를 시작하시겠습니까? (y/n): ");
+    std::cin >> ans;
+   if (ans == "n") return;
+
     uiManager.clearScreen();
-    ConsolePrinter::println(AsciiArt::getWelcomeArt()); // NPC 화면으로 설정
+    ConsolePrinter::println(AsciiArt::getWelcomeArt());
+
 
     int numNPC = rand() % 3 + 1;
     ConsolePrinter::println("\n 오늘 응대할 NPC 수: " + std::to_string(numNPC));
@@ -76,13 +83,13 @@ void GameManager::performNPCPhase() {
 
 		uiManager.displayNPCInteraction(npc); // NPC와 상호작용 화면 설정
 
-		// 먼저 NPC의 요청을 확인
-		// 책을 반납하는 것인지 요청하는 것인지에 따라 다르게 구현
+		    // 먼저 NPC의 요청을 확인
+		    // 책을 반납하는 것인지 요청하는 것인지에 따라 다르게 구현
 
-		// TODO: 책을 요청하는 것은 NPC의 요청에 따라 다르게 구현
-		// 예를 들어, 특정 장르나 분위기를 선호하는 NPC가 있을 수 있음
-		// 따라서 인벤토리에 없는 택을 요청할 수도 있음
-        // 매개 변수 삭제 해야 함
+		    // TODO: 책을 요청하는 것은 NPC의 요청에 따라 다르게 구현
+		    // 예를 들어, 특정 장르나 분위기를 선호하는 NPC가 있을 수 있음
+		    // 따라서 인벤토리에 없는 택을 요청할 수도 있음
+            // 매개 변수 삭제 해야 함
         auto book = npc->requestBook(inventory.getBooks());
 
         bool satisfied = false;
@@ -96,8 +103,7 @@ void GameManager::performNPCPhase() {
         }
         scoreSystem.updateScore(satisfied);
     }
-
-    std::string ans;
+    
     ConsolePrinter::print("인벤토리를 확인하시겠습니까? (y/n): ");
     std::cin >> ans;
     if (ans == "y") uiManager.displayInventory(inventory);
@@ -109,6 +115,7 @@ void GameManager::performSettlementPhase() {
     for (auto& book : inventory.getBooks()) {
         if (book->getCondition() == eBookCondition::Damaged) {
             book->repair();
+            ConsolePrinter::println(AsciiArt::showRestoreBookArt());
             ConsolePrinter::println(book->getTitle() + " 복원 완료!");
         }
     }
@@ -127,5 +134,6 @@ void GameManager::endDay() {
     if (levelSystem.checkLevelUp()) {
         uiManager.displayLevelUpMessage(levelSystem.getLevel());
     }
+    ConsolePrinter::println(AsciiArt::showClosingArt());
     ++day;
 }

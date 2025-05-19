@@ -7,11 +7,18 @@
 
 namespace AsciiArt {
 
+    int GetConsoleWidth();
+    std::string getLine(char ch = '=', int width = -1);
+
 	std::string getWelcomeArt();
 	std::string writeBookArt();
 	std::string getLevelUpArt();
 	std::string getGameOverArt();
 
+    std::string showMaleNPCArt();
+    std::string showFemaleNPCArt();
+    std::string showClosingArt();
+    std::string showRestoreBookArt();
 }
 
 #endif // ASCII_ART_REPOSITORY_H

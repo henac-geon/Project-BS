@@ -3,6 +3,13 @@
 #include "ScienceBook.h"  // ScienceBook 클래스 정의 헤더 포함
 #include <cstdlib>  // rand() 함수 사용을 위한 헤더
 
+
+/*
+ * TODO: 책을 생성하고 성공률을 체크하는 기능 추가 구현
+ * TODO: 미니게임을 실행하는 기능을 추가 구현
+ * TODO: 책을 복구하는 함수 추가 구현
+*/
+
 /**
  * @brief 랜덤한 책을 생성하는 팩토리 함수
  *
