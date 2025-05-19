@@ -7,6 +7,7 @@
 #include <vector>      // std::vector 사용을 위한 헤더
 #include "Book.h"     // Book 클래스 정의 포함
 #include "Enums.h"    // eBookGenre, eBookMood 열거형 정의 포함
+#include "AsciiArtRepository.h"
 
 // NPC(Non-Player Character) 추상 클래스
 // 게임 내에서 책을 요청하고 평점 매기기, 손상된 책에 대한 보상을 처리하는 인터페이스 역할을 합니다.
@@ -96,6 +97,12 @@ public:
     // 요청 타입
     eRequestType getRequestType() const;
     void setRequestType(eRequestType type);
+
+    // 아트
+    std::string getArt() const;
+
+    // 대화
+    std::string getDialogue() const;
 };
 
 #endif // NPC_H

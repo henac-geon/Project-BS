@@ -31,8 +31,9 @@ private:
     ScoreSystem scoreSystem;
     LevelSystem levelSystem;
 
-    void startDay();
+    bool startDay();
     void performWritingPhase();
+    void performShowInventoryPhase();
     void performNPCPhase();
     void performSettlementPhase();
     void endDay();

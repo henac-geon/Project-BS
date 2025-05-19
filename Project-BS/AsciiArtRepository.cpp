@@ -41,7 +41,7 @@ namespace AsciiArt {
     }
 
 
-    std::string writeBookArt() {
+    std::string generate_book_art() {
         return u8R"(
 ⠀⠀⠀⠀⣤⣤⣤⣤⣤⣄⣀⡀⠀⠀⠀⠀⣀⣀⣤⣤⣤⣤⣤⡀⠀⠀⠀⠀⠀⠀
 ⠀⢀⡀⠀⣿⣿⣿⣿⣿⣿⣿⣿⣷⠀⢰⣿⣿⣿⣿⣿⣿⣿⣿⡇⠀⡀⠀⠀⠀⠀
@@ -54,7 +54,7 @@ namespace AsciiArt {
 ⠀⢿⣿⣦⣄⣀⣀⣀⣀⣈⠉⠛⢿⠀⠸⠟⠋⠉⢀⣴⣿⣿⣿⠟⢁⣴⠀⠀⠀⠀
 ⠀⠈⠉⠉⠉⠉⠉⠉⠉⠉⠉⠁⠀⠀⠀⠀⠉⢀⣿⣿⣿⠟⠁⠀⠉⠁⠀⠀⠀⠀
 ⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⠛⠉⠁
-)" + getLine() + "\n     책이 성공적으로 집필되었습니다!\n";
+)" + getLine() + "[책 집필]\n";
     }
 
     std::string getLevelUpArt() {

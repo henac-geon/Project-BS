@@ -55,3 +55,9 @@ Book* Inventory::findBook(const std::string& title) const {
 const std::vector<Book*>& Inventory::getBooks() const {
     return books;
 }
+
+
+void Inventory::removeBook(Book* book) {
+    books.erase(std::remove(books.begin(), books.end(), book), books.end());
+    delete book; // 소각 처리
+}

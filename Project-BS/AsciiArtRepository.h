@@ -11,7 +11,7 @@ namespace AsciiArt {
     std::string getLine(char ch = '=', int width = -1);
 
 	std::string getWelcomeArt();
-	std::string writeBookArt();
+	std::string generate_book_art();
 	std::string getLevelUpArt();
 	std::string getGameOverArt();
 

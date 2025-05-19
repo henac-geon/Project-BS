@@ -95,3 +95,12 @@ eRequestType NPC::getRequestType() const {
 void NPC::setRequestType(eRequestType type) {
     requestType = type;
 }
+
+std::string NPC::getArt() const {
+    // 기본적으로 여성 NPC 아트를 반환하되, 필요시 오버라이드 가능
+    return AsciiArt::showFemaleNPCArt(); // 또는 showRandomNPCArt()
+}
+
+std::string NPC::getDialogue() const {
+    return name + ": 좋은 책 하나 추천해 주실 수 있나요?";
+}

@@ -57,6 +57,8 @@ public:
      * 외부에서 인벤토리에 담긴 모든 Book 포인터를 읽기 전용으로 접근할 때 사용합니다.
      */
     const std::vector<Book*>& getBooks() const;
+
+    void removeBook(Book* book);
 };
 
 #endif // INVENTORY_H
