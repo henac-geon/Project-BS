@@ -75,6 +75,7 @@ void GameManager::performWritingPhase() {
 
     // TODO: 현재 집필할 수 있는 요소들 출력
 
+
     std::string ans;
     ConsolePrinter::println("[집필 요소] 입력");
     std::cin >> ans;
@@ -110,14 +111,14 @@ void GameManager::performShowInventoryPhase() {
             Book* target = inventory.findBook(title);
             if (target) {
                 inventory.removeBook(target);
-                ConsolePrinter::println("🔥 \"" + title + "\" 책이 소각되었습니다.");
+                ConsolePrinter::println("\"" + title + "\" 책이 소각되었습니다.");
             }
             else {
-                ConsolePrinter::println("⚠️ 해당 제목의 책을 찾을 수 없습니다: \"" + title + "\"");
+                ConsolePrinter::println("해당 제목의 책을 찾을 수 없습니다: \"" + title + "\"");
             }
         }
         else {
-            ConsolePrinter::println("⚠️ 올바른 명령어 형식이 아닙니다.");
+            ConsolePrinter::println("올바른 명령어 형식이 아닙니다.");
         }
     }
 }
@@ -129,7 +130,7 @@ void GameManager::performNPCPhase() {
     // NPC 리스트가 비어 있는 경우, 새 NPC들을 준비
     if (npcs.empty()) {
         int numNPC = rand() % 3 + 1;
-        ConsolePrinter::println("오늘 방문한 NPC 수: " + std::to_string(numNPC));
+        // ConsolePrinter::println("오늘 방문한 NPC 수: " + std::to_string(numNPC));
 
         for (int i = 0; i < numNPC; ++i) {
             npcs.push_back(RandomNPC::create());
@@ -169,17 +170,17 @@ void GameManager::performNPCPhase() {
 
             Book* selected = inventory.findBook(input);
             if (!selected) {
-                ConsolePrinter::println("⚠️ 책 제목이 잘못되었습니다. 다시 입력해주세요.");
+                ConsolePrinter::println("책 제목이 잘못되었습니다. 다시 입력해주세요.");
                 continue;
             }
 
             // TODO: QA 필요
             bool satisfied = npc->rateBook(selected);
             if (satisfied) {
-                ConsolePrinter::println("🎉 고객이 만족해했습니다!");
+                ConsolePrinter::println("고객이 만족해했습니다!");
             }
             else {
-                ConsolePrinter::println("😠 고객이 불만족해합니다...");
+                ConsolePrinter::println("고객이 불만족해합니다...");
                 int gp = PenaltySystem::calculateGoldPenalty(*selected);
                 int mp = PenaltySystem::calculateMagicPenalty(*selected);
                 gold = (gold - gp < 0) ? 0 : (gold - gp);
@@ -195,7 +196,7 @@ void GameManager::performNPCPhase() {
         npcs.erase(npcs.begin() + index);
     }
 
-    ConsolePrinter::println("✨ 모든 NPC 응대가 완료되었습니다.");
+    ConsolePrinter::println("모든 NPC 응대가 완료되었습니다.");
 }
 
 void GameManager::performSettlementPhase() {
