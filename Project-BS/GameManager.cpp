@@ -70,7 +70,7 @@ void GameManager::performWritingPhase() {
     AsciiArt::getLine();
 
     // TODO: 플레이어가 가지고 있는 재화 출력
-    bookFactory.displayPlayerStatus();  // Player 클래스에 displayStatus() 함수 추가해도 좋음
+    bookFactory.displayPlayerStatus();
 
     ConsoleIO::println("\n\"(장르), (분위기), (분량), (엣지요소), (기타), (제목)\" 순서로 입력해주세요.");
     ConsoleIO::println("\"입력 예시: 판타지, 암울, 120, 반전, 없음, 다크소울\n");
@@ -231,6 +231,8 @@ void GameManager::performNPCPhase() {
         uiManager.clearScreen();
 
         // TODO: 플레이어가 가지고 있는 재화 출력
+        bookFactory.displayPlayerStatus();
+
         ConsoleIO::println(npc->getArt());
 
         // 안내 메시지
