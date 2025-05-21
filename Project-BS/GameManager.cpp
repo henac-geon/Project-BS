@@ -79,6 +79,7 @@ void GameManager::performWritingPhase() {
     ConsoleIO::println("[현재 사용 가능한 집필 요소]");
     bookFactory.displayAvailableElements();
 
+
     std::string ans;
     ConsoleIO::println("\n[집필 요소] 입력");
     std::cin.ignore(); // 버퍼 정리
