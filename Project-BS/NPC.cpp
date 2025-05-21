@@ -12,8 +12,17 @@
  * 본 생성자에서는 멤버 초기화 리스트를 사용하여 각 멤버 변수를
  * 전달받은 인수로 간결하고 안전하게 초기화합니다.
  */
-NPC::NPC(const std::string& name, eBookGenre genre, eBookMood mood, int gold, int magicPower)
-    : name(name), preferredGenre(genre), preferredMood(mood), gold(gold), magicPower(magicPower)
+NPC::NPC(
+    const std::string& name,
+    eBookGenre genre,
+    eBookMood mood,
+    int gold,
+    int magicPower)
+    : name(name),
+    preferredGenre(genre),
+    preferredMood(mood),
+    gold(gold),
+    magicPower(magicPower)
 {
     // TODO: 필요 시 초기화 후 추가 로직을 여기에 구현
     // 예: 기본 인벤토리(Book 포인터)를 설정하거나,
