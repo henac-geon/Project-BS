@@ -130,7 +130,7 @@
     <ClCompile Include="AsciiArtRepository.cpp" />
     <ClCompile Include="Book.cpp" />
     <ClCompile Include="BookFactory.cpp" />
-    <ClCompile Include="ConsolePrinter.cpp" />
+    <ClCompile Include="ConsoleIO.cpp" />
     <ClCompile Include="CsvIO.cpp" />
     <ClCompile Include="FantasyBook.cpp" />
     <ClCompile Include="GameManager.cpp" />
@@ -140,18 +140,20 @@
     <ClCompile Include="MiniGame.cpp" />
     <ClCompile Include="NPC.cpp" />
     <ClCompile Include="PenaltySystem.cpp" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="RandomNPC.cpp" />
     <ClCompile Include="ScienceBook.cpp" />
     <ClCompile Include="ScoreSystem.cpp" />
     <ClCompile Include="StudentNPC.cpp" />
     <ClCompile Include="UIManager.cpp" />
     <ClCompile Include="WizardNPC.cpp" />
+    <ClCompile Include="WritingElementManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AsciiArtRepository.h" />
     <ClInclude Include="Book.h" />
     <ClInclude Include="BookFactory.h" />
-    <ClInclude Include="ConsolePrinter.h" />
+    <ClInclude Include="ConsoleIO.h" />
     <ClInclude Include="CsvIO.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="FantasyBook.h" />
@@ -161,12 +163,14 @@
     <ClInclude Include="MiniGame.h" />
     <ClInclude Include="NPC.h" />
     <ClInclude Include="PenaltySystem.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="RandomNPC.h" />
     <ClInclude Include="ScienceBook.h" />
     <ClInclude Include="ScoreSystem.h" />
     <ClInclude Include="StudentNPC.h" />
     <ClInclude Include="UIManager.h" />
     <ClInclude Include="WizardNPC.h" />
+    <ClInclude Include="WritingElementManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

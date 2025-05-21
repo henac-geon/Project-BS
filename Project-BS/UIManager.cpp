@@ -1,6 +1,6 @@
 ﻿#include "UIManager.h"   // UIManager 클래스 정의 헤더 포함
 #include "AsciiArtRepository.h" // ASCII 아트 저장소 헤더 포함
-#include "ConsolePrinter.h"
+#include "ConsoleIO.h"
 #include <iostream>        // std::cout, std::cin 사용을 위한 iostream 헤더
 #include <cstdlib>
 #include <string>
@@ -13,12 +13,12 @@
  * 플레이어에게 주요 명령 선택 인터페이스를 제공합니다.
  */
 void UIManager::displayMainMenu() {
-    ConsolePrinter::println("\n=== Main Menu ===");
-    ConsolePrinter::println("1. 집필 모드");
-    ConsolePrinter::println("2. NPC 응대");
-    ConsolePrinter::println("3. 미니게임");
-    ConsolePrinter::println("4. 인벤토리 확인");
-    ConsolePrinter::println("5. 종료");
+    ConsoleIO::println("\n=== Main Menu ===");
+    ConsoleIO::println("1. 집필 모드");
+    ConsoleIO::println("2. NPC 응대");
+    ConsoleIO::println("3. 미니게임");
+    ConsoleIO::println("4. 인벤토리 확인");
+    ConsoleIO::println("5. 종료");
 }
 
 /**
@@ -30,14 +30,14 @@ void UIManager::displayMainMenu() {
  * 인덱스와 책 제목을 한 줄씩 출력합니다.
  */
 void UIManager::displayInventory(const Inventory& inventory) {
-    ConsolePrinter::println("\n 인벤토리 목록:");
+    ConsoleIO::println("\n 인벤토리 목록:");
     const auto& books = inventory.getBooks();
     if (books.empty()) {
-        ConsolePrinter::println(" - 등록된 책이 없습니다.");
+        ConsoleIO::println(" - 등록된 책이 없습니다.");
         return;
     }
     for (size_t i = 0; i < books.size(); ++i) {
-        ConsolePrinter::println(std::to_string(i) + ": " + books[i]->getTitle());
+        ConsoleIO::println(std::to_string(i) + ": " + books[i]->getTitle());
     }
 	//TODO: 책 상세 정보 출력 기능 추가 구현
 	//TODO: 인벤토리 나가기 기능 추가 구현
@@ -52,10 +52,10 @@ void UIManager::displayInventory(const Inventory& inventory) {
  * 추후 NPC 이름, 선호 정보 등을 추가로 표시할 수 있습니다.
  */
 void UIManager::displayNPCInteraction(NPC* npc) {
-    ConsolePrinter::println("\n NPC와의 상호작용을 시작합니다...");
+    ConsoleIO::println("\n NPC와의 상호작용을 시작합니다...");
     if (npc) {
-        ConsolePrinter::println(AsciiArt::showMaleNPCArt());
-        ConsolePrinter::println(" - 이름: " + npc->getName());
+        ConsoleIO::println(AsciiArt::showMaleNPCArt());
+        ConsoleIO::println(" - 이름: " + npc->getName());
         // 필요시 선호 장르 등도 출력 가능
     }
     //TODO: 상호작용 기능 추가 구현
@@ -71,7 +71,7 @@ void UIManager::displayNPCInteraction(NPC* npc) {
  */
 void UIManager::displayBookDetail(const Book* book) {
     if (book) {
-        ConsolePrinter::println("\n 책 상세 정보:");
+        ConsoleIO::println("\n 책 상세 정보:");
         book->displayInfo();  // 내부에 출력 처리되어 있다고 가정
     }
 }
@@ -93,14 +93,14 @@ void UIManager::displayBookCondition(eBookCondition bc) {
         "훼손이 많이 됨 수리 필요"
     };
 
-    ConsolePrinter::print("상태: ");
+    ConsoleIO::print("상태: ");
 
     int index = static_cast<int>(bc); // enum을 정수형으로 변환
     if (index >= 0 && index < static_cast<int>(conditionStrings.size())) {
-        ConsolePrinter::println(conditionStrings[index]);
+        ConsoleIO::println(conditionStrings[index]);
     }
     else {
-        ConsolePrinter::println("알 수 없음");
+        ConsoleIO::println("알 수 없음");
     }
 }
 
@@ -114,9 +114,9 @@ void UIManager::displayBookCondition(eBookCondition bc) {
  * NPC 불만족 시 페널티 정보를 사용자에게 알려줍니다.
  */
 void UIManager::displayPenaltyInfo(int gold, int mp) {
-    ConsolePrinter::println("\n 페널티 발생!");
-    ConsolePrinter::println(" - 골드 감소: " + std::to_string(gold));
-    ConsolePrinter::println(" - 마력 감소: " + std::to_string(mp));
+    ConsoleIO::println("\n 페널티 발생!");
+    ConsoleIO::println(" - 골드 감소: " + std::to_string(gold));
+    ConsoleIO::println(" - 마력 감소: " + std::to_string(mp));
 }
 
 /**
@@ -127,7 +127,7 @@ void UIManager::displayPenaltyInfo(int gold, int mp) {
  * 일일 요약이나 특별 이벤트의 시각적 효과를 위해 사용합니다.
  */
 void UIManager::displayAsciiArt(const std::string& art) {
-    ConsolePrinter::println("\n" + art);
+    ConsoleIO::println("\n" + art);
 }
 
 /**
@@ -138,8 +138,8 @@ void UIManager::displayAsciiArt(const std::string& art) {
  * 레벨업 시 "Level Up! New Level: X" 형태로 표시합니다.
  */
 void UIManager::displayLevelUpMessage(int level) {
-    ConsolePrinter::println(AsciiArt::getLevelUpArt());
-    ConsolePrinter::println("\n 레벨 업! 새로운 레벨: " + std::to_string(level));
+    ConsoleIO::println(AsciiArt::getLevelUpArt());
+    ConsoleIO::println("\n 레벨 업! 새로운 레벨: " + std::to_string(level));
 }
 
 /**
@@ -152,7 +152,7 @@ void UIManager::displayLevelUpMessage(int level) {
  * 값을 반환합니다. 입력 검증 로직은 별도 구현 필요합니다.
  */
 int UIManager::getUserInput(const std::string& prompt) {
-    ConsolePrinter::print(prompt);
+    ConsoleIO::print(prompt);
     int input;
     std::cin >> input;
     // TODO: 예외 처리 및 재입력 로직 구현 가능
@@ -165,11 +165,11 @@ int UIManager::getUserInput(const std::string& prompt) {
  * 플레이어가 수행할 수 있는 모드(집필, NPC 응대, 미니게임 등)를 안내합니다.
  */
 void UIManager::displayModeSelection() {
-    ConsolePrinter::println(L"\n모드를 선택하세요:");
-    ConsolePrinter::println(L"1. 집필 모드");
-    ConsolePrinter::println(L"2. NPC 응대");
-    ConsolePrinter::println(L"3. 미니게임");
-    ConsolePrinter::println(L"4. 돌아가기");
+    ConsoleIO::println(L"\n모드를 선택하세요:");
+    ConsoleIO::println(L"1. 집필 모드");
+    ConsoleIO::println(L"2. NPC 응대");
+    ConsoleIO::println(L"3. 미니게임");
+    ConsoleIO::println(L"4. 돌아가기");
 }
 
 /**
@@ -180,7 +180,7 @@ void UIManager::displayModeSelection() {
  * 미니게임 수행 후 결과를 사용자에게 알려줍니다.
  */
 void UIManager::displayMiniGameResult(const std::string& result) {
-    ConsolePrinter::println("\n 미니게임 결과: " + result);
+    ConsoleIO::println("\n 미니게임 결과: " + result);
 }
 
 /**

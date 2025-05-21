@@ -2,12 +2,36 @@
 #ifndef BOOKFACTORY_H
 #define BOOKFACTORY_H
 
+#include <string>
+#include <vector>
+#include <iomanip>     // std::setw
 #include "Book.h"
+#include "FantasyBook.h"
+#include "ScienceBook.h"
+#include "ConsoleIO.h"
+#include "Player.h"
+#include "WritingElementManager.h"
 
 class BookFactory {
+private:
+    Player player;                            // 플레이어 정보
+    WritingElementManager elementManager;     // 집필 요소 관리자
+
+    // 내부 출력 보조 함수
+    int getDisplayWidth(const std::string& str) const;
+    std::string padRight(const std::string& str, int totalWidth) const;
+    void displayCategoryHeaders(const std::vector<std::string>& categories, int colWidth) const;
+
 public:
-    static Book* createRandomBook();
-    static Book* createBook(eBookGenre genre, eBookMood mood, int length, eBookEdge edge, eBookEtc etc);
+    BookFactory();
+    ~BookFactory() = default;
+
+    // 책 생성
+    Book* createBook(eBookGenre genre, eBookMood mood, int length, eBookEdge edge, eBookEtc etc);
+
+    // 출력 관련
+    void displayPlayerStatus() const;
+    void displayAvailableElements() const;
 };
 
 #endif // BOOKFACTORY_H

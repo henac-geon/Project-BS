@@ -20,10 +20,12 @@ void Inventory::addBook(Book* book) {
  * index가 0 이상 books.size() 미만인지 확인한 후,
  * 유효한 인덱스일 경우 해당 위치의 요소를 erase 합니다.
  */
-void Inventory::removeBook(int index) {
+bool Inventory::safeRemoveBook(int index) {
     if (index >= 0 && index < static_cast<int>(books.size())) {
         books.erase(books.begin() + index);
+        return true;
     }
+    return false;
 }
 
 /**

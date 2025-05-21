@@ -1,8 +1,8 @@
 ﻿#include "BookFactory.h"
-#include "FantasyBook.h"  // FantasyBook 클래스 정의 헤더 포함
-#include "ScienceBook.h"  // ScienceBook 클래스 정의 헤더 포함
-#include <cstdlib>  // rand() 함수 사용을 위한 헤더
 
+namespace {
+    constexpr int COLUMN_WIDTH = 16;
+}
 
 /*
  * TODO: 책을 생성하고 성공률을 체크하는 기능 추가 구현
@@ -10,59 +10,93 @@
  * TODO: 책을 복구하는 함수 추가 구현
 */
 
-/**
- * @brief 랜덤한 책을 생성하는 팩토리 함수
- *
- * @return Book* - 생성된 랜덤 책 객체 포인터
- *
- * 길이는 50~149 사이의 랜덤 값으로 설정되며,
- * 장르는 판타지(Fantasy), 분위기는 기발한(Whimsical)으로 고정합니다.
- */
-Book* BookFactory::createRandomBook() {
-    int len = rand() % 100 + 50;  // 0~99 사이 랜덤 +50 => 50~149
-    // 고정된 장르와 분위기로 책 생성
-    return createBook(eBookGenre::Fantasy, eBookMood::Whimsical, len, eBookEdge::None, eBookEtc::None);
+BookFactory::BookFactory() {
+    elementManager.loadDefaultElements();
 }
 
-/**
- * @brief 지정된 속성의 책을 생성하는 팩토리 함수
- *
- * @param genre   생성할 책의 장르
- * @param mood    생성할 책의 분위기
- * @param length  책의 분량(페이지 수 등)
- * @return Book* - 생성된 책 객체 포인터
- *
- * 장르에 따라 파생 클래스(FantasyBook, ScienceBook 등)를 결정하여
- * 해당 객체를 동적으로 할당 후 반환합니다.
- * 지원하지 않는 장르의 경우 기본 판타지 책을 생성합니다.
- */
-Book* BookFactory::createBook(eBookGenre genre,
+Book* BookFactory::createBook(
+    eBookGenre genre,
     eBookMood mood,
     int length,
     eBookEdge edge,
     eBookEtc etc
-    ) {
+) {
     switch (genre) {
-    case eBookGenre::Fantasy:
-        // 판타지 장르용 책 생성
-        return new FantasyBook(
-            "Random Fantasy",      // 제목
-            "A random fantasy book", // 설명
-            length
-            );                // 분량
+        case eBookGenre::Fantasy:
+            return new FantasyBook("Random Fantasy", "A random fantasy book", length);
+        case eBookGenre::SciFi:
+            return new ScienceBook("Random SciFi", "A random science book", length);
+        default:
+            return new FantasyBook("Default Fantasy", "Default", length);
+    }
+}
 
-    case eBookGenre::SciFi:
-        // 공상과학 장르용 책 생성
-        return new ScienceBook(
-            "Random SciFi",         // 제목
-            "A random science book", // 설명
-            length);                // 분량
+void BookFactory::displayPlayerStatus() const {
+    std::string line;
 
-    default:
-        // 지원하지 않는 장르는 기본 판타지 책으로 처리
-        return new FantasyBook(
-            "Default Fantasy",      // 제목
-            "Default",              // 설명
-            length);                // 분량
+    line += "마법 기운: " + std::to_string(player.getMagicPower()) + "   ";
+    line += "골드: " + std::to_string(player.getGold()) + "   ";
+    line += "LV." + std::to_string(player.getLevel()) + " (" + std::to_string(player.getLevelProgress()) + "%)   ";
+    line += "서점 랭킹: Rank " + std::to_string(player.getBookstoreRank()) + "   ";
+    line += "재고 상태: " + std::to_string(player.getBookStock()) + "/40";
+
+    ConsoleIO::println(line);
+}
+
+
+// 문자열 실제 출력 폭 계산 (한글 2칸 가정)
+int BookFactory::getDisplayWidth(const std::string& str) const {
+    int width = 0;
+    for (char ch : str) {
+        width += (static_cast<unsigned char>(ch) & 0x80) ? 2 : 1;
+    }
+    return width;
+}
+
+// 고정 폭 출력용 오른쪽 패딩 적용
+std::string BookFactory::padRight(const std::string& str, int totalWidth) const {
+    int padding = totalWidth - getDisplayWidth(str);
+    return str + std::string((padding > 0) ? padding : 0, ' ');
+}
+
+// 카테고리 헤더 출력
+void BookFactory::displayCategoryHeaders(const std::vector<std::string>& categories, int colWidth) const {
+    std::string headerLine;
+    for (const auto& category : categories) {
+        headerLine += padRight(std::string("[") + category + std::string("]"), colWidth);
+    }
+    ConsoleIO::println(headerLine);
+}
+
+// 요소 항목 출력
+void BookFactory::displayAvailableElements() const {
+    const std::vector<std::string> categories = { "장르", "분위기", "분량", "옛지 요소", "기타" };
+    std::vector<std::vector<std::string>> allOptions;
+    size_t maxRows = 0;
+    const int colWidth = 16;  // 너비 조정 가능
+
+    // 옵션 수집 및 최대 행 계산
+    for (const auto& category : categories) {
+        auto options = elementManager.getOptions(category);
+        allOptions.push_back(options);
+        if (options.size() > maxRows)
+            maxRows = options.size();
+    }
+
+    // 헤더 출력
+    std::string headerLine;
+    for (const auto& category : categories) {
+        headerLine += padRight(category, colWidth);
+    }
+    ConsoleIO::println(headerLine);
+
+    // 각 행 출력
+    for (size_t row = 0; row < maxRows; ++row) {
+        std::string line;
+        for (const auto& column : allOptions) {
+            std::string value = (row < column.size()) ? column[row] : "";
+            line += padRight(value, colWidth);
+        }
+        ConsoleIO::println(line);
     }
 }

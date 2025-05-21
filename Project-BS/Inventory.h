@@ -36,7 +36,7 @@ public:
      * 해당 위치의 요소를 books 벡터에서 erase 합니다.
      * 경계 검사 및 예외 처리 로직은 구현부에서 추가할 수 있습니다.
      */
-    void removeBook(int index);
+    bool safeRemoveBook(int index);
 
     /**
      * @brief 제목으로 책을 검색
