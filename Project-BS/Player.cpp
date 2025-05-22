@@ -2,7 +2,7 @@
 
 
 Player::Player()
-    : magicPower(999999), gold(999999999), level(9), levelProgress(99.99), bookstoreRank(99), bookStock(40) {
+    : magicPower(0), gold(0), level(0), levelProgress(0), bookstoreRank(99), bookStock(0) {
 }
 
 int Player::getMagicPower() const { return magicPower; }
@@ -36,9 +36,12 @@ void Player::gainExperience(double percent) {
 }
 
 void Player::levelUpIfNeeded() {
-    while (levelProgress >= 100.0) {
+    while (true) {
+        // 경험치 요구량이 레벨에 비례하여 증가 (예: 기본 100에 레벨당 10% 증가)
+        double requiredExp = 100.0 * (1.0 + 0.1 * level);
+        if (levelProgress < requiredExp) break;
         level++;
-        levelProgress -= 100.0;
+        levelProgress -= requiredExp;
     }
 }
 
@@ -46,6 +49,7 @@ void Player::updateBookstoreRank(int rank) {
     bookstoreRank = rank;
 }
 
+/// 책 재고를 조정하여 마이너스가 되지 않도록 하는 기능
 void Player::adjustBookStock(int delta) {
     bookStock += delta;
     if (bookStock < 0) bookStock = 0;

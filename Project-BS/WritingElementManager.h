@@ -25,6 +25,7 @@ public:
     void loadDefaultElements(); // 기본 요소 초기화
 
     std::vector<std::string> getOptions(const std::string& category) const;
+    std::vector<std::string> getAvailableOptions(const std::string& category, int level) const;
     void addElementOption(const std::string& category, const std::string& option);
     bool isOptionAvailable(const std::string& category, const std::string& option) const;
 };

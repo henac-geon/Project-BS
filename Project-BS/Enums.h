@@ -10,6 +10,7 @@ enum class eBookGenre {
     Horror,
     Mystery,
     SciFi,
+    Apocalypse,
     NonFiction
 };
 

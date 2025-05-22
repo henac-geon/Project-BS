@@ -26,6 +26,8 @@ public:
     BookFactory();
     ~BookFactory() = default;
 
+    bool isElementAllowed(const std::string& category, const std::string& option) const;
+
     // 책 생성
     Book* createBook(eBookGenre genre, eBookMood mood, int length, eBookEdge edge, eBookEtc etc);
 

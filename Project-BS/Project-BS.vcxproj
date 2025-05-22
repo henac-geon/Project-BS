@@ -172,6 +172,7 @@
     <ClInclude Include="RandomNPC.h" />
     <ClInclude Include="ScienceBook.h" />
     <ClInclude Include="StudentNPC.h" />
+    <ClInclude Include="test.h" />
     <ClInclude Include="UIManager.h" />
     <ClInclude Include="WizardNPC.h" />
     <ClInclude Include="WritingElementManager.h" />
