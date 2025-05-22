@@ -232,7 +232,7 @@ void GameManager::performNPCPhase() {
                 continue;
             }
 
-            // TODO: QA 필요
+            // 고객 반응 처리
             bool satisfied = npc->rateBook(selected);
             if (satisfied) {
                 ConsoleIO::println("고객이 만족해했습니다!");
@@ -253,12 +253,40 @@ void GameManager::performNPCPhase() {
 
         delete npc;
         npcs.erase(npcs.begin() + index);
+
+        // 다음 손님 받을지 확인
+        if (!npcs.empty()) {
+            std::string decision;
+            while (true) {
+                ConsoleIO::println("다음 손님을 받으시겠습니까? (yes / no)");
+                ConsoleIO::print("> 입력: ");
+                std::getline(std::cin, decision);
+
+                if (decision == "yes") {
+                    break;  // 계속 진행
+                }
+                else if (decision == "no") {
+                    ConsoleIO::println("오늘의 장사를 마감합니다...");
+                    // 남은 NPC 메모리 해제
+                    for (NPC* remaining : npcs) {
+                        delete remaining;
+                    }
+                    npcs.clear();
+                    return;
+                }
+                else {
+                    ConsoleIO::println("올바른 입력이 아닙니다. 'yes' 또는 'no'를 입력해주세요.");
+                }
+            }
+        }
     }
 
     ConsoleIO::println("모든 NPC 응대가 완료되었습니다.");
 }
 
+
 void GameManager::performSettlementPhase() {
+    uiManager.clearScreen();
     ConsoleIO::println("\n 정산 단계 시작!\n");
 
     for (auto& book : crud.getInventory().getBooks()) {
@@ -277,6 +305,7 @@ void GameManager::performSettlementPhase() {
 }
 
 void GameManager::endDay() {
+    uiManager.clearScreen();
     if (crud.checkLevelUp()) {
         uiManager.displayLevelUpMessage(crud.getLevel());
     }
