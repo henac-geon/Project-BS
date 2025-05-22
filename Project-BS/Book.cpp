@@ -37,6 +37,28 @@ eBookMood Book::getMood() const {
     return mood;
 }
 
+int Book::getDamage() const {
+    switch (condition) {
+    case eBookCondition::Perfect:
+        return 100;
+    case eBookCondition::Worn:
+        return getRandomInRange(80, 99);
+    case eBookCondition::Damaged:
+        return getRandomInRange(40, 79);
+    case eBookCondition::Destroyed:
+        return getRandomInRange(0, 39);
+    default:
+        return -1;  // 에러 상황
+    }
+}
+
+int Book::getRandomInRange(int min, int max) const {
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dis(min, max);
+    return dis(gen);
+}
+
 void Book::setTitle(const std::string& newTitle) {
     title = newTitle;
 }

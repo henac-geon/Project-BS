@@ -81,12 +81,6 @@
     <ClCompile Include="GameManager.cpp">
       <Filter>소스 파일\Core</Filter>
     </ClCompile>
-    <ClCompile Include="LevelSystem.cpp">
-      <Filter>소스 파일\Core</Filter>
-    </ClCompile>
-    <ClCompile Include="ScoreSystem.cpp">
-      <Filter>소스 파일\Core</Filter>
-    </ClCompile>
     <ClCompile Include="MiniGame.cpp">
       <Filter>소스 파일\MiniGame</Filter>
     </ClCompile>
@@ -105,9 +99,6 @@
     <ClCompile Include="inventory.cpp">
       <Filter>소스 파일\Systems</Filter>
     </ClCompile>
-    <ClCompile Include="PenaltySystem.cpp">
-      <Filter>소스 파일\Systems</Filter>
-    </ClCompile>
     <ClCompile Include="CsvIO.cpp">
       <Filter>소스 파일\Utility</Filter>
     </ClCompile>
@@ -124,6 +115,12 @@
       <Filter>소스 파일\Core</Filter>
     </ClCompile>
     <ClCompile Include="WritingElementManager.cpp">
+      <Filter>소스 파일\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="test.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="CrudStore.cpp">
       <Filter>소스 파일\Core</Filter>
     </ClCompile>
   </ItemGroup>
@@ -152,23 +149,14 @@
     <ClInclude Include="Inventory.h">
       <Filter>헤더 파일\Systems</Filter>
     </ClInclude>
-    <ClInclude Include="LevelSystem.h">
-      <Filter>헤더 파일\Core</Filter>
-    </ClInclude>
     <ClInclude Include="MiniGame.h">
       <Filter>헤더 파일\MiniGame</Filter>
-    </ClInclude>
-    <ClInclude Include="PenaltySystem.h">
-      <Filter>헤더 파일\Systems</Filter>
     </ClInclude>
     <ClInclude Include="RandomNPC.h">
       <Filter>헤더 파일\NPC</Filter>
     </ClInclude>
     <ClInclude Include="ScienceBook.h">
       <Filter>헤더 파일\Book</Filter>
-    </ClInclude>
-    <ClInclude Include="ScoreSystem.h">
-      <Filter>헤더 파일\Core</Filter>
     </ClInclude>
     <ClInclude Include="StudentNPC.h">
       <Filter>헤더 파일\NPC</Filter>
@@ -191,5 +179,12 @@
     <ClInclude Include="WritingElementManager.h">
       <Filter>헤더 파일\Core</Filter>
     </ClInclude>
+    <ClInclude Include="CrudStore.h">
+      <Filter>헤더 파일\Core</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="config.env" />
   </ItemGroup>
 </Project>

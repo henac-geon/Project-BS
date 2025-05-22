@@ -24,10 +24,10 @@ enum class eBookMood {
 
 //책컨디션
 enum class eBookCondition {
-    Perfect,   // 100% - like new
-    Worn,      // 80-99%
-    Damaged,   // 40-79%
-    Destroyed  // 0-39%
+    Perfect = 100,   // 100% - like new
+    Worn = 80,      // 80-99%
+    Damaged = 40,   // 40-79%
+    Destroyed = 0  // 0-39%
 };
 
 //엣지요소

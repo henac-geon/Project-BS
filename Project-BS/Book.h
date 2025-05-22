@@ -4,9 +4,13 @@
 #define BOOK_H
 
 #include <string>
+#include <random>
 #include "Enums.h"
 
 class Book {
+private:
+    int getRandomInRange(int min, int max) const;
+
 protected:
     std::string title;           // 책 제목
     std::string description;     // 책 설명 또는 요약
@@ -38,6 +42,7 @@ public:
     eBookCondition getCondition() const;
     eBookGenre getGenre() const;
     eBookMood getMood() const;
+    int getDamage() const;
 
     void setTitle(const std::string& newTitle);
     //void setCondition(eBookCondition newCondition);

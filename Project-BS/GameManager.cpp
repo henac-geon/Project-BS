@@ -1,23 +1,14 @@
 ﻿#include "GameManager.h"
 #include "AsciiArtRepository.h"
-#include "BookFactory.h"
-#include "PenaltySystem.h"
+#include "CrudStore.h"
 #include "RandomNPC.h"
 #include "ConsoleIO.h"
 #include <string>
 #include <sstream>
 #include <algorithm>
 
-/**
- * @brief 기본 생성자
- *
- * - day를 1로 초기화하여 1일차부터 시작
- * - gold 및 magicPower는 0으로 초기화
- * - actions 및 actionNames 초기화
- */
 GameManager::GameManager()
-    : day(1), gold(0), magicPower(0) {
-    // 초기화 작업
+    : day(1) {
 }
 
 GameManager::~GameManager() {
@@ -26,10 +17,6 @@ GameManager::~GameManager() {
 
 void GameManager::run() {
     std::string command;
-    //ConsoleIO::print("게임을 시작하려면 '시작'을 입력하세요: ");
-    //std::cin >> command;
-    //if (command != "시작") return;
-
     while (true) {
         if (!startDay()) break;
         performWritingPhase();
@@ -61,7 +48,6 @@ bool GameManager::startDay() {
     return true;
 }
 
-
 void GameManager::performWritingPhase() {
     uiManager.clearScreen();
     ConsoleIO::println(AsciiArt::generate_book_art());
@@ -70,48 +56,41 @@ void GameManager::performWritingPhase() {
     AsciiArt::getLine();
 
     // TODO: 플레이어가 가지고 있는 재화 출력
-    bookFactory.displayPlayerStatus();
+    crud.getBookFactory().displayPlayerStatus();
 
     ConsoleIO::println("\n\"(장르), (분위기), (분량), (엣지요소), (기타), (제목)\" 순서로 입력해주세요.");
     ConsoleIO::println("\"입력 예시: 판타지, 암울, 120, 반전, 없음, 다크소울\n");
 
     // TODO: 현재 집필할 수 있는 요소들 출력
     ConsoleIO::println("[현재 사용 가능한 집필 요소]");
-    bookFactory.displayAvailableElements();
-
+    crud.getBookFactory().displayAvailableElements();
 
     std::string ans;
     ConsoleIO::println("\n[집필 요소] 입력");
-    std::cin.ignore(); // 버퍼 정리
+    std::cin.ignore();
     std::getline(std::cin, ans);
 
-    ConsoleIO::println("입력한 집필 요소: " + ans); // 디버깅용
+    ConsoleIO::println("입력한 집필 요소: " + ans);
 
-    // TODO: 입력된 요소를 파싱하여 책 생성
     std::vector<std::string> tokens;
     std::string token;
-    std::stringstream ss(ans);  // string 기반 스트림
+    std::stringstream ss(ans);
 
     while (std::getline(ss, token, ',')) {
-        // 앞뒤 공백 제거
         token.erase(0, token.find_first_not_of(" \t"));
         token.erase(token.find_last_not_of(" \t") + 1);
         tokens.push_back(token);
     }
 
-    // 디버깅용: 파싱된 요소 개수 및 내용 출력
     ConsoleIO::println("파싱된 요소 개수: " + std::to_string(tokens.size()));
     ConsoleIO::println("파싱된 요소: ");
-    for (const auto& t : tokens) {
-        ConsoleIO::println(t);
-    }
+    for (const auto& t : tokens) ConsoleIO::println(t);
 
     if (tokens.size() != 6) {
         ConsoleIO::println("입력 형식이 잘못되었습니다. 다시 시도해주세요.");
         return;
     }
 
-    // 입력값 파싱 이후
     std::string genreStr = tokens[0];
     std::string moodStr = tokens[1];
     int length = std::stoi(tokens[2]);
@@ -119,12 +98,10 @@ void GameManager::performWritingPhase() {
     std::string etcStr = tokens[4];
     std::string title = tokens[5];
 
-    // 문자열 → enum 변환
     eBookGenre genre;
     eBookMood mood;
     eBookEdge edge;
     eBookEtc etc;
-
 
     // TODO: 배열을 이용한 변환으로 개선 예정
     if (genreStr == "판타지") genre = eBookGenre::Fantasy;
@@ -133,7 +110,7 @@ void GameManager::performWritingPhase() {
     else if (genreStr == "미스터리") genre = eBookGenre::Mystery;
     else if (genreStr == "공상과학") genre = eBookGenre::SciFi;
     else if (genreStr == "논픽션") genre = eBookGenre::NonFiction;
-    else genre = eBookGenre::Fantasy; // 기본값
+    else genre = eBookGenre::Fantasy;
 
     if (moodStr == "암울") mood = eBookMood::Dark;
     else if (moodStr == "명랑") mood = eBookMood::Light;
@@ -149,12 +126,10 @@ void GameManager::performWritingPhase() {
     else etc = eBookEtc::None; // 기타는 추후 확장 가능
 
     // BookFactory를 통해 책 생성 (마법 기운 차감 포함)
-    Book* newBook = bookFactory.createBook(genre, mood, length, edge, etc);
+    Book* newBook = crud.getBookFactory().createBook(genre, mood, length, edge, etc);
 
     // 생성된 책의 제목 덮어쓰기
-    if (newBook != nullptr) {
-        newBook->setTitle(title); // setTitle 함수가 Book 클래스에 필요
-    }
+    if (newBook != nullptr) newBook->setTitle(title); // setTitle 함수가 Book 클래스에 필요
 
     // 집필 결과 출력
     ConsoleIO::println("책이 성공적으로 집필되었습니다: " + title);
@@ -168,7 +143,7 @@ void GameManager::performWritingPhase() {
     ConsoleIO::println("제목: " + title);
 
     // TODO: 인벤토리에 추가
-    inventory.addBook(newBook);
+    crud.getInventory().addBook(newBook);
 
     // 책을 생성하고 인벤토리에 추가 -> 확인
     performShowInventoryPhase();
@@ -180,24 +155,21 @@ void GameManager::performShowInventoryPhase() {
     ConsoleIO::println("[텍스트 입력창]에 희망하는 행동을 텍스트로 작성해주세요.");
     AsciiArt::getLine();
     ConsoleIO::println("번호 | 제목 | 장르 | 분위기 | 분량 | 엣지 요소 | 기타 | 재고 상태 | 품질");
-    uiManager.displayInventory(inventory);
+    uiManager.displayInventory(crud.getInventory());
 
     while (true) {
         std::string input;
-        ConsoleIO::println("> 책 소각 마법: \"[책 제목] arDeat\" 입력          재고 확인 종료 후 장사 시작: \"장사 시작\" 입력"); // 재고 확인 종료: \"다음날 시작\" 입력");
+        ConsoleIO::println("> 책 소각 마법: \"[책 제목] arDeat\" 입력          재고 확인 종료 후 장사 시작: \"장사 시작\" 입력");
         ConsoleIO::print("입력: ");
         std::getline(std::cin, input);
 
-        if (input == "장사 시작") {
-            break;
-        }
+        if (input == "장사 시작") break;
 
-        // 입력이 '... arDeat' 형식인지 확인
         if (input.size() > 7 && input.substr(input.size() - 6) == "arDeat") {
-            std::string title = input.substr(0, input.size() - 7); // ' arDeat' 제거
-            Book* target = inventory.findBook(title);
+            std::string title = input.substr(0, input.size() - 7);
+            Book* target = crud.getInventory().findBook(title);
             if (target) {
-                inventory.removeBook(target);
+                crud.getInventory().removeBook(target);
                 ConsoleIO::println("\"" + title + "\" 책이 소각되었습니다.");
             }
             else {
@@ -210,11 +182,9 @@ void GameManager::performShowInventoryPhase() {
     }
 }
 
-
 void GameManager::performNPCPhase() {
     uiManager.clearScreen();
 
-    // NPC 리스트가 비어 있는 경우, 새 NPC들을 준비
     if (npcs.empty()) {
         int numNPC = rand() % 3 + 1;
         ConsoleIO::println("오늘 방문한 NPC 수: " + std::to_string(numNPC));
@@ -231,7 +201,7 @@ void GameManager::performNPCPhase() {
         uiManager.clearScreen();
 
         // TODO: 플레이어가 가지고 있는 재화 출력
-        bookFactory.displayPlayerStatus();
+        crud.getBookFactory().displayPlayerStatus();
 
         ConsoleIO::println(npc->getArt());
 
@@ -244,7 +214,6 @@ void GameManager::performNPCPhase() {
         // TODO: NPC의 대사 출력, 책 대여/반납 여부에 따라 다르게 출력, 없는 책도 고려해야 함
         ConsoleIO::println(npc->getDialogue());
 
-
         bool validInputReceived = false;
         while (!validInputReceived) {
             ConsoleIO::println("책 추천: [책 제목] 입력    |    책 재고 확인: \"재고 확인\" 입력");
@@ -253,11 +222,11 @@ void GameManager::performNPCPhase() {
             std::getline(std::cin, input);
 
             if (input == "재고 확인") {
-                uiManager.displayInventory(inventory);
+                uiManager.displayInventory(crud.getInventory());
                 continue;
             }
 
-            Book* selected = inventory.findBook(input);
+            Book* selected = crud.getInventory().findBook(input);
             if (!selected) {
                 ConsoleIO::println("책 제목이 잘못되었습니다. 다시 입력해주세요.");
                 continue;
@@ -267,17 +236,18 @@ void GameManager::performNPCPhase() {
             bool satisfied = npc->rateBook(selected);
             if (satisfied) {
                 ConsoleIO::println("고객이 만족해했습니다!");
+                crud.addScore(10);
             }
             else {
                 ConsoleIO::println("고객이 불만족해합니다...");
-                int gp = PenaltySystem::calculateGoldPenalty(*selected);
-                int mp = PenaltySystem::calculateMagicPenalty(*selected);
-                gold = (gold - gp < 0) ? 0 : (gold - gp);
-                magicPower = (magicPower - mp < 0) ? 0 : (magicPower - mp);
+                int gp = crud.calculateGoldPenalty(*selected);
+                int mp = crud.calculateMagicPenalty(*selected);
+                crud.getPlayer().useGold(gp);
+                crud.getPlayer().consumeMagicPower(mp);
+                crud.deductScore(5);
                 uiManager.displayPenaltyInfo(gp, mp);
             }
 
-            scoreSystem.updateScore(satisfied);
             validInputReceived = true;
         }
 
@@ -291,7 +261,7 @@ void GameManager::performNPCPhase() {
 void GameManager::performSettlementPhase() {
     ConsoleIO::println("\n 정산 단계 시작!\n");
 
-    for (auto& book : inventory.getBooks()) {
+    for (auto& book : crud.getInventory().getBooks()) {
         if (book->getCondition() == eBookCondition::Damaged) {
             book->repair();
             ConsoleIO::println(AsciiArt::showRestoreBookArt());
@@ -300,19 +270,15 @@ void GameManager::performSettlementPhase() {
     }
 
     // TODO: 추가 정산 과정 필요
-    /*auto book = BookFactory::createRandomBook();
-    inventory.addBook(book);
-    ConsoleIO::println("마지막 책 집필 완료: " + book->getTitle());*/
-
     std::string ans;
     ConsoleIO::print("인벤토리를 확인하시겠습니까? (y/n): ");
     std::cin >> ans;
-    if (ans == "y") uiManager.displayInventory(inventory);
+    if (ans == "y") uiManager.displayInventory(crud.getInventory());
 }
 
 void GameManager::endDay() {
-    if (levelSystem.checkLevelUp()) {
-        uiManager.displayLevelUpMessage(levelSystem.getLevel());
+    if (crud.checkLevelUp()) {
+        uiManager.displayLevelUpMessage(crud.getLevel());
     }
     ConsoleIO::println(AsciiArt::showClosingArt());
     ++day;
