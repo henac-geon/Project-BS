@@ -113,6 +113,9 @@
       <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies);libcurl.lib</AdditionalDependencies>
       <AdditionalLibraryDirectories>C:\Users\man25\vcpkg\installed\x64-windows\lib</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /Y /D "C:\Users\man25\vcpkg\installed\x64-windows\bin\libcurl.dll" "$(OutDir)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
