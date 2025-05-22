@@ -2,7 +2,7 @@
 
 
 Player::Player()
-    : magicPower(0), gold(0), level(0), levelProgress(0), bookstoreRank(99), bookStock(0) {
+    : magicPower(0), gold(0), level(99), levelProgress(0), bookstoreRank(99), bookStock(0) {
 }
 
 int Player::getMagicPower() const { return magicPower; }

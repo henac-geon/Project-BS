@@ -1,4 +1,6 @@
 ﻿#include "BookFactory.h"
+#include <codecvt>
+#include <locale>
 
 namespace {
     constexpr int COLUMN_WIDTH = 16;
@@ -12,6 +14,25 @@ namespace {
 
 BookFactory::BookFactory() {
     elementManager.loadDefaultElements();
+}
+
+// 유니코드 문자 너비 계산 함수
+int wcwidth(wchar_t ucs) {
+    if (ucs == 0) return 0;
+    if (ucs < 32 || (ucs >= 0x7F && ucs < 0xA0)) return -1;
+
+    // 결합 문자
+    if ((ucs >= 0x300 && ucs <= 0x36F) || (ucs >= 0x200B && ucs <= 0x200F))
+        return 0;
+
+    // 넓은 문자 (CJK, 이모지 포함)
+    if ((ucs >= 0x1100 && ucs <= 0x115F) || (ucs >= 0x2E80 && ucs <= 0xA4CF) ||
+        (ucs >= 0xAC00 && ucs <= 0xD7A3) || (ucs >= 0xF900 && ucs <= 0xFAFF) ||
+        (ucs >= 0xFE10 && ucs <= 0xFE6F) || (ucs >= 0x1F300 && ucs <= 0x1F64F) ||
+        (ucs >= 0x1F900 && ucs <= 0x1F9FF))
+        return 2;
+
+    return 1;
 }
 
 bool BookFactory::isElementAllowed(const std::string& category, const std::string& option) const {
@@ -88,20 +109,24 @@ void BookFactory::displayPlayerStatus() const {
 
 
 
-// 문자열 실제 출력 폭 계산 (한글 2칸 가정)
+// UTF-8 문자열의 실제 출력 폭 계산
 int BookFactory::getDisplayWidth(const std::string& str) const {
+    std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
+    std::wstring wideStr = converter.from_bytes(str);
     int width = 0;
-    for (char ch : str) {
-        width += (static_cast<unsigned char>(ch) & 0x80) ? 2 : 1;
+    for (wchar_t ch : wideStr) {
+        int w = wcwidth(ch);
+        if (w > 0) width += w;
     }
     return width;
 }
 
-// 고정 폭 출력용 오른쪽 패딩 적용
+// 오른쪽 패딩 적용
 std::string BookFactory::padRight(const std::string& str, int totalWidth) const {
     int padding = totalWidth - getDisplayWidth(str);
     return str + std::string((padding > 0) ? padding : 0, ' ');
 }
+
 
 // 카테고리 헤더 출력
 void BookFactory::displayCategoryHeaders(const std::vector<std::string>& categories, int colWidth) const {
@@ -113,35 +138,73 @@ void BookFactory::displayCategoryHeaders(const std::vector<std::string>& categor
 }
 
 // 요소 항목 출력
+// 사용 가능한 요소를 표로 출력
 void BookFactory::displayAvailableElements() const {
     const std::vector<std::string> categories = { "장르", "분위기", "분량", "옛지 요소", "기타" };
     std::vector<std::vector<std::string>> allOptions;
     size_t maxRows = 0;
-    const int colWidth = 16;
     int level = player.getLevel();
 
+    // 옵션 필터링 및 최대 행 수 계산
     for (const auto& category : categories) {
-        // WritingElementManager에 위임하여 레벨 기반 필터링 수행
         auto filtered = elementManager.getAvailableOptions(category, level);
         allOptions.push_back(filtered);
-        maxRows = (filtered.size() > maxRows) ? filtered.size() : maxRows;
-
+        maxRows = (filtered.size() > maxRows) ? filtered.size() : maxRows; // 삼항 연산자 적용
     }
 
     // 헤더 출력
-    std::string headerLine;
+    std::string header;
     for (const auto& category : categories) {
-        headerLine += padRight(category, colWidth);
+        header += padRight(category, COLUMN_WIDTH) + "   ";
     }
-    ConsoleIO::println(headerLine);
+    ConsoleIO::println(header);
 
-    // 요소 출력
+    // 구분선 생략 (원래는 ───────── 등)
+
+    // 항목 출력
     for (size_t row = 0; row < maxRows; ++row) {
         std::string line;
-        for (const auto& column : allOptions) {
-            std::string value = (row < column.size()) ? column[row] : "";
-            line += padRight(value, colWidth);
+        for (size_t col = 0; col < allOptions.size(); ++col) {
+            std::string value = (row < allOptions[col].size()) ? allOptions[col][row] : " ";
+            std::string displayStr;
+
+            if (value == "잠금") {
+                displayStr = "(잠금)  ";
+            }
+            else {
+                std::string point;
+                if (categories[col] == "장르") {
+                    if (value == "판타지") point = "◆10";
+                    else if (value == "공상과학") point = "◆50";
+                    else if (value == "아포칼립스") point = "◆90";
+                }
+                else if (categories[col] == "분위기") {
+                    if (value == "밝음") point = "◆20";
+                    else if (value == "암울") point = "◆40";
+                    else if (value == "공포") point = "◆50";
+                    else point = "◆60";
+                }
+                else if (categories[col] == "분량") {
+                    if (value == "30") point = "◆30";
+                    else if (value == "90") point = "◆90";
+                    else if (value == "120") point = "◆120";
+                }
+                else if (categories[col] == "옛지 요소") {
+                    if (value == "없음") point = "◆0";
+                    else if (value == "반전") point = "◆100";
+                }
+                else if (categories[col] == "기타") {
+                    if (value == "없음") point = "◆0";
+                    else if (value == "숨겨진 코드") point = "◆70";
+                    else if (value == "고대 룬") point = "◆100";
+                    else if (value == "금단 기술") point = "◆120";
+                }
+                displayStr = value + (point.empty() ? "" : " [" + point + "]");
+            }
+
+            line += padRight(displayStr, COLUMN_WIDTH) + "  ";
         }
         ConsoleIO::println(line);
     }
 }
+
