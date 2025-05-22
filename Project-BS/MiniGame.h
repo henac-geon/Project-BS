@@ -1,35 +1,35 @@
-#pragma once
+ï»¿#pragma once
 
 #ifndef MINIGAME_H
 #define MINIGAME_H
 
-#include "Book.h"  // Book Å¬·¡½º Á¤ÀÇ¸¦ Æ÷ÇÔÇÏ¿©, ¹Ì´Ï°ÔÀÓ¿¡¼­ »ç¿ëÇÒ Ã¥ °´Ã¼ ÂüÁ¶
+#include "Book.h"  // Book í´ëž˜ìŠ¤ ì •ì˜ë¥¼ í¬í•¨í•˜ì—¬, ë¯¸ë‹ˆê²Œìž„ì—ì„œ ì‚¬ìš©í•  ì±… ê°ì²´ ì°¸ì¡°
 
 /**
  * @class MiniGame
- * @brief Ã¥(Book)À» È°¿ëÇÑ ´Ù¾çÇÑ ¹Ì´Ï°ÔÀÓ ÀÎÅÍÆäÀÌ½º
+ * @brief ì±…(Book)ì„ í™œìš©í•œ ë‹¤ì–‘í•œ ë¯¸ë‹ˆê²Œìž„ ì¸í„°íŽ˜ì´ìŠ¤
  *
- * ÆÄ»ý Å¬·¡½º¿¡¼­ ±¸Ã¼ÀûÀÎ ¹Ì´Ï°ÔÀÓ ·ÎÁ÷À» ±¸ÇöÇÏ±â À§ÇØ
- * ÀÎÅÍÆäÀÌ½º ¿ªÇÒÀ» ¼öÇàÇÕ´Ï´Ù. play() ¸Þ¼­µå¸¦ ÅëÇØ
- * Ã¥ °´Ã¼¸¦ È°¿ëÇÑ °ÔÀÓ ÁøÇà ¹× °á°ú ¹ÝÈ¯À» Ã³¸®ÇÕ´Ï´Ù.
+ * íŒŒìƒ í´ëž˜ìŠ¤ì—ì„œ êµ¬ì²´ì ì¸ ë¯¸ë‹ˆê²Œìž„ ë¡œì§ì„ êµ¬í˜„í•˜ê¸° ìœ„í•´
+ * ì¸í„°íŽ˜ì´ìŠ¤ ì—­í• ì„ ìˆ˜í–‰í•©ë‹ˆë‹¤. play() ë©”ì„œë“œë¥¼ í†µí•´
+ * ì±… ê°ì²´ë¥¼ í™œìš©í•œ ê²Œìž„ ì§„í–‰ ë° ê²°ê³¼ ë°˜í™˜ì„ ì²˜ë¦¬í•©ë‹ˆë‹¤.
  */
 class MiniGame {
 public:
     /**
-     * @brief °¡»ó ¼Ò¸êÀÚ
+     * @brief ê°€ìƒ ì†Œë©¸ìž
      *
-     * ÆÄ»ý Å¬·¡½º¿¡¼­ µ¿Àû ÀÚ¿øÀ» ¾ÈÀüÇÏ°Ô ÇØÁ¦ÇÏ±â À§ÇØ ¼±¾ðÇÕ´Ï´Ù.
+     * íŒŒìƒ í´ëž˜ìŠ¤ì—ì„œ ë™ì  ìžì›ì„ ì•ˆì „í•˜ê²Œ í•´ì œí•˜ê¸° ìœ„í•´ ì„ ì–¸í•©ë‹ˆë‹¤.
      */
     virtual ~MiniGame() = default;
 
     /**
-     * @brief ¹Ì´Ï°ÔÀÓ ½ÇÇà ÇÔ¼ö
+     * @brief ë¯¸ë‹ˆê²Œìž„ ì‹¤í–‰ í•¨ìˆ˜
      *
-     * @param book  °ÔÀÓ¿¡ »ç¿ëÇÒ Book °´Ã¼ Æ÷ÀÎÅÍ
-     * @return bool - °ÔÀÓ ¼º°ø ¿©ºÎ (true: ¼º°ø/ÀÌ±è, false: ½ÇÆÐ/Áü)
+     * @param book  ê²Œìž„ì— ì‚¬ìš©í•  Book ê°ì²´ í¬ì¸í„°
+     * @return bool - ê²Œìž„ ì„±ê³µ ì—¬ë¶€ (true: ì„±ê³µ/ì´ê¹€, false: ì‹¤íŒ¨/ì§)
      *
-     * ¼ø¼ö °¡»ó ÇÔ¼ö·Î, ÆÄ»ý Å¬·¡½º¿¡¼­ Ã¥ µ¥ÀÌÅÍ¸¦ ±â¹ÝÀ¸·Î
-     * ±¸Ã¼ÀûÀÎ °ÔÀÓ ·ÎÁ÷À» ±¸ÇöÇÏ¿© ¼º°ø/½ÇÆÐ¸¦ ÆÇ´ÜÇÕ´Ï´Ù.
+     * ìˆœìˆ˜ ê°€ìƒ í•¨ìˆ˜ë¡œ, íŒŒìƒ í´ëž˜ìŠ¤ì—ì„œ ì±… ë°ì´í„°ë¥¼ ê¸°ë°˜ìœ¼ë¡œ
+     * êµ¬ì²´ì ì¸ ê²Œìž„ ë¡œì§ì„ êµ¬í˜„í•˜ì—¬ ì„±ê³µ/ì‹¤íŒ¨ë¥¼ íŒë‹¨í•©ë‹ˆë‹¤.
      */
     virtual bool play(Book* book) = 0;
 };

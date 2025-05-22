@@ -1,19 +1,5 @@
-#include "Book.h"    // Book Å¬·¡½º Á¤ÀÇ Çì´õ Æ÷ÇÔ
+ï»¿#include "Book.h"    // Book í´ë˜ìŠ¤ ì •ì˜ í—¤ë” í¬í•¨
 
-/**
- * @brief Book Å¬·¡½º »ı¼ºÀÚ ±¸Çö
- *
- * @param title        Ã¥ Á¦¸ñ
- * @param description  Ã¥ ¼³¸í ¶Ç´Â ¿ä¾à
- * @param genre        Ã¥ Àå¸£ (Enums.h¿¡ Á¤ÀÇµÈ eBookGenre)
- * @param mood         Ã¥ ºĞÀ§±â (Enums.h¿¡ Á¤ÀÇµÈ eBookMood)
- * @param length       Ã¥ ºĞ·® (ÆäÀÌÁö ¼ö È¤Àº ÀĞ±â¿¡ ÇÊ¿äÇÑ ºĞ·®)
- * @param edge         Ã¥ ¾ÜÁö¿ä¼Ò
- * @param etc          Ã¥ ±âÅ¸¿ä¼Ò
- * »ı¼ºÀÚ¿¡¼­´Â ¸â¹ö ÃÊ±âÈ­ ¸®½ºÆ®¸¦ »ç¿ëÇÏ¿© ¸ğµç ¸â¹ö¸¦ ¾ÈÀüÇÏ°Ô ÃÊ±âÈ­ÇÕ´Ï´Ù.
- * ±âº»ÀûÀ¸·Î isDamaged´Â false·Î ¼³Á¤ÇÏ¿© ¼Õ»óµÇÁö ¾ÊÀº »óÅÂ·Î ½ÃÀÛÇÏ¸ç,
- * damageTypeÀº eDamageType::None(¼Õ»ó ¾øÀ½), conditionÀº eBookCondition::Perfect(¿ÏÀü)·Î ÃÊ±âÈ­ÇÕ´Ï´Ù.
- */
 Book::Book(const std::string& title,
     const std::string& description,
     eBookGenre genre,
@@ -21,36 +7,58 @@ Book::Book(const std::string& title,
     int length,
     eBookEdge edge,
     eBookEtc etc)
-    : title(title),               // Á¦¸ñ ÃÊ±âÈ­
-    description(description),   // ¼³¸í ÃÊ±âÈ­
-    genre(genre),               // Àå¸£ ÃÊ±âÈ­
-    mood(mood),                 // ºĞÀ§±â ÃÊ±âÈ­
-    length(length),             // ºĞ·® ÃÊ±âÈ­
+    : title(title),               // ì œëª© ì´ˆê¸°í™”
+    description(description),   // ì„¤ëª… ì´ˆê¸°í™”
+    genre(genre),               // ì¥ë¥´ ì´ˆê¸°í™”
+    mood(mood),                 // ë¶„ìœ„ê¸° ì´ˆê¸°í™”
+    length(length),             // ë¶„ëŸ‰ ì´ˆê¸°í™”
     edge(edge),
-    etc(etc),
-    isDamaged(false),           // ±âº» ¼Õ»ó ¿©ºÎ: ¾øÀ½
-    damageType(eDamageType::None),       // ±âº» ¼Õ»ó À¯Çü: ¾øÀ½
-    condition(eBookCondition::Perfect)   // ±âº» »óÅÂ: ¿ÏÀü
+    etc(etc),                   // ê¸°íƒ€ ì •ë³´ ì´ˆê¸°í™”
+    isDamaged(false),           // ê¸°ë³¸ ì†ìƒ ì—¬ë¶€: ì—†ìŒ
+    damageType(eDamageType::None),       // ê¸°ë³¸ ì†ìƒ ìœ í˜•: ì—†ìŒ
+    condition(eBookCondition::Perfect)   // ê¸°ë³¸ ìƒíƒœ: ì™„ì „
 {
-    // TODO: ÇÊ¿ä¿¡ µû¶ó Ãß°¡ ÃÊ±âÈ­ ·ÎÁ÷ ±¸Çö
+    // TODO: í•„ìš”ì— ë”°ë¼ ì¶”ê°€ ì´ˆê¸°í™” ë¡œì§ êµ¬í˜„
 }
 
-/**
- * @brief Ã¥ Á¦¸ñÀ» ¹İÈ¯ÇÏ´Â Getter
- *
- * @return std::string - Ã¥ÀÇ Á¦¸ñ
- */
 std::string Book::getTitle() const {
-    return title;  // title ¸â¹ö ¹İÈ¯
+    return title;  // title ë©¤ë²„ ë°˜í™˜
 }
 
-/**
- * @brief Ã¥ »óÅÂ¸¦ ¹İÈ¯ÇÏ´Â Getter
- *
- * @return eBookCondition - Ã¥ÀÇ ÇöÀç »óÅÂ
- *
- * condition ¸â¹ö º¯¼ö °ªÀ» ±×´ë·Î ¹İÈ¯ÇÕ´Ï´Ù.
- */
 eBookCondition Book::getCondition() const {
-    return condition;  // condition ¸â¹ö ¹İÈ¯
+    return condition;  // condition ë©¤ë²„ ë°˜í™˜
+}
+
+eBookGenre Book::getGenre() const {
+    return genre;
+}
+
+eBookMood Book::getMood() const {
+    return mood;
+}
+
+int Book::getDamage() const {
+    switch (condition) {
+    case eBookCondition::Perfect:
+        return 100;
+    case eBookCondition::Worn:
+        return getRandomInRange(80, 99);
+    case eBookCondition::Damaged:
+        return getRandomInRange(40, 79);
+    case eBookCondition::Destroyed:
+        return getRandomInRange(0, 39);
+    default:
+        return -1;  // ì—ëŸ¬ ìƒí™©
+    }
+}
+
+int Book::getRandomInRange(int min, int max) const {
+    static std::random_device rd;
+    static std::mt19937 gen(rd());
+    std::uniform_int_distribution<> dis(min, max);
+    return dis(gen);
+}
+
+void Book::setTitle(const std::string& newTitle) {
+    title = newTitle;
 }

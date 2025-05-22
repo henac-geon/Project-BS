@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\vcpkg.C.Users.man25.vcpkg.1.0.0\build\native\vcpkg.C.Users.man25.vcpkg.props" Condition="Exists('..\packages\vcpkg.C.Users.man25.vcpkg.1.0.0\build\native\vcpkg.C.Users.man25.vcpkg.props')" />
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -104,11 +105,17 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\Users\man25\vcpkg\installed\x64-windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>$(CoreLibraryDependencies);%(AdditionalDependencies);libcurl.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>C:\Users\man25\vcpkg\installed\x64-windows\lib</AdditionalLibraryDirectories>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy /Y /D "C:\Users\man25\vcpkg\installed\x64-windows\bin\libcurl.dll" "$(OutDir)"</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -130,43 +137,59 @@
     <ClCompile Include="AsciiArtRepository.cpp" />
     <ClCompile Include="Book.cpp" />
     <ClCompile Include="BookFactory.cpp" />
+    <ClCompile Include="ConsoleIO.cpp" />
+    <ClCompile Include="CrudStore.cpp" />
     <ClCompile Include="CsvIO.cpp" />
     <ClCompile Include="FantasyBook.cpp" />
-    <ClCompile Include="Inventory.cpp" />
-    <ClCompile Include="LevelSystem.cpp" />
+    <ClCompile Include="GameManager.cpp" />
+    <ClCompile Include="inventory.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MiniGame.cpp" />
     <ClCompile Include="NPC.cpp" />
-    <ClCompile Include="GameManager.cpp" />
-    <ClCompile Include="PenaltySystem.cpp" />
-    <ClCompile Include="PenaltySystem.h" />
+    <ClCompile Include="Player.cpp" />
     <ClCompile Include="RandomNPC.cpp" />
-    <ClCompile Include="ScoreSystem.cpp" />
-    <ClCompile Include="StudentNPC.cpp" />
-    <ClCompile Include="UIManager.cpp" />
     <ClCompile Include="ScienceBook.cpp" />
+    <ClCompile Include="StudentNPC.cpp" />
+    <ClCompile Include="test.cpp" />
+    <ClCompile Include="UIManager.cpp" />
     <ClCompile Include="WizardNPC.cpp" />
+    <ClCompile Include="WritingElementManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AsciiArtRepository.h" />
     <ClInclude Include="Book.h" />
     <ClInclude Include="BookFactory.h" />
+    <ClInclude Include="ConsoleIO.h" />
+    <ClInclude Include="CrudStore.h" />
     <ClInclude Include="CsvIO.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="FantasyBook.h" />
-    <ClInclude Include="NPC.h" />
-    <ClInclude Include="MiniGame.h" />
     <ClInclude Include="GameManager.h" />
-    <ClInclude Include="LevelSystem.h" />
+    <ClInclude Include="Inventory.h" />
+    <ClInclude Include="MiniGame.h" />
+    <ClInclude Include="NPC.h" />
+    <ClInclude Include="Player.h" />
     <ClInclude Include="RandomNPC.h" />
     <ClInclude Include="ScienceBook.h" />
-    <ClInclude Include="ScoreSystem.h" />
     <ClInclude Include="StudentNPC.h" />
+    <ClInclude Include="test.h" />
     <ClInclude Include="UIManager.h" />
-    <ClInclude Include="Inventory.h" />
     <ClInclude Include="WizardNPC.h" />
+    <ClInclude Include="WritingElementManager.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="config.env" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
+    <Import Project="..\packages\vcpkg.C.Users.man25.vcpkg.1.0.0\build\native\vcpkg.C.Users.man25.vcpkg.targets" Condition="Exists('..\packages\vcpkg.C.Users.man25.vcpkg.1.0.0\build\native\vcpkg.C.Users.man25.vcpkg.targets')" />
   </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>이 프로젝트는 이 컴퓨터에 없는 NuGet 패키지를 참조합니다. 해당 패키지를 다운로드하려면 NuGet 패키지 복원을 사용하십시오. 자세한 내용은 http://go.microsoft.com/fwlink/?LinkID=322105를 참조하십시오. 누락된 파일은 {0}입니다.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\vcpkg.C.Users.man25.vcpkg.1.0.0\build\native\vcpkg.C.Users.man25.vcpkg.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\vcpkg.C.Users.man25.vcpkg.1.0.0\build\native\vcpkg.C.Users.man25.vcpkg.props'))" />
+    <Error Condition="!Exists('..\packages\vcpkg.C.Users.man25.vcpkg.1.0.0\build\native\vcpkg.C.Users.man25.vcpkg.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\vcpkg.C.Users.man25.vcpkg.1.0.0\build\native\vcpkg.C.Users.man25.vcpkg.targets'))" />
+  </Target>
 </Project>

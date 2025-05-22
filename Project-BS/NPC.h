@@ -1,100 +1,54 @@
-#pragma once
+ï»¿#pragma once
 
 #ifndef NPC_H
 #define NPC_H
 
-#include <string>      // std::string »ç¿ëÀ» À§ÇÑ Çì´õ
-#include <vector>      // std::vector »ç¿ëÀ» À§ÇÑ Çì´õ
-#include "Book.h"     // Book Å¬·¡½º Á¤ÀÇ Æ÷ÇÔ
-#include "Enums.h"    // eBookGenre, eBookMood ¿­°ÅÇü Á¤ÀÇ Æ÷ÇÔ
+#include <string>      // std::string ì‚¬ìš©ì„ ìœ„í•œ í—¤ë”
+#include <vector>      // std::vector ì‚¬ìš©ì„ ìœ„í•œ í—¤ë”
+#include "Book.h"     // Book í´ë˜ìŠ¤ ì •ì˜ í¬í•¨
+#include "Enums.h"    // eBookGenre, eBookMood ì—´ê±°í˜• ì •ì˜ í¬í•¨
+#include "AsciiArtRepository.h"
 
-// NPC(Non-Player Character) Ãß»ó Å¬·¡½º
-// °ÔÀÓ ³»¿¡¼­ Ã¥À» ¿äÃ»ÇÏ°í ÆòÁ¡ ¸Å±â±â, ¼Õ»óµÈ Ã¥¿¡ ´ëÇÑ º¸»óÀ» Ã³¸®ÇÏ´Â ÀÎÅÍÆäÀÌ½º ¿ªÇÒÀ» ÇÕ´Ï´Ù.
+// NPC(Non-Player Character) ì¶”ìƒ í´ë˜ìŠ¤
+// ê²Œì„ ë‚´ì—ì„œ ì±…ì„ ìš”ì²­í•˜ê³  í‰ì  ë§¤ê¸°ê¸°, ì†ìƒëœ ì±…ì— ëŒ€í•œ ë³´ìƒì„ ì²˜ë¦¬í•˜ëŠ” ì¸í„°í˜ì´ìŠ¤ ì—­í• ì„ í•©ë‹ˆë‹¤.
 class NPC {
 protected:
-    std::string name;               // NPCÀÇ ÀÌ¸§
-    eBookGenre preferredGenre;      // NPC°¡ ¼±È£ÇÏ´Â Ã¥ Àå¸£ (Enums.h ÂüÁ¶)
-    eBookMood preferredMood;        // NPC°¡ ÇöÀç ±âºĞ¿¡ ¸ÂÃç ¼±È£ÇÏ´Â Ã¥ ºĞÀ§±â
-    std::vector<Book*> inventory;   // NPC°¡ ¼ÒÀ¯ÇÏ°Å³ª ´ë¿© °¡´ÉÇÑ Ã¥ ¸ñ·Ï
-    int gold;                       // NPC°¡ º¸À¯ÇÑ ±İÈ­ (°æÁ¦ ½Ã½ºÅÛ¿¡¼­ »ç¿ë)
-    int magicPower;                 // NPCÀÇ ¸¶¹ı·Â (Æ¯Á¤ º¸»ó ¶Ç´Â »óÈ£ÀÛ¿ë¿¡ È°¿ë)
-    eRequestType requestType = eRequestType::GenreAndMood;  // NPC°¡ ¿øÇÏ´Â Ã¥ ÃßÃµ Á¶°Ç
+    std::string name;
+    eBookGenre preferredGenre;      // ì„ í˜¸í•˜ëŠ” ì±… ì¥ë¥´ (Enums.h ì°¸ì¡°)
+    eBookMood preferredMood;        // í˜„ì¬ ê¸°ë¶„ì— ë§ì¶° ì„ í˜¸í•˜ëŠ” ì±… ë¶„ìœ„ê¸°
+    std::vector<Book*> inventory;   // ì†Œìœ í•˜ê±°ë‚˜ ëŒ€ì—¬ ê°€ëŠ¥í•œ ì±… ëª©ë¡
+    int gold;                       // ë³´ìœ í•œ ê¸ˆí™” (ê²½ì œ ì‹œìŠ¤í…œì—ì„œ ì‚¬ìš©)
+    int magicPower;                 // ë§ˆë²•ë ¥ (íŠ¹ì • ë³´ìƒ ë˜ëŠ” ìƒí˜¸ì‘ìš©ì— í™œìš©)
+    eRequestType requestType = eRequestType::GenreAndMood;  // NPCê°€ ì›í•˜ëŠ” ì±… ì¶”ì²œ ì¡°ê±´
 
 public:
-    /**
-     * @brief NPC »ı¼ºÀÚ
-     * @param name        NPCÀÇ ÀÌ¸§
-     * @param genre       NPC°¡ ¼±È£ÇÏ´Â Ã¥ Àå¸£
-     * @param mood        NPC°¡ ¼±È£ÇÏ´Â Ã¥ ºĞÀ§±â
-     * @param gold        ÃÊ±â ±İÈ­·®
-     * @param magicPower  ÃÊ±â ¸¶¹ı·Â
-     */
-    NPC(const std::string& name,
-        eBookGenre genre,
-        eBookMood mood,
-        int gold,
-        int magicPower);
-
-    /**
-     * @brief °¡»ó ¼Ò¸êÀÚ
-     * ÆÄ»ı Å¬·¡½º¿¡¼­ µ¿Àû ÇÒ´çµÈ ÀÚ¿øÀ» ¾ÈÀüÇÏ°Ô ÇØÁ¦ÇÏ±â À§ÇØ ¼±¾ğÇÕ´Ï´Ù.
-     */
+    NPC(const std::string& name, eBookGenre genre, eBookMood mood, int gold, int magicPower);
     virtual ~NPC() = default;
 
-    /**
-     * @brief NPC°¡ Ã¥À» ¿äÃ»ÇÏ´Â ÇÔ¼ö
-     * @param candidates  ¿äÃ» °¡´ÉÇÑ Ã¥ ÈÄº¸ ¸ñ·Ï
-     * @return            ¼±ÅÃµÈ Book Æ÷ÀÎÅÍ (¾øÀ¸¸é nullptr)
-     * @note ¼ø¼ö °¡»ó ÇÔ¼ö·Î, ÆÄ»ı Å¬·¡½º¿¡¼­ ±¸Ã¼ÀûÀ¸·Î ±¸ÇöÇØ¾ß ÇÕ´Ï´Ù.
-     */
     virtual Book* requestBook(const std::vector<Book*>& candidates) = 0;
 
-    /**
-     * @brief NPC°¡ Ã¥À» Æò°¡ÇÏ´Â ÇÔ¼ö
-     * @param book  Æò°¡ÇÒ Ã¥ Æ÷ÀÎÅÍ
-     * @return      Æò°¡ °á°ú (true: ¸¸Á·, false: ºÒ¸¸Á·)
-     * @note NPCÀÇ ¼±È£µµ¿¡ µû¶ó Æò°¡ ·ÎÁ÷À» ±¸ÇöÇÕ´Ï´Ù.
-     */
+    /// ìš”ì²­í•œ ì±…ì„ í‰ê°€í•˜ëŠ” í•¨ìˆ˜
     virtual bool rateBook(Book* book) const;
 
-    /**
-     * @brief NPC°¡ ¼Õ»óµÈ Ã¥¿¡ ´ëÇØ º¸»óÇÏ´Â ÇÔ¼ö
-     * @param book  ¼Õ»óµÈ Ã¥ Æ÷ÀÎÅÍ
-     * @note Ã¥ »óÅÂ¿¡ µû¶ó ±İÈ­³ª ¸¶¹ı·ÂÀ¸·Î º¸»óÀ» Ã³¸®ÇÒ ·ÎÁ÷À» ±¸ÇöÇÕ´Ï´Ù.
-     */
+    /// NPCê°€ ì†ìƒëœ ì±…ì— ëŒ€í•´ ë³´ìƒí•˜ëŠ” í•¨ìˆ˜
     virtual void compensateForDamage(Book* book) = 0;
 
-    /**
-    * 
-    * ¿ÜºÎ¿¡¼­ Á¢±Ù ÇÒ ¼ö ÀÖ°Ô ¸¸µé¾îÁÖ´Â get ÇÔ¼ö¿Í set ÇÔ¼ö
-    * 
-    */
 
-    // ÀÌ¸§
     std::string getName() const;
-    void setName(const std::string& newName);
-
-    // Àå¸£
     eBookGenre getPreferredGenre() const;
-    void setPreferredGenre(eBookGenre genre);
-
-    // ¹«µå
     eBookMood getPreferredMood() const;
-    void setPreferredMood(eBookMood mood);
-
-    // ÀÎº¥Åä¸® È®ÀÎ
     const std::vector<Book*>& getInventory() const;
-
-    // °ñµå
     int getGold() const;
-    void setGold(int newGold);
-
-    // ¸¶¹ı·Â
     int getMagicPower() const;
-    void setMagicPower(int newMagicPower);
-
-    // ¿äÃ» Å¸ÀÔ
     eRequestType getRequestType() const;
+    std::string getArt() const;
+    std::string getDialogue() const;
+
+    void setName(const std::string& newName);
+    void setPreferredGenre(eBookGenre genre);
+    void setPreferredMood(eBookMood mood);
+    void setGold(int newGold);
+    void setMagicPower(int newMagicPower);
     void setRequestType(eRequestType type);
 };
 

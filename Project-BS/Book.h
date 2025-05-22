@@ -1,46 +1,29 @@
-#pragma once
+ï»¿#pragma once
 
 #ifndef BOOK_H
 #define BOOK_H
 
-#include <string>     // std::string »ç¿ëÀ» À§ÇÑ Çì´õ
-#include "Enums.h"   // eBookGenre, eBookMood, eDamageType, eBookCondition ¿­°ÅÇü Á¤ÀÇ Æ÷ÇÔ
+#include <string>
+#include <random>
+#include "Enums.h"
 
-/**
- * @class Book
- * @brief Ã¥(Book) Ãß»ó Å¬·¡½º
- *
- * °ÔÀÓ ¶Ç´Â ¾ÖÇÃ¸®ÄÉÀÌ¼Ç ³»¿¡¼­ Ã¥ °´Ã¼¸¦ ¸ğµ¨¸µÇÕ´Ï´Ù.
- * Á¦¸ñ, ¼³¸í, Àå¸£, ºĞÀ§±â, ºĞ·® µîÀÇ ¸ŞÅ¸µ¥ÀÌÅÍ¿Í ¼Õ»ó »óÅÂ¸¦ °ü¸®ÇÏ¸ç,
- * ¼ö¸®(repair) ¹× Á¤º¸ Ç¥½Ã(displayInfo) ±â´ÉÀ» ÆÄ»ı Å¬·¡½º¿¡¼­ ±¸ÇöÇÏµµ·Ï ÇÕ´Ï´Ù.
- */
 class Book {
+private:
+    int getRandomInRange(int min, int max) const;
+
 protected:
-    std::string title;           // Ã¥ Á¦¸ñ
-    std::string description;     // Ã¥ ¼³¸í ¶Ç´Â ¿ä¾à
-    eBookGenre genre;            // Ã¥ Àå¸£ (Enums.h Âü°í)
-    eBookMood mood;              // Ã¥ÀÌ Àü´ŞÇÏ´Â ºĞÀ§±â (Enums.h Âü°í)
-    int length;                  // Ã¥ÀÇ ºĞ·® (ÆäÀÌÁö ¼ö ¶Ç´Â ÀĞ±â ¼Ò¿ä ½Ã°£)
-    eBookEdge edge;              // Ã¥ÀÇ ¹İÀü ¿ä¼Ò
-    eBookEtc etc;                // ±âÅ¸
-    bool isDamaged;              // Ã¥ ¼Õ»ó ¿©ºÎ (true: ¼Õ»óµÊ, false: ¾çÈ£)
-    eDamageType damageType;      // ¼Õ»ó À¯Çü (Enums.h¿¡ Á¤ÀÇµÈ eDamageType)
-    eBookCondition condition;    // Ã¥ »óÅÂ (Enums.h¿¡ Á¤ÀÇµÈ eBookCondition)
+    std::string title;           // ì±… ì œëª©
+    std::string description;     // ì±… ì„¤ëª… ë˜ëŠ” ìš”ì•½
+    eBookGenre genre;            // ì±… ì¥ë¥´ (Enums.h ì°¸ê³ )
+    eBookMood mood;              // ì±…ì´ ì „ë‹¬í•˜ëŠ” ë¶„ìœ„ê¸° (Enums.h ì°¸ê³ )
+    int length;                  // ì±…ì˜ ë¶„ëŸ‰ (í˜ì´ì§€ ìˆ˜ ë˜ëŠ” ì½ê¸° ì†Œìš” ì‹œê°„)
+    eBookEdge edge;              // ì±…ì˜ ë°˜ì „ ìš”ì†Œ
+    eBookEtc etc;                // ê¸°íƒ€
+    bool isDamaged;              // ì±… ì†ìƒ ì—¬ë¶€ (true: ì†ìƒë¨, false: ì–‘í˜¸)
+    eDamageType damageType;      // ì†ìƒ ìœ í˜• (Enums.hì— ì •ì˜ëœ eDamageType)
+    eBookCondition condition;    // ì±… ìƒíƒœ (Enums.hì— ì •ì˜ëœ eBookCondition)
 
 public:
-    /**
-     * @brief »ı¼ºÀÚ
-     * @param title        Ã¥ Á¦¸ñ
-     * @param description  Ã¥ ¼³¸í ¶Ç´Â ¿ä¾à
-     * @param genre        Ã¥ Àå¸£
-     * @param mood         Ã¥ ºĞÀ§±â
-     * @param length       Ã¥ ºĞ·®
-     * @param edge         Ã¥ ¹İÀü¿ä¼Ò
-     * @param etc          Ã¥ ±âÅ¸
-     *
-     * »ı¼ºÀÚ¿¡¼­´Â Àü´Ş¹ŞÀº ¸ŞÅ¸µ¥ÀÌÅÍ·Î ¸â¹ö º¯¼ö¸¦ ÃÊ±âÈ­ÇÏ°í,
-     * ±âº»ÀûÀ¸·Î ¼Õ»ó »óÅÂ¸¦ "¾çÈ£"·Î ¼³Á¤ÇÕ´Ï´Ù.
-     */
     Book(const std::string& title,
         const std::string& description,
         eBookGenre genre,
@@ -49,38 +32,26 @@ public:
         eBookEdge edge,
         eBookEtc etc);
 
-    /**
-     * @brief °¡»ó ¼Ò¸êÀÚ
-     *
-     * ÆÄ»ı Å¬·¡½º¿¡¼­ µ¿Àû ÇÒ´çµÈ ÀÚ¿øÀ» ¾ÈÀüÇÏ°Ô ÇØÁ¦ÇÏ±â À§ÇØ ¼±¾ğÇÕ´Ï´Ù.
-     */
     virtual ~Book() = default;
 
-    /**
-     * @brief Ã¥À» ¼ö¸®ÇÏ´Â ÇÔ¼ö
-     *
-     * ¼ø¼ö °¡»ó ÇÔ¼ö·Î, ÆÄ»ı Å¬·¡½º¿¡¼­ ¼Õ»óµÈ Ã¥À» ¼ö¸®ÇÏ´Â ±¸Ã¼ ·ÎÁ÷À» ±¸ÇöÇØ¾ß ÇÕ´Ï´Ù.
-     */
     virtual void repair() = 0;
 
-    /**
-     * @brief Ã¥ Á¤º¸¸¦ Ç¥½ÃÇÏ´Â ÇÔ¼ö
-     *
-     * ¼ø¼ö °¡»ó ÇÔ¼ö·Î, ÆÄ»ı Å¬·¡½º¿¡¼­ Ã¥ÀÇ ¸ŞÅ¸µ¥ÀÌÅÍ¿Í »óÅÂ¸¦ Ãâ·ÂÇÏ´Â ±¸Ã¼ ·ÎÁ÷À» ±¸ÇöÇØ¾ß ÇÕ´Ï´Ù.
-     */
     virtual void displayInfo() const = 0;
 
-    /**
-     * @brief Ã¥ Á¦¸ñÀ» ¹İÈ¯ÇÏ´Â getter
-     * @return std::string - Ã¥ÀÇ Á¦¸ñ
-     */
     std::string getTitle() const;
-
-    /**
-     * @brief Ã¥ »óÅÂ¸¦ ¹İÈ¯ÇÏ´Â getter
-     * @return eBookCondition - Ã¥ÀÇ »óÅÂ
-     */
     eBookCondition getCondition() const;
+    eBookGenre getGenre() const;
+    eBookMood getMood() const;
+    int getDamage() const;
+
+    void setTitle(const std::string& newTitle);
+    //void setCondition(eBookCondition newCondition);
+    //void setIsDamaged(bool damaged);
+    //void setDamageType(eDamageType type);
+    //void setLength(int newLength);
+    //void setEdge(eBookEdge newEdge);
+    //void setGenre(eBookGenre newGenre);
+    //void setMood(eBookMood newMood);
 };
 
 #endif // BOOK_H

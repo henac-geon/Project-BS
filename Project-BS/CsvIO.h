@@ -1,4 +1,4 @@
-// CsvIO.hpp
+ï»¿// CsvIO.hpp
 #pragma once
 
 #ifndef CSVIO_H
@@ -8,34 +8,34 @@
 #include <vector>
 
 /**
- * @brief CSV ÆÄÀÏ ÀÔÃâ·ÂÀ» À§ÇÑ Á¤Àû À¯Æ¿¸®Æ¼ Å¬·¡½º
+ * @brief CSV íŒŒì¼ ì…ì¶œë ¥ì„ ìœ„í•œ ì •ì  ìœ í‹¸ë¦¬í‹° í´ë˜ìŠ¤
  *
- * °´Ã¼¸¦ »ı¼ºÇÏÁö ¾Ê°í Å¬·¡½º ÀÌ¸§À¸·Î Á÷Á¢ ÇÔ¼ö È£Ãâ °¡´É
- * CSV ÆÄÀÏÀ» ÀĞ°í ¾²´Â ±â´ÉÀ» static ÇÔ¼ö·Î Á¦°ø
+ * ê°ì²´ë¥¼ ìƒì„±í•˜ì§€ ì•Šê³  í´ë˜ìŠ¤ ì´ë¦„ìœ¼ë¡œ ì§ì ‘ í•¨ìˆ˜ í˜¸ì¶œ ê°€ëŠ¥
+ * CSV íŒŒì¼ì„ ì½ê³  ì“°ëŠ” ê¸°ëŠ¥ì„ static í•¨ìˆ˜ë¡œ ì œê³µ
  */
 class CsvIO
 {
 public:
-    // °´Ã¼ »ı¼º ¹æÁö (Á¤Àû Å¬·¡½º¿ë)
+    // ê°ì²´ ìƒì„± ë°©ì§€ (ì •ì  í´ë˜ìŠ¤ìš©)
     CsvIO() = delete;
 
     /**
-     * @brief 2Â÷¿ø ¹®ÀÚ¿­ º¤ÅÍ µ¥ÀÌÅÍ¸¦ CSV ÆÄÀÏ·Î ÀúÀå
+     * @brief 2ì°¨ì› ë¬¸ìì—´ ë²¡í„° ë°ì´í„°ë¥¼ CSV íŒŒì¼ë¡œ ì €ì¥
      *
-     * @param filename ÀúÀåÇÒ CSV ÆÄÀÏ °æ·Î
-     * @param data ÀúÀåÇÒ µ¥ÀÌÅÍ (Çà·Ä ±¸Á¶)
+     * @param filename ì €ì¥í•  CSV íŒŒì¼ ê²½ë¡œ
+     * @param data ì €ì¥í•  ë°ì´í„° (í–‰ë ¬ êµ¬ì¡°)
      *
-     * @throws std::runtime_error ÆÄÀÏ ¿­±â ½ÇÆĞ ½Ã ¿¹¿Ü ¹ß»ı
+     * @throws std::runtime_error íŒŒì¼ ì—´ê¸° ì‹¤íŒ¨ ì‹œ ì˜ˆì™¸ ë°œìƒ
      */
     static void exportToCsv(const std::string& filename, const std::vector<std::vector<std::string>>& data);
 
     /**
-     * @brief CSV ÆÄÀÏÀ» ÀĞ¾î 2Â÷¿ø ¹®ÀÚ¿­ º¤ÅÍ·Î ¹İÈ¯
+     * @brief CSV íŒŒì¼ì„ ì½ì–´ 2ì°¨ì› ë¬¸ìì—´ ë²¡í„°ë¡œ ë°˜í™˜
      *
-     * @param filename ÀĞÀ» CSV ÆÄÀÏ °æ·Î
-     * @return std::vector<std::vector<std::string>> ÀĞÀº µ¥ÀÌÅÍ Çà·Ä
+     * @param filename ì½ì„ CSV íŒŒì¼ ê²½ë¡œ
+     * @return std::vector<std::vector<std::string>> ì½ì€ ë°ì´í„° í–‰ë ¬
      *
-     * @throws std::runtime_error ÆÄÀÏ ¿­±â ½ÇÆĞ ½Ã ¿¹¿Ü ¹ß»ı
+     * @throws std::runtime_error íŒŒì¼ ì—´ê¸° ì‹¤íŒ¨ ì‹œ ì˜ˆì™¸ ë°œìƒ
      */
     static std::vector<std::vector<std::string>> importFromCsv(const std::string& filename);
 };

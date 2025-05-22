@@ -1,61 +1,147 @@
-#include "BookFactory.h"
-#include "FantasyBook.h"  // FantasyBook Å¬·¡½º Á¤ÀÇ Çì´õ Æ÷ÇÔ
-#include "ScienceBook.h"  // ScienceBook Å¬·¡½º Á¤ÀÇ Çì´õ Æ÷ÇÔ
-#include <cstdlib>  // rand() ÇÔ¼ö »ç¿ëÀ» À§ÇÑ Çì´õ
+ï»¿#include "BookFactory.h"
 
-/**
- * @brief ·£´ıÇÑ Ã¥À» »ı¼ºÇÏ´Â ÆÑÅä¸® ÇÔ¼ö
- *
- * @return Book* - »ı¼ºµÈ ·£´ı Ã¥ °´Ã¼ Æ÷ÀÎÅÍ
- *
- * ±æÀÌ´Â 50~149 »çÀÌÀÇ ·£´ı °ªÀ¸·Î ¼³Á¤µÇ¸ç,
- * Àå¸£´Â ÆÇÅ¸Áö(Fantasy), ºĞÀ§±â´Â ±â¹ßÇÑ(Whimsical)À¸·Î °íÁ¤ÇÕ´Ï´Ù.
- */
-Book* BookFactory::createRandomBook() {
-    int len = rand() % 100 + 50;  // 0~99 »çÀÌ ·£´ı +50 => 50~149
-    // °íÁ¤µÈ Àå¸£¿Í ºĞÀ§±â·Î Ã¥ »ı¼º
-    return createBook(eBookGenre::Fantasy, eBookMood::Whimsical, len, eBookEdge::None, eBookEtc::None);
+namespace {
+    constexpr int COLUMN_WIDTH = 16;
 }
 
-/**
- * @brief ÁöÁ¤µÈ ¼Ó¼ºÀÇ Ã¥À» »ı¼ºÇÏ´Â ÆÑÅä¸® ÇÔ¼ö
- *
- * @param genre   »ı¼ºÇÒ Ã¥ÀÇ Àå¸£
- * @param mood    »ı¼ºÇÒ Ã¥ÀÇ ºĞÀ§±â
- * @param length  Ã¥ÀÇ ºĞ·®(ÆäÀÌÁö ¼ö µî)
- * @return Book* - »ı¼ºµÈ Ã¥ °´Ã¼ Æ÷ÀÎÅÍ
- *
- * Àå¸£¿¡ µû¶ó ÆÄ»ı Å¬·¡½º(FantasyBook, ScienceBook µî)¸¦ °áÁ¤ÇÏ¿©
- * ÇØ´ç °´Ã¼¸¦ µ¿ÀûÀ¸·Î ÇÒ´ç ÈÄ ¹İÈ¯ÇÕ´Ï´Ù.
- * Áö¿øÇÏÁö ¾Ê´Â Àå¸£ÀÇ °æ¿ì ±âº» ÆÇÅ¸Áö Ã¥À» »ı¼ºÇÕ´Ï´Ù.
- */
-Book* BookFactory::createBook(eBookGenre genre,
+/*
+ * TODO: ì±…ì„ ìƒì„±í•˜ê³  ì„±ê³µë¥ ì„ ì²´í¬í•˜ëŠ” ê¸°ëŠ¥ ì¶”ê°€ êµ¬í˜„
+ * TODO: ë¯¸ë‹ˆê²Œì„ì„ ì‹¤í–‰í•˜ëŠ” ê¸°ëŠ¥ì„ ì¶”ê°€ êµ¬í˜„
+ * TODO: ì±…ì„ ë³µêµ¬í•˜ëŠ” í•¨ìˆ˜ ì¶”ê°€ êµ¬í˜„
+*/
+
+BookFactory::BookFactory() {
+    elementManager.loadDefaultElements();
+}
+
+bool BookFactory::isElementAllowed(const std::string& category, const std::string& option) const {
+    int level = player.getLevel();
+
+    if (category == "ì¥ë¥´") {
+        if (option == "íŒíƒ€ì§€") return true;
+        if (option == "ê³µìƒê³¼í•™") return level >= 2;
+        if (option == "ì•„í¬ì¹¼ë¦½ìŠ¤") return level >= 5;
+    }
+    if (category == "ì˜›ì§€ ìš”ì†Œ") {
+        if (option == "ì—†ìŒ") return true;
+        if (option == "ë°˜ì „") return level >= 5;
+    }
+    if (category == "ê¸°íƒ€") {
+        if (option == "ì—†ìŒ") return true;
+        if (option == "ìˆ¨ê²¨ì§„ ì½”ë“œ") return level >= 30;
+        if (option == "ê³ ëŒ€ ë£¬" || option == "ìš´ëª…ì˜ ë°˜ì „") return level >= 50;
+        if (option == "ë¯¸ë˜ ì˜ˆì‹œ" || option == "ê¸ˆë‹¨ ê¸°ìˆ ") return level >= 80;
+    }
+
+    // ê¸°ë³¸ì ìœ¼ë¡œ í—ˆìš©
+    return true;
+}
+
+
+Book* BookFactory::createBook(
+    eBookGenre genre,
     eBookMood mood,
     int length,
     eBookEdge edge,
     eBookEtc etc
-    ) {
+) {
+    // ì¥ë¥´ ì œí•œ ê²€ì‚¬ (ì˜ˆì‹œ)
+    std::string genreStr;
+    switch (genre) {
+    case eBookGenre::Fantasy: genreStr = "íŒíƒ€ì§€"; break;
+    case eBookGenre::SciFi: genreStr = "ê³µìƒê³¼í•™"; break;
+    case eBookGenre::Apocalypse: genreStr = "ì•„í¬ì¹¼ë¦½ìŠ¤"; break;
+    }
+
+    if (!isElementAllowed("ì¥ë¥´", genreStr)) {
+        ConsoleIO::println("ì„ íƒí•œ ì¥ë¥´ê°€ í˜„ì¬ ë ˆë²¨ì—ì„œëŠ” ì‚¬ìš©í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤. ê¸°ë³¸ê°’ìœ¼ë¡œ ëŒ€ì²´ë©ë‹ˆë‹¤.");
+        genre = eBookGenre::Fantasy;  // ëŒ€ì²´
+    }
+
+    // ì´ì™€ ìœ ì‚¬í•˜ê²Œ mood, edge, etc ë“±ì— ëŒ€í•´ì„œë„ ì²´í¬ ê°€ëŠ¥
+
+    // ìµœì¢… ìƒì„±
     switch (genre) {
     case eBookGenre::Fantasy:
-        // ÆÇÅ¸Áö Àå¸£¿ë Ã¥ »ı¼º
-        return new FantasyBook(
-            "Random Fantasy",      // Á¦¸ñ
-            "A random fantasy book", // ¼³¸í
-            length
-            );                // ºĞ·®
-
+        return new FantasyBook("Random Fantasy", "A random fantasy book", length);
     case eBookGenre::SciFi:
-        // °ø»ó°úÇĞ Àå¸£¿ë Ã¥ »ı¼º
-        return new ScienceBook(
-            "Random SciFi",         // Á¦¸ñ
-            "A random science book", // ¼³¸í
-            length);                // ºĞ·®
-
+        return new ScienceBook("Random SciFi", "A random science book", length);
+    case eBookGenre::Apocalypse:
+        return new FantasyBook("Alt Apoc", "Generated in Apoc genre", length); // TODO: ì‹¤ì œ í´ë˜ìŠ¤ê°€ ìˆë‹¤ë©´ ëŒ€ì²´
     default:
-        // Áö¿øÇÏÁö ¾Ê´Â Àå¸£´Â ±âº» ÆÇÅ¸Áö Ã¥À¸·Î Ã³¸®
-        return new FantasyBook(
-            "Default Fantasy",      // Á¦¸ñ
-            "Default",              // ¼³¸í
-            length);                // ºĞ·®
+        return new FantasyBook("Default Fantasy", "Default", length);
+    }
+}
+
+
+void BookFactory::displayPlayerStatus() const {
+    std::string line;
+
+    line += "ë§ˆë²• ê¸°ìš´: " + std::to_string(player.getMagicPower()) + "   ";
+    line += "ê³¨ë“œ: " + std::to_string(player.getGold()) + "   ";
+    line += "LV." + std::to_string(player.getLevel()) + " (" + std::to_string(player.getLevelProgress()) + "%)   ";
+    line += "ì„œì  ë­í‚¹: Rank " + std::to_string(player.getBookstoreRank()) + "   ";
+    line += "ì¬ê³  ìƒíƒœ: " + std::to_string(player.getBookStock()) + "/40";
+
+    ConsoleIO::println(line);
+}
+
+
+
+// ë¬¸ìì—´ ì‹¤ì œ ì¶œë ¥ í­ ê³„ì‚° (í•œê¸€ 2ì¹¸ ê°€ì •)
+int BookFactory::getDisplayWidth(const std::string& str) const {
+    int width = 0;
+    for (char ch : str) {
+        width += (static_cast<unsigned char>(ch) & 0x80) ? 2 : 1;
+    }
+    return width;
+}
+
+// ê³ ì • í­ ì¶œë ¥ìš© ì˜¤ë¥¸ìª½ íŒ¨ë”© ì ìš©
+std::string BookFactory::padRight(const std::string& str, int totalWidth) const {
+    int padding = totalWidth - getDisplayWidth(str);
+    return str + std::string((padding > 0) ? padding : 0, ' ');
+}
+
+// ì¹´í…Œê³ ë¦¬ í—¤ë” ì¶œë ¥
+void BookFactory::displayCategoryHeaders(const std::vector<std::string>& categories, int colWidth) const {
+    std::string headerLine;
+    for (const auto& category : categories) {
+        headerLine += padRight(std::string("[") + category + std::string("]"), colWidth);
+    }
+    ConsoleIO::println(headerLine);
+}
+
+// ìš”ì†Œ í•­ëª© ì¶œë ¥
+void BookFactory::displayAvailableElements() const {
+    const std::vector<std::string> categories = { "ì¥ë¥´", "ë¶„ìœ„ê¸°", "ë¶„ëŸ‰", "ì˜›ì§€ ìš”ì†Œ", "ê¸°íƒ€" };
+    std::vector<std::vector<std::string>> allOptions;
+    size_t maxRows = 0;
+    const int colWidth = 16;
+    int level = player.getLevel();
+
+    for (const auto& category : categories) {
+        // WritingElementManagerì— ìœ„ì„í•˜ì—¬ ë ˆë²¨ ê¸°ë°˜ í•„í„°ë§ ìˆ˜í–‰
+        auto filtered = elementManager.getAvailableOptions(category, level);
+        allOptions.push_back(filtered);
+        maxRows = (filtered.size() > maxRows) ? filtered.size() : maxRows;
+
+    }
+
+    // í—¤ë” ì¶œë ¥
+    std::string headerLine;
+    for (const auto& category : categories) {
+        headerLine += padRight(category, colWidth);
+    }
+    ConsoleIO::println(headerLine);
+
+    // ìš”ì†Œ ì¶œë ¥
+    for (size_t row = 0; row < maxRows; ++row) {
+        std::string line;
+        for (const auto& column : allOptions) {
+            std::string value = (row < column.size()) ? column[row] : "";
+            line += padRight(value, colWidth);
+        }
+        ConsoleIO::println(line);
     }
 }

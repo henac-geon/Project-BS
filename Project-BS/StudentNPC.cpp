@@ -1,5 +1,6 @@
-#include "NPC.h"
+﻿#include "NPC.h"
 #include "StudentNPC.h"
+#include "ConsoleIO.h"
 
 /**
 
@@ -23,10 +24,10 @@ Book* StudentNPC::requestBook(const std::vector<Book*>& candidates) {
 }
 
 bool StudentNPC::rateBook(Book* book) const {
-    return NPC::rateBook(book);  // �л� NPC å ��
+    return NPC::rateBook(book);  // 학생 NPC 책 평가
 }
 
 void StudentNPC::compensateForDamage(Book* book) {
-    std::cout << getName() << " compensates 10 gold." << std::endl;
+    ConsoleIO::println(getName() + " compensates 10 gold.");
     setGold(getGold() - 10);
 }

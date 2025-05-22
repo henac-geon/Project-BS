@@ -1,0 +1,13 @@
+root = true
+
+# All files
+[*]
+indent_style = space
+charset = utf-8-bom
+end_of_line = crlf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# Xml files
+[*.xml]
+indent_size = 2

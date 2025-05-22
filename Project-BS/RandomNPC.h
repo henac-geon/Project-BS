@@ -1,14 +1,14 @@
-#pragma once
+ï»¿#pragma once
 
 #ifndef RANDOM_NPC_H
 #define RANDOM_NPC_H
 
 #include "NPC.h"
 
-// ¾ÕÀ¸·Î ´Ù¾çÇÑ NPC Å¸ÀÔµéÀ» ºÒ·¯¿Ã ¶§ ¾²´Â ·£´ı »ı¼º±â
+// ì•ìœ¼ë¡œ ë‹¤ì–‘í•œ NPC íƒ€ì…ë“¤ì„ ë¶ˆëŸ¬ì˜¬ ë•Œ ì“°ëŠ” ëœë¤ ìƒì„±ê¸°
 class RandomNPC {
 public:
-    static NPC* create();  // ¸¶¹ı»ç, ÇĞ»ı Áß ÇÏ³ª¸¦ ·£´ı »ı¼º
+    static NPC* create();  // ë§ˆë²•ì‚¬, í•™ìƒ ì¤‘ í•˜ë‚˜ë¥¼ ëœë¤ ìƒì„±
 };
 
 #endif // RANDOM_NPC_H

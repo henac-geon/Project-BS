@@ -1,40 +1,21 @@
-#include "Inventory.h"        // Inventory Å¬·¡½º Á¤ÀÇ Çì´õ Æ÷ÇÔ
-#include <algorithm>             // std::find_if »ç¿ëÀ» À§ÇÑ ¾Ë°í¸®Áò Çì´õ
+ï»¿#include "Inventory.h"
+#include <algorithm>
 
-/**
- * @brief ÀÎº¥Åä¸®¿¡ Ã¥À» Ãß°¡ÇÏ´Â ÇÔ¼ö
- *
- * @param book  Ãß°¡ÇÒ Book °´Ã¼ÀÇ Æ÷ÀÎÅÍ
- *
- * books º¤ÅÍÀÇ ³¡¿¡ Àü´Ş¹ŞÀº book Æ÷ÀÎÅÍ¸¦ push_back ÇÏ¿© ÀÎº¥Åä¸®¿¡ Ãß°¡ÇÕ´Ï´Ù.
- */
+
 void Inventory::addBook(Book* book) {
     books.push_back(book);
 }
 
-/**
- * @brief ÁöÁ¤ÇÑ ÀÎµ¦½ºÀÇ Ã¥À» ÀÎº¥Åä¸®¿¡¼­ Á¦°ÅÇÏ´Â ÇÔ¼ö
- *
- * @param index  Á¦°ÅÇÒ Ã¥ÀÇ 0ºÎÅÍ ½ÃÀÛÇÏ´Â ÀÎµ¦½º
- *
- * index°¡ 0 ÀÌ»ó books.size() ¹Ì¸¸ÀÎÁö È®ÀÎÇÑ ÈÄ,
- * À¯È¿ÇÑ ÀÎµ¦½ºÀÏ °æ¿ì ÇØ´ç À§Ä¡ÀÇ ¿ä¼Ò¸¦ erase ÇÕ´Ï´Ù.
- */
-void Inventory::removeBook(int index) {
+
+bool Inventory::safeRemoveBook(int index) {
     if (index >= 0 && index < static_cast<int>(books.size())) {
         books.erase(books.begin() + index);
+        return true;
     }
+    return false;
 }
 
-/**
- * @brief Á¦¸ñÀ» ±âÁØÀ¸·Î Ã¥À» °Ë»öÇÏ´Â ÇÔ¼ö
- *
- * @param title  Ã£°íÀÚ ÇÏ´Â Ã¥ÀÇ Á¦¸ñ
- * @return Book* - Á¦¸ñÀÌ ÀÏÄ¡ÇÏ´Â Ã¹ ¹øÂ° Book Æ÷ÀÎÅÍ (¾øÀ¸¸é nullptr)
- *
- * std::find_if¿Í ¶÷´Ù¸¦ »ç¿ëÇÏ¿© books º¤ÅÍ¸¦ ¼øÈ¸ÇÏ¸ç,
- * getTitle()ÀÌ Àü´ŞµÈ title°ú ÀÏÄ¡ÇÏ´ÂÁö °Ë»çÇÕ´Ï´Ù.
- */
+
 Book* Inventory::findBook(const std::string& title) const {
     auto it = std::find_if(books.begin(), books.end(), [&](Book* b) {
         return b->getTitle() == title;
@@ -45,13 +26,13 @@ Book* Inventory::findBook(const std::string& title) const {
     return nullptr;
 }
 
-/**
- * @brief ÇöÀç ÀÎº¥Åä¸®¿¡ º¸À¯ ÁßÀÎ Ã¥ ¸ñ·ÏÀ» ¹İÈ¯ÇÏ´Â ÇÔ¼ö
- *
- * @return const std::vector<Book*>& - ³»ºÎ books º¤ÅÍ¿¡ ´ëÇÑ const ÂüÁ¶
- *
- * ¿ÜºÎ¿¡¼­ ÀÎº¥Åä¸®¿¡ ´ã±ä ¸ğµç Book Æ÷ÀÎÅÍ¸¦ ÀĞ±â Àü¿ëÀ¸·Î Á¢±ÙÇÒ ¶§ »ç¿ëÇÕ´Ï´Ù.
- */
+
 const std::vector<Book*>& Inventory::getBooks() const {
     return books;
+}
+
+
+void Inventory::removeBook(Book* book) {
+    books.erase(std::remove(books.begin(), books.end(), book), books.end());
+    delete book; // ì†Œê° ì²˜ë¦¬
 }
