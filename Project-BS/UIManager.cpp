@@ -1,4 +1,4 @@
-#include "UIManager.h"   // UIManager 클래스 정의 헤더 포함
+﻿#include "UIManager.h"   // UIManager 클래스 정의 헤더 포함
 #include "AsciiArtRepository.h" // ASCII 아트 저장소 헤더 포함
 #include "ConsolePrinter.h"
 #include <iostream>        // std::cout, std::cin 사용을 위한 iostream 헤더

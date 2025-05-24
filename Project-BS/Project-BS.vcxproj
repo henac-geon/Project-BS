@@ -143,6 +143,7 @@
     <ClCompile Include="RandomNPC.cpp" />
     <ClCompile Include="ScienceBook.cpp" />
     <ClCompile Include="ScoreSystem.cpp" />
+    <ClCompile Include="ReactionGame.cpp" />
     <ClCompile Include="StudentNPC.cpp" />
     <ClCompile Include="TypingGame.cpp" />
     <ClCompile Include="UIManager.cpp" />
@@ -163,6 +164,7 @@
     <ClInclude Include="NPC.h" />
     <ClInclude Include="PenaltySystem.h" />
     <ClInclude Include="RandomNPC.h" />
+    <ClInclude Include="ReactionGame.h" />
     <ClInclude Include="ScienceBook.h" />
     <ClInclude Include="ScoreSystem.h" />
     <ClInclude Include="StudentNPC.h" />
