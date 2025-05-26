@@ -6,14 +6,24 @@ CrudStore::CrudStore(const std::string& storeName)
 }
 
 void CrudStore::displayStatus() const {
-    std::cout << "===== [" << name << "] 상태 출력 =====" << std::endl;
-    std::cout << "레벨: " << level << " (" << experience << " XP)" << std::endl;
-    std::cout << "골드: " << player.getGold() << std::endl;
-    std::cout << "마법력: " << player.getMagicPower() << std::endl;
-    std::cout << "서점 등급: " << player.getBookstoreRank() << std::endl;
-    std::cout << "책 보유량: " << player.getBookStock() << std::endl;
-    std::cout << "평판 점수: " << score << std::endl;
-    std::cout << "====================================" << std::endl;
+    std::string line;
+
+    line += "마법 기운: " + std::to_string(player.getMagicPower()) + "   ";
+    line += "골드: " + std::to_string(player.getGold()) + "   ";
+    line += "LV." + std::to_string(player.getLevel()) + " (" + std::to_string(player.getLevelProgress()) + "%)   ";
+    line += "서점 랭킹: Rank " + std::to_string(player.getBookstoreRank()) + "   ";
+    line += "재고 상태: " + std::to_string(player.getBookStock()) + "/40";
+
+    ConsoleIO::println(line);
+
+    //std::cout << "===== [" << name << "] 상태 출력 =====" << std::endl;
+    //std::cout << "레벨: " << level << " (" << experience << " XP)" << std::endl;
+    //std::cout << "골드: " << player.getGold() << std::endl;
+    //std::cout << "마법력: " << player.getMagicPower() << std::endl;
+    //std::cout << "서점 등급: " << player.getBookstoreRank() << std::endl;
+    //std::cout << "책 보유량: " << player.getBookStock() << std::endl;
+    //std::cout << "평판 점수: " << score << std::endl;
+    //std::cout << "====================================" << std::endl;
 }
 
 void CrudStore::gainExperience(int amount) {
