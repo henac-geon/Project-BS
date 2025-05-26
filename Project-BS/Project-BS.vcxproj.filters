@@ -61,6 +61,12 @@
     <Filter Include="소스 파일\Commons">
       <UniqueIdentifier>{f9dbda96-5671-4a4b-8e5e-8dcbe5cd5589}</UniqueIdentifier>
     </Filter>
+    <Filter Include="헤더 파일\AI">
+      <UniqueIdentifier>{0cf0f0f2-a8f0-40d0-bd30-398766b391d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\AI">
+      <UniqueIdentifier>{f03e56e0-7ca1-4eac-954a-cd48d46755e6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AsciiArtRepository.cpp">
@@ -117,11 +123,11 @@
     <ClCompile Include="WritingElementManager.cpp">
       <Filter>소스 파일\Core</Filter>
     </ClCompile>
-    <ClCompile Include="test.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="CrudStore.cpp">
       <Filter>소스 파일\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="openai_client.cpp">
+      <Filter>소스 파일\AI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -182,8 +188,8 @@
     <ClInclude Include="CrudStore.h">
       <Filter>헤더 파일\Core</Filter>
     </ClInclude>
-    <ClInclude Include="test.h">
-      <Filter>헤더 파일</Filter>
+    <ClInclude Include="openai_client.h">
+      <Filter>헤더 파일\AI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -150,7 +150,7 @@
     <ClCompile Include="RandomNPC.cpp" />
     <ClCompile Include="ScienceBook.cpp" />
     <ClCompile Include="StudentNPC.cpp" />
-    <ClCompile Include="test.cpp" />
+    <ClCompile Include="openai_client.cpp" />
     <ClCompile Include="UIManager.cpp" />
     <ClCompile Include="WizardNPC.cpp" />
     <ClCompile Include="WritingElementManager.cpp" />
@@ -172,7 +172,7 @@
     <ClInclude Include="RandomNPC.h" />
     <ClInclude Include="ScienceBook.h" />
     <ClInclude Include="StudentNPC.h" />
-    <ClInclude Include="test.h" />
+    <ClInclude Include="openai_client.h" />
     <ClInclude Include="UIManager.h" />
     <ClInclude Include="WizardNPC.h" />
     <ClInclude Include="WritingElementManager.h" />

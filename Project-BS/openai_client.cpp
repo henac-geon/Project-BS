@@ -5,7 +5,7 @@
 #include <fstream>
 #include <vector>
 #include <sstream>
-#include "test.h"
+#include "openai_client.h"
 
 using json = nlohmann::json;
 
