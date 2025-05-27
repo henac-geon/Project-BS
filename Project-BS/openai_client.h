@@ -1,7 +1,15 @@
-﻿// test.h
-#ifndef TEST_H
-#define TEST_H
+﻿#ifndef NPC_GENERATOR_H
+#define NPC_GENERATOR_H
 
-int test();  // 테스트 함수 선언
+#ifdef __cplusplus
+extern "C" {
+#endif
 
-#endif  // TEST_H
+    // OpenAI API를 사용하여 NPC 데이터를 생성하는 함수
+    int generateNpcFromAI();
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif  // NPC_GENERATOR_H
