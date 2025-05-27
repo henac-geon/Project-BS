@@ -1,15 +1,20 @@
-﻿#ifndef NPC_GENERATOR_H
-#define NPC_GENERATOR_H
+﻿#ifndef OPENAI_CLIENT_H
+#define OPENAI_CLIENT_H
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include <string>
+#include <nlohmann/json.hpp>
 
-    // OpenAI API를 사용하여 NPC 데이터를 생성하는 함수
-    int generateNpcFromAI();
+class OpenAIClient {
+public:
+    // config.env 파일에서 키와 모델을 읽어 초기화
+    OpenAIClient(const std::string& configFile = "config.env");
 
-#ifdef __cplusplus
-}
-#endif
+    // OpenAI에 프롬프트를 보내고 JSON 형태로 응답받음
+    nlohmann::json sendChatCompletion(const std::string& prompt);
 
-#endif  // NPC_GENERATOR_H
+private:
+    std::string apiKey;
+    std::string modelName;
+};
+
+#endif // OPENAI_CLIENT_H
