@@ -9,6 +9,8 @@
 
 GameManager::GameManager()
     : day(1) {
+    // 초기화 작업
+    crud = CrudStore();
 }
 
 GameManager::~GameManager() {
@@ -17,6 +19,7 @@ GameManager::~GameManager() {
 
 void GameManager::run() {
     std::string command;
+
     while (true) {
         if (!startDay()) break;
 

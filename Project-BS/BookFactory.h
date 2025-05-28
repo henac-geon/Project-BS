@@ -30,6 +30,7 @@ public:
 
     // 책 생성
     Book* createBook(eBookGenre genre, eBookMood mood, int length, eBookEdge edge, eBookEtc etc);
+    Book* createRandomBook();
 
     // 출력 관련
     void displayPlayerStatus() const;

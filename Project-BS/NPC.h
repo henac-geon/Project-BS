@@ -3,37 +3,42 @@
 #ifndef NPC_H
 #define NPC_H
 
-#include <string>      // std::string 사용을 위한 헤더
-#include <vector>      // std::vector 사용을 위한 헤더
-#include "Book.h"     // Book 클래스 정의 포함
-#include "Enums.h"    // eBookGenre, eBookMood 열거형 정의 포함
+#include <string>
+#include <vector>
+#include "Book.h"
+#include "Enums.h"
 #include "AsciiArtRepository.h"
 
-// NPC(Non-Player Character) 추상 클래스
-// 게임 내에서 책을 요청하고 평점 매기기, 손상된 책에 대한 보상을 처리하는 인터페이스 역할을 합니다.
 class NPC {
 protected:
     std::string name;
-    eBookGenre preferredGenre;      // 선호하는 책 장르 (Enums.h 참조)
-    eBookMood preferredMood;        // 현재 기분에 맞춰 선호하는 책 분위기
-    std::vector<Book*> inventory;   // 소유하거나 대여 가능한 책 목록
-    int gold;                       // 보유한 금화 (경제 시스템에서 사용)
-    int magicPower;                 // 마법력 (특정 보상 또는 상호작용에 활용)
-    eRequestType requestType = eRequestType::GenreAndMood;  // NPC가 원하는 책 추천 조건
+    eBookGenre preferredGenre;
+    eBookMood preferredMood;
+    std::vector<Book*> inventory;
+    int gold;
+    int magicPower;
+    eRequestType requestType = eRequestType::GenreAndMood;
+    std::string dialogue;
+    bool borrowed = false;  // 책을 현재 대여 중인지 여부
 
 public:
     NPC(const std::string& name, eBookGenre genre, eBookMood mood, int gold, int magicPower);
     virtual ~NPC() = default;
 
+    // 게임 상호작용 인터페이스
     virtual Book* requestBook(const std::vector<Book*>& candidates) = 0;
-
-    /// 요청한 책을 평가하는 함수
     virtual bool rateBook(Book* book) const;
-
-    /// NPC가 손상된 책에 대해 보상하는 함수
     virtual void compensateForDamage(Book* book) = 0;
 
+    // 새로운 기능: 대여 / 반납 / 보상
+    virtual bool borrowBook(Book* book);
+    virtual Book* returnBook();
+    virtual bool hasBorrowed() const;
 
+    virtual void payGold(int amount);
+    virtual void gainExp(int amount);
+
+    // Getters
     std::string getName() const;
     eBookGenre getPreferredGenre() const;
     eBookMood getPreferredMood() const;
@@ -44,12 +49,14 @@ public:
     std::string getArt() const;
     std::string getDialogue() const;
 
+    // Setters
     void setName(const std::string& newName);
     void setPreferredGenre(eBookGenre genre);
     void setPreferredMood(eBookMood mood);
     void setGold(int newGold);
     void setMagicPower(int newMagicPower);
     void setRequestType(eRequestType type);
+    void setDialogue(const std::string& line);
 };
 
 #endif // NPC_H

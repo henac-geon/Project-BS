@@ -3,6 +3,10 @@
 
 CrudStore::CrudStore(const std::string& storeName)
     : name(storeName), experience(0), level(1), score(0) {
+    // 초기화 작업
+    for (int i = 0; i < 5; ++i) {
+        inventory.addBook(bookFactory.createRandomBook());
+    }
 }
 
 void CrudStore::displayStatus() const {

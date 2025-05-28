@@ -59,6 +59,17 @@ bool BookFactory::isElementAllowed(const std::string& category, const std::strin
 }
 
 
+Book* BookFactory::createRandomBook() {
+    eBookGenre genre = static_cast<eBookGenre>(rand() % 3);  // Fantasy, Romance, Horror 예시
+    eBookMood mood = static_cast<eBookMood>(rand() % 2);     // Light, Dark 예시
+    int length = 60 + (rand() % 61); // 60~120
+    eBookEdge edge = eBookEdge::None;
+    eBookEtc etc = eBookEtc::None;
+
+    return createBook(genre, mood, length, edge, etc);
+}
+
+
 Book* BookFactory::createBook(
     eBookGenre genre,
     eBookMood mood,

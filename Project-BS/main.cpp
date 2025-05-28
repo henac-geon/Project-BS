@@ -1,6 +1,5 @@
 ﻿#include "ConsoleIO.h"
 #include "GameManager.h"
-#include "test.h"
 
 /**
  * @brief 프로그램 진입점
@@ -12,8 +11,6 @@ int main() {
 
     GameManager game;
     game.run();
-
-    // test();  // OpenAI API 테스트 실행
 
     ConsoleIO::println("Thank you for playing!");
     return 0;
