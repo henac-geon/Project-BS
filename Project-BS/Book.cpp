@@ -52,6 +52,7 @@ int Book::getDamage() const {
     }
 }
 
+// 책의 상태를 범위 형태로 반환하는 함수
 int Book::getRandomInRange(int min, int max) const {
     static std::random_device rd;
     static std::mt19937 gen(rd());

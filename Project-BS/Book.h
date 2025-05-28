@@ -9,6 +9,7 @@
 
 class Book {
 private:
+    // 책의 상태를 범위 형태로 반환하는 함수
     int getRandomInRange(int min, int max) const;
 
 protected:
