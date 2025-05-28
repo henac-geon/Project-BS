@@ -143,10 +143,6 @@ void GameManager::performWritingPhase() {
 // 재고 확인 단계
 void GameManager::performShowInventoryPhase() {
     uiManager.clearScreen();
-    ConsoleIO::println("[책 재고]");
-    ConsoleIO::println("[텍스트 입력창]에 희망하는 행동을 텍스트로 작성해주세요.");
-    AsciiArt::getLine();
-    ConsoleIO::println("번호 | 제목 | 장르 | 분위기 | 분량 | 엣지 요소 | 기타 | 재고 상태 | 품질");
     uiManager.displayInventory(crud.getInventory());
 
     while (true) {

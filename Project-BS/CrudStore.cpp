@@ -42,11 +42,11 @@ int CrudStore::getLevel() const {
 }
 
 int CrudStore::calculateGoldPenalty(const Book& book) const {
-    return book.getDamage() * 10;
+    return 0; // book.getConditionValue() * 10;
 }
 
 int CrudStore::calculateMagicPenalty(const Book& book) const {
-    return book.getDamage() * 5;
+    return 0; // book.getConditionValue() * 5;
 }
 
 // 점수 시스템 구현
