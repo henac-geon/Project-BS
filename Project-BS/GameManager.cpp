@@ -223,7 +223,7 @@ void GameManager::performNPCPhase() {
     }
 
     // 리스트에서 NPC를 순서대로 응대
-    size_t i = 0;
+    int i = 0;
     while (i < npcs.size()) {
         NPC* npc = npcs[i]; // 현재 NPC 포인터
 
@@ -235,7 +235,10 @@ void GameManager::performNPCPhase() {
         ConsoleIO::println("[NPC 접객 시작]");
         ConsoleIO::println("고객은 책을 반납하거나 대여하거나, 아무 말 없이 그냥 갈 수도 있습니다!");
         AsciiArt::getLine();
-        ConsoleIO::println(npc->getDialogue());
+        for (const auto& line : npc->getDialogues()) {
+            ConsoleIO::println(line);
+        }
+
 
         bool shouldRemove = false; // 이 NPC를 리스트에서 삭제할지 여부
 

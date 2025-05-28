@@ -2,8 +2,9 @@
 #include <iostream>
 #include <cstdlib>
 
-NPC::NPC(const std::string& name, eBookGenre genre, eBookMood mood, int gold, int magicPower)
+NPC::NPC(const std::string& name, bool isMale, eBookGenre genre, eBookMood mood, int gold, int magicPower)
     : name(name),
+    isMale(isMale),
     preferredGenre(genre),
     preferredMood(mood),
     gold(gold),
@@ -20,7 +21,7 @@ NPC::NPC(const std::string& name, eBookGenre genre, eBookMood mood, int gold, in
     }
 
     // 대사 설정
-    dialogue = "오늘은 뭔가 끌리는 책이 있을까요?";
+    dialogues = { "오늘은 뭔가 끌리는 책이 있을까요?" };
 }
 
 // 책을 추천받았을 때 만족 여부 판단
@@ -81,35 +82,30 @@ void NPC::gainExp(int amount) {
     magicPower += amount;
 }
 
-// Getters/Setters
-std::string NPC::getName() const { return name; }
-void NPC::setName(const std::string& newName) { name = newName; }
-
-eBookGenre NPC::getPreferredGenre() const { return preferredGenre; }
-void NPC::setPreferredGenre(eBookGenre genre) { preferredGenre = genre; }
-
-eBookMood NPC::getPreferredMood() const { return preferredMood; }
-void NPC::setPreferredMood(eBookMood mood) { preferredMood = mood; }
-
-const std::vector<Book*>& NPC::getInventory() const { return inventory; }
-
-int NPC::getGold() const { return gold; }
-void NPC::setGold(int newGold) { gold = newGold; }
-
-int NPC::getMagicPower() const { return magicPower; }
-void NPC::setMagicPower(int newMagicPower) { magicPower = newMagicPower; }
-
-eRequestType NPC::getRequestType() const { return requestType; }
-void NPC::setRequestType(eRequestType type) { requestType = type; }
-
-std::string NPC::getDialogue() const { return dialogue; }
-void NPC::setDialogue(const std::string& line) { dialogue = line; }
-
-std::string NPC::getArt() const {
-    return AsciiArt::showFemaleNPCArt();  // 현재 기본값
+// 책 손상에 대한 보상 처리
+void NPC::compensateForDamage(Book* book) {
 }
 
 
+// Getters/Setters
+eRequestType NPC::getRequestType() const { return requestType; }
+void NPC::setRequestType(eRequestType type) { requestType = type; }
+
+void NPC::setDialogues(const std::vector<std::string>& lines) {
+    dialogues = lines;
+}
+
+const std::vector<std::string>& NPC::getDialogues() const {
+    return dialogues;
+}
+
+// 성별에 따라 아트 반환
+std::string NPC::getArt() const {
+    return isMale ? AsciiArt::showMaleNPCArt() : AsciiArt::showFemaleNPCArt();  // 성별에 따라 아트 반환
+}
+
+
+// 디버깅용 출력 함수
 void NPC::debugPrint() const {
     std::cout << "===== NPC DEBUG INFO =====" << std::endl;
     std::cout << "Name: " << name << std::endl;
@@ -120,6 +116,12 @@ void NPC::debugPrint() const {
     std::cout << "Magic Power: " << magicPower << std::endl;
     std::cout << "Has Borrowed: " << (borrowed ? "Yes" : "No") << std::endl;
     std::cout << "Inventory Size: " << inventory.size() << std::endl;
-    std::cout << "Dialogue: " << dialogue << std::endl;
+
+    std::cout << "Dialogues:" << std::endl;
+    for (size_t i = 0; i < dialogues.size(); ++i) {
+        std::cout << "  [" << i + 1 << "] " << dialogues[i] << std::endl;
+    }
+
     std::cout << "==========================" << std::endl;
 }
+

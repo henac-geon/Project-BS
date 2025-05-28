@@ -1,4 +1,5 @@
 ﻿#include "Inventory.h"
+#include "ConsoleIO.h"
 #include <algorithm>
 
 
@@ -29,15 +30,16 @@ void Inventory::removeBook(Book* book) {
 
 // 훼손된 책 복구 시도
 bool Inventory::attemptToRestoreDamagedBook(Book* book, MiniGame* game) {
-    std::cout << "\n📖 훼손된 책 복구 시도 중: " << book->getTitle() << "\n";
+    ConsoleIO::print("\n훼손된 책 복구 시도 중: " + book->getTitle());
+
     bool result = game->play(book);
 
     if (result) {
-        std::cout << "✅ 책 복구 성공: " << book->getTitle() << "\n";
+        ConsoleIO::print("책 복구 성공: " + book->getTitle());
         return true;
     }
     else {
-        std::cout << "❌ 책 복구 실패. 책을 폐기합니다.\n";
+        ConsoleIO::print("책 복구 실패. 책을 폐기합니다.");
         removeBook(book);
         return false;
     }

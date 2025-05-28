@@ -52,44 +52,57 @@ NPC* RandomNPC::createRandomNpcLocally() {
     eBookMood mood = static_cast<eBookMood>(rand() % 2);     // Dark, Light
     int gold = rand() % 101 + 50;                            // 50~150
     int magic = rand() % 51 + 20;                            // 20~70
+    bool isMale = rand() % 2;                                // 남성/여성
 
     int r = rand() % 2;
     NPC* npc = nullptr;
     if (r == 0) {
-        npc = new WizardNPC(name, genre, mood, gold, magic);
+        npc = new WizardNPC(name, isMale, genre, mood, gold, magic);
     }
     else {
-        npc = new StudentNPC(name, genre, mood, gold, magic);
+        npc = new StudentNPC(name, isMale, genre, mood, gold, magic);
     }
-    npc->setDialogue("안녕하세요, 책을 좀 보고 싶습니다.");
-    return npc;
 
+    // 기본 대사 리스트 설정
+    std::vector<std::string> dialogues = {
+        "오늘은 뭔가 끌리는 책이 있을까요?",
+        "책 냄새는 언제나 마음을 안정시켜줘요."
+    };
+    npc->setDialogues(dialogues);
+
+    return npc;
 }
 
-// ---------------------- OpenAI 기반 NPC 생성 ----------------------
 
+// ---------------------- OpenAI 기반 NPC 생성 ----------------------
 NPC* RandomNPC::createNpcFromOpenAI() {
     OpenAIClient client;
 
     std::string prompt = R"(
 다음 JSON 형식으로 NPC를 생성해줘. 반드시 아래 enum 값만 사용해.
 
+- gender: true (남성), false (여성)
 - genre (preferredGenre): "Fantasy", "Romance", "Horror", "Mystery", "SciFi", "Apocalypse", "NonFiction"
 - mood: "Dark", "Light", "Emotional", "Tense", "Whimsical"
 - type: "student", "wizard", "merchant", "librarian"
+- dialogue: 문자열 배열, 최소 3줄 이상 (예: ["어서오세요!", "찾으시는 책이 있나요?"])
 
 형식 예:
 {
   "name": "엘드릭",
-  "gender": "남성",
+  "gender": true,
   "age": 43,
   "gold": 120,
   "preferredGenre": "Fantasy",
   "mood": "Dark",
   "type": "wizard",
-  "dialogue": "이 책방에서 금지된 마법서를 찾을 수 있을까?"
+  "dialogue": [
+    "이 책방에서 금지된 마법서를 찾을 수 있을까?",
+    "조심해라. 마법은 항상 대가를 요구하지."
+  ]
 }
 )";
+
 
     nlohmann::json json = client.sendChatCompletion(prompt);
 
@@ -99,10 +112,24 @@ NPC* RandomNPC::createNpcFromOpenAI() {
     }
 
     std::string name = json.value("name", "이름없음");
+    bool isMale = json.value("sex", true) ? true : false;
     std::string typeStr = json.value("type", "student");
     std::string genreStr = json.value("preferredGenre", "Fantasy");
     std::string moodStr = json.value("mood", "Light");
-    std::string dialogue = json.value("dialogue", "어서오세요!");
+
+    std::vector<std::string> dialogues;
+    if (json.contains("dialogue") && json["dialogue"].is_array()) {
+        for (const auto& d : json["dialogue"]) {
+            if (d.is_string()) dialogues.push_back(d.get<std::string>());
+        }
+    }
+    else if (json.contains("dialogue") && json["dialogue"].is_string()) {
+        dialogues.push_back(json["dialogue"].get<std::string>());
+    }
+    else {
+        dialogues.push_back("어서오세요!");
+    }
+
 
     int gold = json.value("gold", 100);
     int magic = rand() % 51 + 20;
@@ -114,24 +141,25 @@ NPC* RandomNPC::createNpcFromOpenAI() {
     NPC* npc = nullptr;
     switch (npcType) {
     case eNPCType::Wizard:
-        npc = new WizardNPC(name, genre, mood, gold, magic);
+        npc = new WizardNPC(name, isMale, genre, mood, gold, magic);
         break;
     case eNPCType::Student:
-        npc = new StudentNPC(name, genre, mood, gold, magic);
+        npc = new StudentNPC(name, isMale, genre, mood, gold, magic);
         break;
     case eNPCType::Merchant:
         // TODO : npc = new MerchantNPC(name, genre, mood, gold, magic);
-        npc = new NPC(name, genre, mood, gold, magic);
+        npc = new NPC(name, isMale, genre, mood, gold, magic);
         break;
     case eNPCType::Librarian:
         // TODO :  npc = new LibrarianNPC(name, genre, mood, gold, magic);
-        npc = new NPC(name, genre, mood, gold, magic);
+        npc = new NPC(name, isMale, genre, mood, gold, magic);
         break;
     default:
-        npc = new StudentNPC(name, genre, mood, gold, magic);
+        npc = new StudentNPC(name, isMale, genre, mood, gold, magic);
         break;
     }
 
-    npc->setDialogue(dialogue);
+    npc->setDialogues(dialogues);
+
     return npc;
 }

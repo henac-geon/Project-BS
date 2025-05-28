@@ -35,15 +35,6 @@ public:
      */
     void displayInventory(const Inventory& inventory);
 
-    /**
-     * @brief NPC 상호작용 화면을 출력
-     *
-     * @param npc  상호작용할 NPC 객체 포인터
-     *
-     * NPC의 이름, 선호 장르/분위기 등을 표시하여
-     * 플레이어가 NPC의 요청을 이해하도록 돕습니다.
-     */
-    void displayNPCInteraction(NPC* npc);
 
     /**
      * @brief 책 상세 정보를 출력

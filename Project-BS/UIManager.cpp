@@ -43,23 +43,6 @@ void UIManager::displayInventory(const Inventory& inventory) {
 	//TODO: 인벤토리 나가기 기능 추가 구현
 }
 
-/**
- * @brief NPC와 상호작용을 시작할 때 메시지 출력
- *
- * @param npc  상호작용할 NPC 포인터
- *
- * 간단한 안내 메시지를 출력하며,
- * 추후 NPC 이름, 선호 정보 등을 추가로 표시할 수 있습니다.
- */
-void UIManager::displayNPCInteraction(NPC* npc) {
-    ConsoleIO::println("\n NPC와의 상호작용을 시작합니다...");
-    if (npc) {
-        ConsoleIO::println(AsciiArt::showMaleNPCArt());
-        ConsoleIO::println(" - 이름: " + npc->getName());
-        // 필요시 선호 장르 등도 출력 가능
-    }
-    //TODO: 상호작용 기능 추가 구현
-}
 
 /**
  * @brief 책 상세 정보를 콘솔에 출력

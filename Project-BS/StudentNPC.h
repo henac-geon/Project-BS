@@ -25,7 +25,9 @@ public:
      * @param gold 보유 금액
      * @param studyLevel 학습 수준
      */
-    StudentNPC(const std::string& name,
+    StudentNPC(
+        const std::string& name,
+        bool isMale,
         eBookGenre genre,
         eBookMood mood,
         int gold,

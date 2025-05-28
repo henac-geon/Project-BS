@@ -11,19 +11,21 @@
 
 class NPC {
 private:
-    std::string name;
-    eBookGenre preferredGenre;
-    eBookMood preferredMood;
-    int gold;
-    int magicPower;
-    bool borrowed;
-    std::vector<Book*> inventory;
+    std::string name;                       // NPC의 이름
+    bool isMale;                            // NPC의 성별 (true: 남성, false: 여성)
+    std::string art;                        // NPC의 ASCII 아트
+    eBookGenre preferredGenre;              // NPC가 선호하는 책 장르
+    eBookMood preferredMood;                // NPC가 선호하는 책의 분위기
+    int gold;                               // NPC가 가진 골드
+    int magicPower;                         // NPC의 마법 기운
+    bool borrowed;                          // 책을 빌렸는지 여부
+    std::vector<Book*> inventory;           // NPC가 소유한(빌린) 책 목록
 
-    eRequestType requestType;
-    std::string dialogue;
+    eRequestType requestType;               // NPC의 요청 유형
+    std::vector<std::string> dialogues;     // NPC의 대사
 
 public:
-    NPC(const std::string& name, eBookGenre genre, eBookMood mood, int gold, int magicPower);
+    NPC(const std::string& name, bool sex, eBookGenre genre, eBookMood mood, int gold, int magicPower);
 
     // 책 추천에 대한 반응
     bool rateBook(Book* book) const;
@@ -41,29 +43,14 @@ public:
     void payGold(int amount);
     void gainExp(int amount);
 
-    // 상태 getter/setter
-    std::string getName() const;
-    void setName(const std::string& newName);
-
-    eBookGenre getPreferredGenre() const;
-    void setPreferredGenre(eBookGenre genre);
-
-    eBookMood getPreferredMood() const;
-    void setPreferredMood(eBookMood mood);
-
-    const std::vector<Book*>& getInventory() const;
-
-    int getGold() const;
-    void setGold(int newGold);
-
-    int getMagicPower() const;
-    void setMagicPower(int newMagicPower);
+    // 책이 손상된 경우에 대한 보상을 진행
+    void compensateForDamage(Book* book);
 
     eRequestType getRequestType() const;
     void setRequestType(eRequestType type);
 
-    std::string getDialogue() const;
-    void setDialogue(const std::string& line);
+    void setDialogues(const std::vector<std::string>& lines);
+    const std::vector<std::string>& getDialogues() const;
 
     std::string getArt() const;
 
