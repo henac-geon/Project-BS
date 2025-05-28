@@ -121,11 +121,11 @@ NPC* RandomNPC::createNpcFromOpenAI() {
         break;
     case eNPCType::Merchant:
         // TODO : npc = new MerchantNPC(name, genre, mood, gold, magic);
-        npc = new StudentNPC(name, genre, mood, gold, magic);
+        npc = new NPC(name, genre, mood, gold, magic);
         break;
     case eNPCType::Librarian:
         // TODO :  npc = new LibrarianNPC(name, genre, mood, gold, magic);
-        npc = new StudentNPC(name, genre, mood, gold, magic);
+        npc = new NPC(name, genre, mood, gold, magic);
         break;
     default:
         npc = new StudentNPC(name, genre, mood, gold, magic);

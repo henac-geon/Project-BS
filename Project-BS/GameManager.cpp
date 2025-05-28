@@ -61,7 +61,7 @@ void GameManager::performWritingPhase() {
         ConsoleIO::println("[텍스트 입력창]에 집필 요소를 입력하여 나만의 책을 집필할 수 있습니다.\n");
         AsciiArt::getLine();
 
-        crud.getBookFactory().displayPlayerStatus();
+        crud.displayStatus();
         ConsoleIO::println("\n\"(장르), (분위기), (분량), (엣지요소), (기타), (제목)\" 순서로 입력해주세요.");
         ConsoleIO::println("\"입력 예시: 판타지, 암울, 120, 반전, 없음, 다크소울\"\n");
 
@@ -177,8 +177,16 @@ void GameManager::performShowInventoryPhase() {
                     title = input.substr(0, input.size() - 8);
                     Book* target = crud.getInventory().findBook(title);
                     if (target) {
-                        crud.getInventory().removeBook(target);
-                        crud.getInventory().addBook(target);
+                        // todo: 책 복구용 미니 게임 추가
+                        if (target->getCondition() == eBookCondition::Damaged) {
+                            // todo: 책 복구용 미니 게임 추가
+                            MiniGame* game = new TypingGame();  // 또는 ReactionGame
+                            crud.getInventory().attemptToRestoreDamagedBook(target, game);
+                            delete game;
+                            target->repair();
+                            ConsoleIO::println(AsciiArt::showRestoreBookArt());
+                            ConsoleIO::println(target->getTitle() + " 복원 완료!");
+                        }
                         ConsoleIO::println("\"" + title + "\" 책이 복구되었습니다.");
                     }
                     else {
@@ -202,12 +210,15 @@ void GameManager::performShowInventoryPhase() {
 void GameManager::performNPCPhase() {
     uiManager.clearScreen();
 
-    // NPC 리스트가 비어 있을 경우, 오늘 방문할 NPC들을 무작위 생성
-    if (npcs.empty()) {
-        int numNPC = rand() % 3 + 1; // 1~3명 방문
+    // NPC 리스트가 다 차 있지 않다면, 오늘 방문할 NPC들을 무작위 생성
+    if (npcs.size() < MAX_NPC_COUNT) {
+        int remain = MAX_NPC_COUNT - npcs.size();
+        int numNPC = rand() % remain + 1; // 1 ~ remain 명 방문
         ConsoleIO::println("오늘 방문한 NPC 수: " + std::to_string(numNPC));
+
         for (int i = 0; i < numNPC; ++i) {
-            npcs.push_back(RandomNPC::create());
+            NPC* npc = RandomNPC::create(true); // true: api 사용
+            npcs.push_back(npc);
         }
     }
 
@@ -251,7 +262,7 @@ void GameManager::performNPCPhase() {
 
                 if (input == "재고 확인") {
                     performShowInventoryPhase();
-                    continue;
+                    break;
                 }
                 else if (input == "패스") {
                     ConsoleIO::println("NPC는 고개를 끄덕이고 떠났습니다.");
@@ -314,11 +325,16 @@ void GameManager::performNPCPhase() {
                 if (decision == "yes") break;
                 else if (decision == "no") {
                     ConsoleIO::println("오늘의 장사를 마감합니다...");
-                    // 남은 NPC들도 모두 제거
-                    for (; i < npcs.size(); ++i) {
-                        delete npcs[i];
+                    // 책을 빌린 NPC는 제외하고 나머지 NPC 제거
+                    for (auto it = npcs.begin(); it != npcs.end(); ) {
+                        if (!(*it)->hasBorrowed()) {  // 책을 빌리지 않은 경우
+                            delete* it;                   // 메모리 해제
+                            it = npcs.erase(it);         // 리스트에서 제거하고 반복자 갱신
+                        }
+                        else {
+                            ++it;                         // 다음 NPC로
+                        }
                     }
-                    npcs.clear();
                     return;
                 }
                 else {
@@ -327,7 +343,6 @@ void GameManager::performNPCPhase() {
             }
         }
     }
-
     ConsoleIO::println("모든 NPC 응대가 완료되었습니다.");
 }
 
@@ -340,6 +355,10 @@ void GameManager::performSettlementPhase() {
 
     for (auto& book : crud.getInventory().getBooks()) {
         if (book->getCondition() == eBookCondition::Damaged) {
+            // todo: 책 복구용 미니 게임 추가
+            MiniGame* game = new TypingGame();  // 또는 ReactionGame
+            crud.getInventory().attemptToRestoreDamagedBook(book, game);
+            delete game;
             book->repair();
             ConsoleIO::println(AsciiArt::showRestoreBookArt());
             ConsoleIO::println(book->getTitle() + " 복원 완료!");

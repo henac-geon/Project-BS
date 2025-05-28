@@ -129,6 +129,12 @@
     <ClCompile Include="openai_client.cpp">
       <Filter>소스 파일\AI</Filter>
     </ClCompile>
+    <ClCompile Include="TypingGame.cpp">
+      <Filter>소스 파일\MiniGame</Filter>
+    </ClCompile>
+    <ClCompile Include="ReactionGame.cpp">
+      <Filter>소스 파일\MiniGame</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Book.h">
@@ -190,6 +196,12 @@
     </ClInclude>
     <ClInclude Include="openai_client.h">
       <Filter>헤더 파일\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="TypingGame.h">
+      <Filter>헤더 파일\MiniGame</Filter>
+    </ClInclude>
+    <ClInclude Include="ReactionGame.h">
+      <Filter>헤더 파일\MiniGame</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

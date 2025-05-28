@@ -1,4 +1,4 @@
-﻿#include "npc.h"
+﻿#include "NPC.h"
 #include <iostream>
 #include <cstdlib>
 
@@ -107,4 +107,19 @@ void NPC::setDialogue(const std::string& line) { dialogue = line; }
 
 std::string NPC::getArt() const {
     return AsciiArt::showFemaleNPCArt();  // 현재 기본값
+}
+
+
+void NPC::debugPrint() const {
+    std::cout << "===== NPC DEBUG INFO =====" << std::endl;
+    std::cout << "Name: " << name << std::endl;
+    std::cout << "Preferred Genre: " << static_cast<int>(preferredGenre) << std::endl;
+    std::cout << "Preferred Mood: " << static_cast<int>(preferredMood) << std::endl;
+    std::cout << "Request Type: " << static_cast<int>(requestType) << std::endl;
+    std::cout << "Gold: " << gold << std::endl;
+    std::cout << "Magic Power: " << magicPower << std::endl;
+    std::cout << "Has Borrowed: " << (borrowed ? "Yes" : "No") << std::endl;
+    std::cout << "Inventory Size: " << inventory.size() << std::endl;
+    std::cout << "Dialogue: " << dialogue << std::endl;
+    std::cout << "==========================" << std::endl;
 }

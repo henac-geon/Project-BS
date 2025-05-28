@@ -66,6 +66,8 @@ public:
     void setDialogue(const std::string& line);
 
     std::string getArt() const;
+
+    void debugPrint() const;
 };
 
 

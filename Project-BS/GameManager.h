@@ -22,6 +22,7 @@ private:
     int day;                   ///< 현재 날짜
     CrudStore crud;
     std::vector<NPC*> npcs;    ///< 하루에 등장하는 NPC 리스트
+    static constexpr int MAX_NPC_COUNT = 5; ///< 최대 NPC 수
     UIManager uiManager;       ///< UI 출력 전담 관리자
    
 public:

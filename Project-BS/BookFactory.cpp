@@ -111,9 +111,9 @@ void BookFactory::displayPlayerStatus() const {
 
     line += "마법 기운: " + std::to_string(player.getMagicPower()) + "   ";
     line += "골드: " + std::to_string(player.getGold()) + "   ";
-    line += "LV." + std::to_string(player.getLevel()) + " (" + std::to_string(player.getLevelProgress()) + "%)   ";
+    line += "LV." + std::to_string(player.getLevel()) + " (" + std::to_string(player.getExperience()) + "%)   ";
     line += "서점 랭킹: Rank " + std::to_string(player.getBookstoreRank()) + "   ";
-    line += "재고 상태: " + std::to_string(player.getBookStock()) + "/40";
+    line += "재고 상태: " + std::to_string(player.getBookStock()) + "/" + std::to_string(player.getMaxBookStock());
 
     ConsoleIO::println(line);
 }

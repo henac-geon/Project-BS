@@ -5,6 +5,9 @@
 #include <vector>    // std::vector 사용을 위한 헤더
 #include <string>    // std::string 사용을 위한 헤더
 #include "Book.h"   // Book 클래스 정의 포함
+#include "MiniGame.h"
+#include "TypingGame.h"
+#include "ReactionGame.h"
 
 /**
  * @class Inventory
@@ -59,6 +62,8 @@ public:
     const std::vector<Book*>& getBooks() const;
 
     void removeBook(Book* book);
+
+    bool attemptToRestoreDamagedBook(Book* book, MiniGame* game);
 };
 
 #endif // INVENTORY_H
