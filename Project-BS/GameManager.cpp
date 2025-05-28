@@ -280,10 +280,12 @@ void GameManager::performNPCPhase() {
                 bool satisfied = npc->rateBook(selected);
                 if (satisfied) {
                     ConsoleIO::println("고객이 만족해했습니다!");
+                    // TODO: 고객 만족 시 보상 처리
                     crud.addScore(10);
                 }
                 else {
                     ConsoleIO::println("고객이 불만족해합니다...");
+                    // TODO: 고객 불만족 시 패널티 처리
                     int gp = crud.calculateGoldPenalty(*selected);
                     int mp = crud.calculateMagicPenalty(*selected);
                     crud.getPlayer().useGold(gp);
