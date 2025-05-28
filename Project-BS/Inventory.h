@@ -22,7 +22,6 @@ private:
 
 public:
     void addBook(Book* book);
-    bool safeRemoveBook(int index);
     Book* findBook(const std::string& title) const;
     const std::vector<Book*>& getBooks() const;
     void removeBook(Book* book);
