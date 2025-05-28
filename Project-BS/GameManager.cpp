@@ -354,7 +354,7 @@ void GameManager::performSettlementPhase() {
 
     for (auto& book : crud.getInventory().getBooks()) {
         if (book->getCondition() == eBookCondition::Damaged) {
-            // todo: 책 복구용 미니 게임 추가
+            // 책 복구용 미니 게임 추가
             MiniGame* game = new TypingGame();  // 또는 ReactionGame
             crud.getInventory().attemptToRestoreDamagedBook(book, game);
             delete game;

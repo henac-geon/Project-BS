@@ -28,6 +28,7 @@ void CrudStore::gainExperience(int amount) {
 
 bool CrudStore::checkLevelUp() {
     const int threshold = 100;
+    // TODO: 레벨업 로직 따로 만들기(레벨업을 하면 얻는 부과 효과를 구현해야 함)
     if (experience >= threshold) {
         level++;
         experience -= threshold;
