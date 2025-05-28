@@ -10,53 +10,63 @@
 #include "AsciiArtRepository.h"
 
 class NPC {
-protected:
+private:
     std::string name;
     eBookGenre preferredGenre;
     eBookMood preferredMood;
-    std::vector<Book*> inventory;
     int gold;
     int magicPower;
-    eRequestType requestType = eRequestType::GenreAndMood;
+    bool borrowed;
+    std::vector<Book*> inventory;
+
+    eRequestType requestType;
     std::string dialogue;
-    bool borrowed = false;  // 책을 현재 대여 중인지 여부
 
 public:
     NPC(const std::string& name, eBookGenre genre, eBookMood mood, int gold, int magicPower);
-    virtual ~NPC() = default;
 
-    // 게임 상호작용 인터페이스
-    virtual Book* requestBook(const std::vector<Book*>& candidates) = 0;
-    virtual bool rateBook(Book* book) const;
-    virtual void compensateForDamage(Book* book) = 0;
+    // 책 추천에 대한 반응
+    bool rateBook(Book* book) const;
 
-    // 새로운 기능: 대여 / 반납 / 보상
-    virtual bool borrowBook(Book* book);
-    virtual Book* returnBook();
-    virtual bool hasBorrowed() const;
+    // 대여/반납 관련
+    bool borrowBook(Book* book);
+    Book* returnBook();
+    bool hasBorrowed() const;
 
-    virtual void payGold(int amount);
-    virtual void gainExp(int amount);
+    // NPC의 행동 결정
+    bool isReturningBook() const;
+    bool wantsRecommendation() const;
 
-    // Getters
+    // 재화 관련
+    void payGold(int amount);
+    void gainExp(int amount);
+
+    // 상태 getter/setter
     std::string getName() const;
-    eBookGenre getPreferredGenre() const;
-    eBookMood getPreferredMood() const;
-    const std::vector<Book*>& getInventory() const;
-    int getGold() const;
-    int getMagicPower() const;
-    eRequestType getRequestType() const;
-    std::string getArt() const;
-    std::string getDialogue() const;
-
-    // Setters
     void setName(const std::string& newName);
+
+    eBookGenre getPreferredGenre() const;
     void setPreferredGenre(eBookGenre genre);
+
+    eBookMood getPreferredMood() const;
     void setPreferredMood(eBookMood mood);
+
+    const std::vector<Book*>& getInventory() const;
+
+    int getGold() const;
     void setGold(int newGold);
+
+    int getMagicPower() const;
     void setMagicPower(int newMagicPower);
+
+    eRequestType getRequestType() const;
     void setRequestType(eRequestType type);
+
+    std::string getDialogue() const;
     void setDialogue(const std::string& line);
+
+    std::string getArt() const;
 };
+
 
 #endif // NPC_H

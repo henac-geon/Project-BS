@@ -127,7 +127,7 @@ void GameManager::performWritingPhase() {
             }
             else if (command == "인벤토리") {
                 performShowInventoryPhase();
-                continue; // 인벤토리 보기 → 다시 루프 반복
+                break; // 인벤토리 보기 → 다시 루프 반복
             }
             else if (command == "응대") {
                 return; // 응대로 넘어감
@@ -152,7 +152,6 @@ void GameManager::performShowInventoryPhase() {
         std::string input;
         ConsoleIO::println("> 책 소각 마법: \"[책 제목] arDeat\" 입력");
         ConsoleIO::println("> 책 복구 마법: \"[책 제목] arRegen\" 입력");
-        ConsoleIO::println("> 재고 확인 종료 후 장사 시작: \"장사 시작\" 입력");
         ConsoleIO::println("> 뒤로가기: \"뒤로가기\" 입력");
         ConsoleIO::print("입력: ");
         std::getline(std::cin, input);
@@ -200,72 +199,113 @@ void GameManager::performShowInventoryPhase() {
     }
 }
 
-
 void GameManager::performNPCPhase() {
     uiManager.clearScreen();
 
+    // NPC 리스트가 비어 있을 경우, 오늘 방문할 NPC들을 무작위 생성
     if (npcs.empty()) {
-        int numNPC = rand() % 3 + 1;
+        int numNPC = rand() % 3 + 1; // 1~3명 방문
         ConsoleIO::println("오늘 방문한 NPC 수: " + std::to_string(numNPC));
         for (int i = 0; i < numNPC; ++i) {
             npcs.push_back(RandomNPC::create());
         }
     }
 
-    while (!npcs.empty()) {
-        int index = rand() % npcs.size();
-        NPC* npc = npcs[index];
+    // 리스트에서 NPC를 순서대로 응대
+    size_t i = 0;
+    while (i < npcs.size()) {
+        NPC* npc = npcs[i]; // 현재 NPC 포인터
 
+        // 화면 초기화 및 현재 상태 출력
         uiManager.clearScreen();
         crud.displayStatus();
         ConsoleIO::println(npc->getArt());
 
         ConsoleIO::println("[NPC 접객 시작]");
-        ConsoleIO::println("다양한 고객을 만나보세요! 누군간 책을 대여할 수도 반납할 수 도 있습니다!");
-        ConsoleIO::println("[텍스트 입력창]에 반드시 올바른 마법을 사용하세요!");
+        ConsoleIO::println("고객은 책을 반납하거나 대여하거나, 아무 말 없이 그냥 갈 수도 있습니다!");
         AsciiArt::getLine();
         ConsoleIO::println(npc->getDialogue());
 
-        bool validInputReceived = false;
-        while (!validInputReceived) {
-            ConsoleIO::println("책 추천: [책 제목] 입력    |    책 재고 확인: \"재고 확인\" 입력");
-            std::string input;
-            ConsoleIO::print("> 입력: ");
-            std::getline(std::cin, input);
+        bool shouldRemove = false; // 이 NPC를 리스트에서 삭제할지 여부
 
-            if (input == "재고 확인") {
-                performShowInventoryPhase();
-                continue;
-            }
-
-            Book* selected = crud.getInventory().findBook(input);
-            if (!selected) {
-                ConsoleIO::println("책 제목이 잘못되었습니다. 다시 입력해주세요.");
-                continue;
-            }
-
-            bool satisfied = npc->rateBook(selected);
-            if (satisfied) {
-                ConsoleIO::println("고객이 만족해했습니다!");
-                crud.addScore(10);
+        // 1. 반납하는 경우
+        if (npc->isReturningBook()) {
+            Book* returnedBook = npc->returnBook();
+            if (returnedBook) {
+                ConsoleIO::println("고객이 \"" + returnedBook->getTitle() + "\" 책을 반납했습니다.");
+                crud.getInventory().addBook(returnedBook);
+                crud.addScore(5);
             }
             else {
-                ConsoleIO::println("고객이 불만족해합니다...");
-                int gp = crud.calculateGoldPenalty(*selected);
-                int mp = crud.calculateMagicPenalty(*selected);
-                crud.getPlayer().useGold(gp);
-                crud.getPlayer().consumeMagicPower(mp);
-                crud.deductScore(5);
-                uiManager.displayPenaltyInfo(gp, mp);
+                ConsoleIO::println("반납할 책이 없습니다.");
             }
+            shouldRemove = true; // 반납 고객은 리스트에서 제거
+        }
+        // 2. 추천을 받으려는 경우
+        else if (npc->wantsRecommendation()) {
+            while (true) {
+                ConsoleIO::println("책 추천: [책 제목] 입력    |    책 재고 확인: \"재고 확인\" 입력    |    아무 것도 하지 않기: \"패스\"");
+                std::string input;
+                ConsoleIO::print("> 입력: ");
+                std::getline(std::cin, input);
 
-            validInputReceived = true;
+                if (input == "재고 확인") {
+                    performShowInventoryPhase();
+                    continue;
+                }
+                else if (input == "패스") {
+                    ConsoleIO::println("NPC는 고개를 끄덕이고 떠났습니다.");
+                    shouldRemove = true; // 아무것도 하지 않은 NPC는 제거
+                    break;
+                }
+
+                // 책 추천 처리
+                Book* selected = crud.getInventory().findBook(input);
+                if (!selected) {
+                    ConsoleIO::println("책 제목이 잘못되었습니다. 다시 입력해주세요.");
+                    continue;
+                }
+
+                bool satisfied = npc->rateBook(selected);
+                if (satisfied) {
+                    ConsoleIO::println("고객이 만족해했습니다!");
+                    crud.addScore(10);
+                }
+                else {
+                    ConsoleIO::println("고객이 불만족해합니다...");
+                    int gp = crud.calculateGoldPenalty(*selected);
+                    int mp = crud.calculateMagicPenalty(*selected);
+                    crud.getPlayer().useGold(gp);
+                    crud.getPlayer().consumeMagicPower(mp);
+                    crud.deductScore(5);
+                    uiManager.displayPenaltyInfo(gp, mp);
+                }
+
+                // 책 대여 처리: 인벤토리에서 제거하고 NPC에 저장
+                crud.getInventory().removeBook(selected);
+                npc->borrowBook(selected);
+
+                shouldRemove = false; // 대여한 NPC는 리스트에 유지
+                break;
+            }
+        }
+        // 3. 아무 요청도 하지 않는 경우
+        else {
+            ConsoleIO::println("NPC는 조용히 둘러보더니 그냥 떠났습니다.");
+            shouldRemove = true; // 아무 행동도 없는 NPC는 제거
         }
 
-        delete npc;
-        npcs.erase(npcs.begin() + index);
+        // NPC 제거 또는 유지 처리
+        if (shouldRemove) {
+            delete npc;                   // 객체 메모리 해제
+            npcs.erase(npcs.begin() + i); // 리스트에서 제거 (i는 증가 X)
+        }
+        else {
+            ++i; // 다음 NPC로 넘어감
+        }
 
-        if (!npcs.empty()) {
+        // 아직 남은 NPC가 있다면, 다음 손님을 받을지 물어봄
+        if (i < npcs.size()) {
             std::string decision;
             while (true) {
                 ConsoleIO::println("다음 손님을 받으시겠습니까? (yes / no)");
@@ -274,7 +314,10 @@ void GameManager::performNPCPhase() {
                 if (decision == "yes") break;
                 else if (decision == "no") {
                     ConsoleIO::println("오늘의 장사를 마감합니다...");
-                    for (NPC* remaining : npcs) delete remaining;
+                    // 남은 NPC들도 모두 제거
+                    for (; i < npcs.size(); ++i) {
+                        delete npcs[i];
+                    }
                     npcs.clear();
                     return;
                 }
@@ -287,6 +330,9 @@ void GameManager::performNPCPhase() {
 
     ConsoleIO::println("모든 NPC 응대가 완료되었습니다.");
 }
+
+
+
 
 void GameManager::performSettlementPhase() {
     uiManager.clearScreen();

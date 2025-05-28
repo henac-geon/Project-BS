@@ -1,5 +1,6 @@
-﻿#include "NPC.h"
+﻿#include "npc.h"
 #include <iostream>
+#include <cstdlib>
 
 NPC::NPC(const std::string& name, eBookGenre genre, eBookMood mood, int gold, int magicPower)
     : name(name),
@@ -7,11 +8,22 @@ NPC::NPC(const std::string& name, eBookGenre genre, eBookMood mood, int gold, in
     preferredMood(mood),
     gold(gold),
     magicPower(magicPower),
+    requestType(eRequestType::GenreOnly),
     borrowed(false)
 {
+    // 무작위 요청 유형 할당
+    int r = rand() % 3;
+    switch (r) {
+    case 0: requestType = eRequestType::GenreOnly; break;
+    case 1: requestType = eRequestType::MoodOnly; break;
+    case 2: requestType = eRequestType::GenreAndMood; break;
+    }
+
+    // 대사 설정
+    dialogue = "오늘은 뭔가 끌리는 책이 있을까요?";
 }
 
-// 책을 추천받았을 때 선호와 비교
+// 책을 추천받았을 때 만족 여부 판단
 bool NPC::rateBook(Book* book) const {
     if (!book) return false;
 
@@ -28,16 +40,15 @@ bool NPC::rateBook(Book* book) const {
     return false;
 }
 
-// 책 빌리기
+// 책 대여
 bool NPC::borrowBook(Book* book) {
     if (!book || borrowed) return false;
-
     inventory.push_back(book);
     borrowed = true;
     return true;
 }
 
-// 책 반납하기
+// 책 반납
 Book* NPC::returnBook() {
     if (!borrowed || inventory.empty()) return nullptr;
 
@@ -51,12 +62,21 @@ bool NPC::hasBorrowed() const {
     return borrowed;
 }
 
-// 골드 지불
+// NPC가 오늘 반납할 의사가 있는지?
+bool NPC::isReturningBook() const {
+    return borrowed && (rand() % 2 == 0);  // 대여했고 50% 확률로 반납
+}
+
+// 추천받을 의사가 있는지?
+bool NPC::wantsRecommendation() const {
+    return !borrowed && (rand() % 2 == 0); // 책이 없고 50% 확률로 추천 요청
+}
+
+// 재화 처리
 void NPC::payGold(int amount) {
     gold = std::max(0, gold - amount);
 }
 
-// 경험치 증가
 void NPC::gainExp(int amount) {
     magicPower += amount;
 }
@@ -86,5 +106,5 @@ std::string NPC::getDialogue() const { return dialogue; }
 void NPC::setDialogue(const std::string& line) { dialogue = line; }
 
 std::string NPC::getArt() const {
-    return AsciiArt::showFemaleNPCArt();  // 기본값
+    return AsciiArt::showFemaleNPCArt();  // 현재 기본값
 }
