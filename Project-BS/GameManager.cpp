@@ -34,6 +34,7 @@ void GameManager::run() {
     }
 }
 
+// 하루의 시작 단계
 bool GameManager::startDay() {
     uiManager.clearScreen();
     ConsoleIO::println(AsciiArt::getWelcomeArt());
@@ -52,7 +53,7 @@ bool GameManager::startDay() {
     return true;
 }
 
-// return: 1 = 인벤토리 보기, 2 = 손님 응대
+// 책 집필 단계
 void GameManager::performWritingPhase() {
     while (true) {
         uiManager.clearScreen();
@@ -139,7 +140,7 @@ void GameManager::performWritingPhase() {
     }
 }
 
-
+// 재고 확인 단계
 void GameManager::performShowInventoryPhase() {
     uiManager.clearScreen();
     ConsoleIO::println("[책 재고]");
@@ -205,6 +206,7 @@ void GameManager::performShowInventoryPhase() {
     }
 }
 
+// 손님 응대 단계
 void GameManager::performNPCPhase() {
     uiManager.clearScreen();
 
@@ -349,9 +351,7 @@ void GameManager::performNPCPhase() {
     ConsoleIO::println("모든 NPC 응대가 완료되었습니다.");
 }
 
-
-
-
+// 정산 단계
 void GameManager::performSettlementPhase() {
     uiManager.clearScreen();
     ConsoleIO::println("\n 정산 단계 시작!\n");
@@ -374,6 +374,7 @@ void GameManager::performSettlementPhase() {
     if (ans == "y") performShowInventoryPhase();
 }
 
+// 하루의 마무리 단계
 void GameManager::endDay() {
     uiManager.clearScreen();
     if (crud.checkLevelUp()) {
