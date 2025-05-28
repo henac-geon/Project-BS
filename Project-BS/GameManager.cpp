@@ -150,9 +150,7 @@ void GameManager::performShowInventoryPhase() {
 
     while (true) {
         std::string input;
-        ConsoleIO::println("> 책 소각 마법: \"[책 제목] arDeat\" 입력");
-        ConsoleIO::println("> 책 복구 마법: \"[책 제목] arRegen\" 입력");
-        ConsoleIO::println("> 뒤로가기: \"뒤로가기\" 입력");
+        ConsoleIO::println("> 책 소각 마법: \"[책 제목] arDeat\" 입력         책 복구 마법: \"[책 제목] arRegen\" 입력          뒤로가기: \"뒤로가기\" 입력");
         ConsoleIO::print("입력: ");
         std::getline(std::cin, input);
 

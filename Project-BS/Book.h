@@ -23,6 +23,7 @@ protected:
     bool isDamaged;              // 책 손상 여부 (true: 손상됨, false: 양호)
     eDamageType damageType;      // 손상 유형 (Enums.h에 정의된 eDamageType)
     eBookCondition condition;    // 책 상태 (Enums.h에 정의된 eBookCondition)
+    int conditionValue;  // 0~100 사이의 수치형 상태값
 
 public:
     Book(const std::string& title,
@@ -43,12 +44,20 @@ public:
     eBookCondition getCondition() const;
     eBookGenre getGenre() const;
     eBookMood getMood() const;
-    int getDamage() const;
+    std::string getGenreName() const;
+    std::string getMoodName() const;
+    std::string getEdgeName() const;
+    std::string getEtcName() const;
+    //std::string getStockSymbol() const; // 재고 여부
+    int getVolume() const;  // = length
+    int getConditionValue() const;
+    std::string getConditionPercentText() const;
+
 
     void setTitle(const std::string& newTitle);
-    //void setCondition(eBookCondition newCondition);
-    //void setIsDamaged(bool damaged);
-    //void setDamageType(eDamageType type);
+    void setCondition(eBookCondition newCondition);
+    void setIsDamaged(bool damaged);
+    void setDamageType(eDamageType type);
     //void setLength(int newLength);
     //void setEdge(eBookEdge newEdge);
     //void setGenre(eBookGenre newGenre);
