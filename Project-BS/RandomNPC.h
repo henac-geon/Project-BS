@@ -1,19 +1,30 @@
 ﻿#ifndef RANDOM_NPC_H
 #define RANDOM_NPC_H
 
-#include "NPC.h"          // NPC 기본 클래스
-#include "WizardNPC.h"
+#include "NPC.h"
 #include "StudentNPC.h"
+#include "WizardNPC.h"
+#include "MerchantNPC.h"
+#include "LibrarianNPC.h"
+#include "VampireNPC.h"
+#include "KnightNPC.h"
+#include "ElfScholarNPC.h"
+#include "Enums.h"
 #include <string>
 
 class RandomNPC {
 public:
-    // AI 사용 여부에 따라 NPC 생성
-    static NPC* create(bool useAI = false);
+    static NPC* create(eNPCGenerationMode mode);
 
 private:
     static NPC* createRandomNpcLocally();
-    static NPC* createNpcFromOpenAI();
+    static NPC* createNpcFromOpenAISimple(NPC* npc);
+    static NPC* createNpcFromOpenAICreative();
+    static eBookGenre stringToGenre(const std::string& str);
+    static eBookMood stringToMood(const std::string& str);
+    static eNPCType stringToNPCType(const std::string& str);
+    static std::string genreToString(eBookGenre genre);
+    static std::string moodToString(eBookMood mood);
 };
 
 #endif

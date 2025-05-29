@@ -1,35 +1,40 @@
-﻿#include "NPC.h"
-#include "StudentNPC.h"
-#include "ConsoleIO.h"
+﻿#include "StudentNPC.h"
+#include <iostream>
 
-/**
-
-StudentNPC::StudentNPC(const std::string& name)
-    : NPC(name, eBookGenre::Mystery, eBookMood::Light, 100, 10) {
+bool StudentNPC::rateBook(Book* book) const {
+    std::cout << "학생은 책의 교육적 가치를 평가합니다.\n";
+    return true;
 }
 
-*/
-
-StudentNPC::StudentNPC(
-    const std::string& name,
-    bool isMale,
-    eBookGenre genre,
-    eBookMood mood,
-    int gold,
-    int magicPower)
-    : NPC(name, isMale, genre, mood, gold, magicPower), 
-    studyLevel(1){
+bool StudentNPC::borrowBook(Book* book) {
+    borrowed = true;
+    inventory.push_back(book);
+    return true;
 }
 
-Book* StudentNPC::requestBook(const std::vector<Book*>& candidates) {
-    if (!candidates.empty()) return candidates.front();
+Book* StudentNPC::returnBook() {
+    if (!inventory.empty()) {
+        Book* b = inventory.back();
+        inventory.pop_back();
+        borrowed = false;
+        return b;
+    }
     return nullptr;
 }
 
-bool StudentNPC::rateBook(Book* book) const {
-    return NPC::rateBook(book);  // 학생 NPC 책 평가
+bool StudentNPC::isReturningBook() const {
+    return borrowed;
 }
 
-// 책 손상에 대한 보상 처리
+bool StudentNPC::wantsRecommendation() const {
+    return !borrowed;
+}
+
 void StudentNPC::compensateForDamage(Book* book) {
+    std::cout << "학생이 책 손상에 대해 골드로 보상합니다.\n";
+    gold -= 5;
+}
+
+void StudentNPC::debugPrint() const {
+    std::cout << "[Student] " << name << " (gold: " << gold << ", magic: " << magicPower << ")\n";
 }

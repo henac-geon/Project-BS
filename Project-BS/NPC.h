@@ -7,55 +7,57 @@
 #include <vector>
 #include "Book.h"
 #include "Enums.h"
-#include "AsciiArtRepository.h"
 
 class NPC {
-private:
-    std::string name;                       // NPC의 이름
-    bool isMale;                            // NPC의 성별 (true: 남성, false: 여성)
-    std::string art;                        // NPC의 ASCII 아트
-    eBookGenre preferredGenre;              // NPC가 선호하는 책 장르
-    eBookMood preferredMood;                // NPC가 선호하는 책의 분위기
-    int gold;                               // NPC가 가진 골드
-    int magicPower;                         // NPC의 마법 기운
-    bool borrowed;                          // 책을 빌렸는지 여부
-    std::vector<Book*> inventory;           // NPC가 소유한(빌린) 책 목록
-
-    eRequestType requestType;               // NPC의 요청 유형
-    std::vector<std::string> dialogues;     // NPC의 대사
+protected:
+    std::string name;
+    bool isMale;
+    eBookGenre preferredGenre;
+    eBookMood preferredMood;
+    int gold;
+    int magicPower;
+    bool borrowed;
+    eRequestType requestType;
+    std::vector<Book*> inventory;
+    std::vector<std::string> dialogues;
 
 public:
-    NPC(const std::string& name, bool sex, eBookGenre genre, eBookMood mood, int gold, int magicPower);
+    NPC(const std::string& name, bool isMale, eBookGenre genre, eBookMood mood, int gold, int magicPower)
+        : name(name), isMale(isMale), preferredGenre(genre), preferredMood(mood),
+        gold(gold), magicPower(magicPower), requestType(eRequestType::GenreOnly), borrowed(false){
+    }
 
-    // 책 추천에 대한 반응
-    bool rateBook(Book* book) const;
+    virtual ~NPC() = default;
 
-    // 대여/반납 관련
-    bool borrowBook(Book* book);
-    Book* returnBook();
-    bool hasBorrowed() const;
+    virtual bool rateBook(Book* book) const = 0;
+    virtual bool borrowBook(Book* book) = 0;
+    virtual Book* returnBook() = 0;
+    virtual bool isReturningBook() const = 0;
+    virtual bool wantsRecommendation() const = 0;
+    virtual void compensateForDamage(Book* book) = 0;
+    virtual void debugPrint() const = 0;
 
-    // NPC의 행동 결정
-    bool isReturningBook() const;
-    bool wantsRecommendation() const;
 
-    // 재화 관련
-    void payGold(int amount);
-    void gainExp(int amount);
-
-    // 책이 손상된 경우에 대한 보상을 진행
-    void compensateForDamage(Book* book);
-
+    std::string getName() const;
+    bool getIsMale() const;
+    eBookGenre getPreferredGenre() const;
+    eBookMood getPreferredMood() const;
+    int getGold() const;
+    void setGold(int amount);
+    int getMagicPower() const;
+    void setMagicPower(int amount);
+    void removeBookFromInventory(Book* book);
+    const std::vector<Book*>& getInventory() const;
+    bool hasBookInInventory(const Book* book) const;
     eRequestType getRequestType() const;
     void setRequestType(eRequestType type);
-
-    void setDialogues(const std::vector<std::string>& lines);
-    const std::vector<std::string>& getDialogues() const;
-
+    void payGold(int amount);
+    void gainExp(int amount);
     std::string getArt() const;
+    void setDialogues(const std::vector<std::string>& lines) { dialogues = lines; }
+    const std::vector<std::string>& getDialogues() const { return dialogues; }
 
-    void debugPrint() const;
+    bool hasBorrowed() const { return borrowed; }
 };
 
-
-#endif // NPC_H
+#endif

@@ -141,10 +141,13 @@
     <ClCompile Include="ConsoleIO.cpp" />
     <ClCompile Include="CrudStore.cpp" />
     <ClCompile Include="CsvIO.cpp" />
+    <ClCompile Include="ElfScholarNPC..cpp" />
     <ClCompile Include="FantasyBook.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="inventory.cpp" />
+    <ClCompile Include="KnightNPC.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MerchantNPC.cpp" />
     <ClCompile Include="MiniGame.cpp" />
     <ClCompile Include="NPC.cpp" />
     <ClCompile Include="Player.cpp" />
@@ -155,6 +158,7 @@
     <ClCompile Include="openai_client.cpp" />
     <ClCompile Include="TypingGame.cpp" />
     <ClCompile Include="UIManager.cpp" />
+    <ClCompile Include="VampireNPC.cpp" />
     <ClCompile Include="WizardNPC.cpp" />
     <ClCompile Include="WritingElementManager.cpp" />
   </ItemGroup>
@@ -165,10 +169,14 @@
     <ClInclude Include="ConsoleIO.h" />
     <ClInclude Include="CrudStore.h" />
     <ClInclude Include="CsvIO.h" />
+    <ClInclude Include="ElfScholarNPC.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="FantasyBook.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="Inventory.h" />
+    <ClInclude Include="KnightNPC.h" />
+    <ClInclude Include="LibrarianNPC.h" />
+    <ClInclude Include="MerchantNPC.h" />
     <ClInclude Include="MiniGame.h" />
     <ClInclude Include="NPC.h" />
     <ClInclude Include="Player.h" />
@@ -178,6 +186,7 @@
     <ClInclude Include="openai_client.h" />
     <ClInclude Include="TypingGame.h" />
     <ClInclude Include="UIManager.h" />
+    <ClInclude Include="VampireNPC.h" />
     <ClInclude Include="WizardNPC.h" />
     <ClInclude Include="WritingElementManager.h" />
     <ClInclude Include="ReactionGame.h" />

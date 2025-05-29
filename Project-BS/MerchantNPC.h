@@ -1,13 +1,13 @@
 ﻿#pragma once
 
-#ifndef STUDENTNPC_H
-#define STUDENTNPC_H
+#ifndef MERCHANTNPC_H
+#define MERCHANTNPC_H
 
 #include "NPC.h"
 
-class StudentNPC : public NPC {
+class MerchantNPC : public NPC {
 public:
-    StudentNPC(const std::string& n, bool s, eBookGenre g, eBookMood m, int gold, int mp)
+    MerchantNPC(const std::string& n, bool s, eBookGenre g, eBookMood m, int gold, int mp)
         : NPC(n, s, g, m, gold, mp) {
     }
 

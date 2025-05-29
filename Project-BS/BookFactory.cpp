@@ -92,7 +92,7 @@ Book* BookFactory::createBook(
 
     // 이와 유사하게 mood, edge, etc 등에 대해서도 체크 가능
 
-    // 최종 생성
+    // TODO: ㅅㅂ 이거 다 수정해야 함
     switch (genre) {
     case eBookGenre::Fantasy:
         return new FantasyBook("Random Fantasy", "A random fantasy book", length);

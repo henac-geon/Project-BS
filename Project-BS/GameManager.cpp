@@ -172,9 +172,9 @@ void GameManager::performShowInventoryPhase() {
                     title = input.substr(0, input.size() - 8);
                     Book* target = crud.getInventory().findBook(title);
                     if (target) {
-                        // todo: 책 복구용 미니 게임 추가
-                        if (target->getCondition() == eBookCondition::Damaged) {
-                            // todo: 책 복구용 미니 게임 추가
+                        if (target->getCondition() != eBookCondition::Perfect) {
+                            // 책 복구용 미니 게임 추가
+                            // TODO: 책 복구 시 재화 소모 로직 추가
                             MiniGame* game = new TypingGame();  // 또는 ReactionGame
                             crud.getInventory().attemptToRestoreDamagedBook(target, game);
                             delete game;
@@ -207,13 +207,14 @@ void GameManager::performNPCPhase() {
     uiManager.clearScreen();
 
     // NPC 리스트가 다 차 있지 않다면, 오늘 방문할 NPC들을 무작위 생성
+    // TODO: api호출을 NPC를 기다릴때마다 사용하여 손님을 기다리고 있다는 느낌을 주기(+ api 사용 어필, 로딩창 구현 필요)
     if (npcs.size() < MAX_NPC_COUNT) {
         int remain = MAX_NPC_COUNT - npcs.size();
         int numNPC = rand() % remain + 1; // 1 ~ remain 명 방문
         ConsoleIO::println("오늘 방문한 NPC 수: " + std::to_string(numNPC));
 
         for (int i = 0; i < numNPC; ++i) {
-            NPC* npc = RandomNPC::create(true); // true: api 사용
+            NPC* npc = RandomNPC::create(eNPCGenerationMode::CreativeAI);
             npcs.push_back(npc);
         }
     }
@@ -353,8 +354,11 @@ void GameManager::performSettlementPhase() {
     ConsoleIO::println("\n 정산 단계 시작!\n");
 
     for (auto& book : crud.getInventory().getBooks()) {
-        if (book->getCondition() == eBookCondition::Damaged) {
+        // TODO: 복구를 할 것인지 여부를 물어보는 로직 추가
+        if (book->getCondition() != eBookCondition::Perfect) {
             // 책 복구용 미니 게임 추가
+            // TODO: 책 복구 시 재화 소모 로직 추가
+            // 재화 소모 로직은 crud클레스에서 처리
             MiniGame* game = new TypingGame();  // 또는 ReactionGame
             crud.getInventory().attemptToRestoreDamagedBook(book, game);
             delete game;
@@ -363,6 +367,9 @@ void GameManager::performSettlementPhase() {
             ConsoleIO::println(book->getTitle() + " 복원 완료!");
         }
     }
+
+    // TODO: 플레이어의 스텟 정산
+    // TODO: 서점 랭킹 업데이트
 
     std::string ans;
     ConsoleIO::print("인벤토리를 확인하시겠습니까? (y/n): ");

@@ -1,27 +1,40 @@
-﻿#include "NPC.h"
-#include "WizardNPC.h"
-#include "ConsoleIO.h"
+﻿#include "WizardNPC.h"
+#include <iostream>
 
-WizardNPC::WizardNPC(
-    const std::string& name,
-    bool isMale,
-    eBookGenre genre,
-    eBookMood mood,
-    int gold,
-    int magicPower)
-    : NPC(name, isMale, genre, mood, gold, magicPower),
-    magicPower(magicPower){
+bool WizardNPC::rateBook(Book* book) const {
+    std::cout << "마법사는 마법적 에너지를 느끼려 합니다.\n";
+    return true;
 }
 
-Book* WizardNPC::requestBook(const std::vector<Book*>& candidates) {
-    if (!candidates.empty()) return candidates.back();
+bool WizardNPC::borrowBook(Book* book) {
+    borrowed = true;
+    inventory.push_back(book);
+    return true;
+}
+
+Book* WizardNPC::returnBook() {
+    if (!inventory.empty()) {
+        Book* b = inventory.back();
+        inventory.pop_back();
+        borrowed = false;
+        return b;
+    }
     return nullptr;
 }
 
-bool WizardNPC::rateBook(Book* book) const {
-    return NPC::rateBook(book); // 마법사 NPC 책 평가
+bool WizardNPC::isReturningBook() const {
+    return borrowed && (magicPower % 2 == 0);
 }
 
-// 책 손상에 대한 보상 처리
+bool WizardNPC::wantsRecommendation() const {
+    return magicPower > 50;
+}
+
 void WizardNPC::compensateForDamage(Book* book) {
+    std::cout << "마법사가 손상된 책을 마법으로 수리하려 하지만 실패했습니다.\n";
+    gold -= 10;
+}
+
+void WizardNPC::debugPrint() const {
+    std::cout << "[Wizard] " << name << " (magic: " << magicPower << ")\n";
 }

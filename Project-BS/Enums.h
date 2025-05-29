@@ -69,3 +69,10 @@ enum class eRequestType {
 };
 
 #endif // ENUMS_H
+
+
+enum class eNPCGenerationMode {
+    Local = 0,
+    SimpleAI = 1,
+    CreativeAI = 2
+};
