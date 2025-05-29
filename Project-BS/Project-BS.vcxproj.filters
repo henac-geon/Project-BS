@@ -108,9 +108,6 @@
     <ClCompile Include="CsvIO.cpp">
       <Filter>소스 파일\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="UIManager.cpp">
       <Filter>소스 파일\UI</Filter>
     </ClCompile>
@@ -134,6 +131,21 @@
     </ClCompile>
     <ClCompile Include="ReactionGame.cpp">
       <Filter>소스 파일\MiniGame</Filter>
+    </ClCompile>
+    <ClCompile Include="ElfScholarNPC..cpp">
+      <Filter>소스 파일\NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="KnightNPC.cpp">
+      <Filter>소스 파일\NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>소스 파일\NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="MerchantNPC.cpp">
+      <Filter>소스 파일\NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="VampireNPC.cpp">
+      <Filter>소스 파일\NPC</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -202,6 +214,21 @@
     </ClInclude>
     <ClInclude Include="ReactionGame.h">
       <Filter>헤더 파일\MiniGame</Filter>
+    </ClInclude>
+    <ClInclude Include="ElfScholarNPC.h">
+      <Filter>헤더 파일\NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="KnightNPC.h">
+      <Filter>헤더 파일\NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="LibrarianNPC.h">
+      <Filter>헤더 파일\NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="MerchantNPC.h">
+      <Filter>헤더 파일\NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="VampireNPC.h">
+      <Filter>헤더 파일\NPC</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

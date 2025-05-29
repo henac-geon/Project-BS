@@ -60,11 +60,6 @@ Book* NPC::returnBook() {
     return book;
 }
 
-// 대여 여부
-bool NPC::hasBorrowed() const {
-    return borrowed;
-}
-
 // 반납 의사 (50% 확률)
 bool NPC::isReturningBook() const {
     return borrowed && (rand() % 2 == 0);
@@ -153,15 +148,6 @@ bool NPC::hasBookInInventory(const Book* book) const {
 
 void NPC::setRequestType(eRequestType type) {
     requestType = type;
-}
-
-// 대사 설정 및 반환
-void NPC::setDialogues(const std::vector<std::string>& lines) {
-    dialogues = lines;
-}
-
-const std::vector<std::string>& NPC::getDialogues() const {
-    return dialogues;
 }
 
 // ASCII 아트 반환

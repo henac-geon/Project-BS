@@ -107,7 +107,7 @@ void GameManager::performWritingPhase() {
         eBookEdge edge = (edgeStr == "반전") ? eBookEdge::Reversal : eBookEdge::None;
         eBookEtc  etc = (etcStr == "없음") ? eBookEtc::None : eBookEtc::None;
 
-        Book* newBook = crud.getBookFactory().createBook(genre, mood, length, edge, etc);
+        Book* newBook = crud.getBookFactory().createBook("", "", genre, mood, length, edge, etc);
         if (newBook) newBook->setTitle(title);
         crud.getInventory().addBook(newBook);
 

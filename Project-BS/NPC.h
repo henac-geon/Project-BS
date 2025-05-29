@@ -22,10 +22,7 @@ protected:
     std::vector<std::string> dialogues;
 
 public:
-    NPC(const std::string& name, bool isMale, eBookGenre genre, eBookMood mood, int gold, int magicPower)
-        : name(name), isMale(isMale), preferredGenre(genre), preferredMood(mood),
-        gold(gold), magicPower(magicPower), requestType(eRequestType::GenreOnly), borrowed(false){
-    }
+    NPC(const std::string& name, bool isMale, eBookGenre genre, eBookMood mood, int gold, int magicPower);
 
     virtual ~NPC() = default;
 
@@ -57,6 +54,7 @@ public:
     void setDialogues(const std::vector<std::string>& lines) { dialogues = lines; }
     const std::vector<std::string>& getDialogues() const { return dialogues; }
 
+    // 대여 여부
     bool hasBorrowed() const { return borrowed; }
 };
 
