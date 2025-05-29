@@ -138,9 +138,6 @@
     <ClCompile Include="KnightNPC.cpp">
       <Filter>소스 파일\NPC</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>소스 파일\NPC</Filter>
-    </ClCompile>
     <ClCompile Include="MerchantNPC.cpp">
       <Filter>소스 파일\NPC</Filter>
     </ClCompile>
@@ -149,6 +146,12 @@
     </ClCompile>
     <ClCompile Include="LibrarianNPC.cpp">
       <Filter>소스 파일\NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="enum_utils.cpp">
+      <Filter>소스 파일\Commons</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -232,6 +235,9 @@
     </ClInclude>
     <ClInclude Include="VampireNPC.h">
       <Filter>헤더 파일\NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="enum_utils.h">
+      <Filter>헤더 파일\Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

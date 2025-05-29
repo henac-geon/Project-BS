@@ -19,7 +19,6 @@ GameManager::~GameManager() {
 
 void GameManager::run() {
     std::string command;
-
     while (true) {
         if (!startDay()) break;
 
@@ -39,12 +38,12 @@ bool GameManager::startDay() {
     uiManager.clearScreen();
     ConsoleIO::println(AsciiArt::getWelcomeArt());
 
-    std::string command;
+    std::string start_command;
     ConsoleIO::print("텍스트 입력창이 보이도록 화면을 조정해 주세요. ");
     ConsoleIO::print("> \"시작\" \n입력: ");
-    std::cin >> command;
+    std::cin >> start_command;
 
-    if (command != "시작") {
+    if (start_command != "시작") {
         ConsoleIO::println("올바른 명령이 아닙니다. 게임을 종료합니다.");
         return false;
     }
@@ -65,6 +64,7 @@ void GameManager::performWritingPhase() {
         crud.displayStatus();
         ConsoleIO::println("\n\"(장르), (분위기), (분량), (엣지요소), (기타), (제목)\" 순서로 입력해주세요.");
         ConsoleIO::println("\"입력 예시: 판타지, 암울, 120, 반전, 없음, 다크소울\"\n");
+        ConsoleIO::println("※ 책을 집필하지 않고 손님 응대로 바로 가려면 \"건너뛰기\"를 입력하세요.\n");
 
         ConsoleIO::println("[현재 사용 가능한 집필 요소]");
         crud.getBookFactory().displayAvailableElements();
@@ -73,6 +73,12 @@ void GameManager::performWritingPhase() {
         ConsoleIO::println("\n[집필 요소] 입력");
         std::cin.ignore();
         std::getline(std::cin, ans);
+
+        // 건너뛰기 기능 추가
+        if (ans == "건너뛰기") {
+            ConsoleIO::println("책 집필을 건너뛰고 손님 응대로 이동합니다.");
+            return;
+        }
 
         std::vector<std::string> tokens;
         std::stringstream ss(ans);
@@ -107,8 +113,7 @@ void GameManager::performWritingPhase() {
         eBookEdge edge = (edgeStr == "반전") ? eBookEdge::Reversal : eBookEdge::None;
         eBookEtc  etc = (etcStr == "없음") ? eBookEtc::None : eBookEtc::None;
 
-        Book* newBook = crud.getBookFactory().createBook("", "", genre, mood, length, edge, etc);
-        if (newBook) newBook->setTitle(title);
+        Book* newBook = crud.getBookFactory().createBook(title, "수동 제작", genre, mood, length, edge, etc);
         crud.getInventory().addBook(newBook);
 
         ConsoleIO::println("책이 성공적으로 집필되었습니다: " + title);
@@ -208,10 +213,28 @@ void GameManager::performNPCPhase() {
 
     // NPC 리스트가 다 차 있지 않다면, 오늘 방문할 NPC들을 무작위 생성
     // TODO: api호출을 NPC를 기다릴때마다 사용하여 손님을 기다리고 있다는 느낌을 주기(+ api 사용 어필, 로딩창 구현 필요)
+    //if (npcs.size() < MAX_NPC_COUNT) {
+    //    int remain = MAX_NPC_COUNT - npcs.size();
+    //    int numNPC = rand() % remain + 1; // 1 ~ remain 명 방문
+    //    ConsoleIO::println("오늘 방문한 NPC 수: " + std::to_string(numNPC));
+
+    //    for (int i = 0; i < numNPC; ++i) {
+    //        NPC* npc = RandomNPC::create(eNPCGenerationMode::CreativeAI);
+    //        npcs.push_back(npc);
+    //    }
+    //}
+    // NPC 리스트가 다 차 있지 않다면, 오늘 방문할 NPC들을 무작위 생성
     if (npcs.size() < MAX_NPC_COUNT) {
         int remain = MAX_NPC_COUNT - npcs.size();
         int numNPC = rand() % remain + 1; // 1 ~ remain 명 방문
-        ConsoleIO::println("오늘 방문한 NPC 수: " + std::to_string(numNPC));
+
+        ConsoleIO::println("손님을 기다리는 중입니다...");
+
+        // 💡 로딩창 및 API 호출 시뮬레이션
+        callNPCGenerationAPI();  // API 요청 흉내
+        displayLoadingAnimation(3); // 3초간 로딩 애니메이션
+
+        ConsoleIO::println("\n오늘 방문한 NPC 수: " + std::to_string(numNPC));
 
         for (int i = 0; i < numNPC; ++i) {
             NPC* npc = RandomNPC::create(eNPCGenerationMode::CreativeAI);
@@ -302,7 +325,7 @@ void GameManager::performNPCPhase() {
                 break;
             }
         }
-        // 3. 아무 요청도 하지 않는 경우
+        // 3. 아무 요청도 하지 않는 경우(너무 자주 발생함)
         else {
             ConsoleIO::println("NPC는 조용히 둘러보더니 그냥 떠났습니다.");
             shouldRemove = true; // 아무 행동도 없는 NPC는 제거
@@ -346,6 +369,23 @@ void GameManager::performNPCPhase() {
         }
     }
     ConsoleIO::println("모든 NPC 응대가 완료되었습니다.");
+}
+
+
+// ✨ API 호출 흉내 함수
+void GameManager::callNPCGenerationAPI() {
+    ConsoleIO::println("[API 호출] NPC 생성 요청 중...");
+    // 여기에서 실제 API 호출이 있다면 REST 요청 등을 수행
+    std::this_thread::sleep_for(std::chrono::seconds(1)); // 1초 대기
+}
+
+// ✨ 로딩 애니메이션 함수
+void GameManager::displayLoadingAnimation(int seconds) {
+    for (int i = 0; i < seconds; ++i) {
+        ConsoleIO::print(".");
+        std::this_thread::sleep_for(std::chrono::seconds(1));
+    }
+    ConsoleIO::println(""); // 줄바꿈
 }
 
 // 정산 단계

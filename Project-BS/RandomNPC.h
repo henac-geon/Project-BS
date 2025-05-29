@@ -20,11 +20,6 @@ private:
     static NPC* createRandomNpcLocally();
     static NPC* createNpcFromOpenAISimple(NPC* npc);
     static NPC* createNpcFromOpenAICreative();
-    static eBookGenre stringToGenre(const std::string& str);
-    static eBookMood stringToMood(const std::string& str);
-    static eNPCType stringToNPCType(const std::string& str);
-    static std::string genreToString(eBookGenre genre);
-    static std::string moodToString(eBookMood mood);
 };
 
 #endif

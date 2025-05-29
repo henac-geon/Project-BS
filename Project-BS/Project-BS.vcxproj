@@ -142,6 +142,7 @@
     <ClCompile Include="CrudStore.cpp" />
     <ClCompile Include="CsvIO.cpp" />
     <ClCompile Include="ElfScholarNPC..cpp" />
+    <ClCompile Include="enum_utils.cpp" />
     <ClCompile Include="FantasyBook.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="inventory.cpp" />
@@ -172,6 +173,7 @@
     <ClInclude Include="CsvIO.h" />
     <ClInclude Include="ElfScholarNPC.h" />
     <ClInclude Include="Enums.h" />
+    <ClInclude Include="enum_utils.h" />
     <ClInclude Include="FantasyBook.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="Inventory.h" />

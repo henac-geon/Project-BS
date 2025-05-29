@@ -9,6 +9,8 @@
 
 #include <vector>
 #include <string>
+#include <thread>  // std::this_thread::sleep_for
+#include <chrono>  // std::chrono::seconds
 
 /**
  * @class GameManager
@@ -36,6 +38,8 @@ public:
     void performNPCPhase();           ///< NPC 응대 단계
     void performSettlementPhase();    ///< 하루 마무리 정산 단계
     void endDay();                    ///< 하루 종료 및 레벨 확인
+    void callNPCGenerationAPI(); ///< NPC 생성 API 호출
+    void displayLoadingAnimation(int seconds); ///< 로딩 애니메이션 표시
 };
 
 #endif // GAME_MANAGER_H
