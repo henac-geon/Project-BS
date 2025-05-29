@@ -21,6 +21,9 @@ protected:
     std::vector<Book*> inventory;
     std::vector<std::string> dialogues;
 
+    Book* currentBook = nullptr;
+    bool hasBook = false;
+
 public:
     NPC(const std::string& name, bool isMale, eBookGenre genre, eBookMood mood, int gold, int magicPower);
 
@@ -56,6 +59,10 @@ public:
 
     // 대여 여부
     bool hasBorrowed() const { return borrowed; }
+
+    // currentBook 접근자 (원하면)
+    Book* getCurrentBook() const { return currentBook; }
+    bool isHoldingBook() const { return hasBook; }
 };
 
 #endif

@@ -147,6 +147,9 @@
     <ClCompile Include="VampireNPC.cpp">
       <Filter>소스 파일\NPC</Filter>
     </ClCompile>
+    <ClCompile Include="LibrarianNPC.cpp">
+      <Filter>소스 파일\NPC</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Book.h">

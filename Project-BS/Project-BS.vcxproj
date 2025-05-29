@@ -146,6 +146,7 @@
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="inventory.cpp" />
     <ClCompile Include="KnightNPC.cpp" />
+    <ClCompile Include="LibrarianNPC.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MerchantNPC.cpp" />
     <ClCompile Include="MiniGame.cpp" />
