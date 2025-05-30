@@ -17,9 +17,19 @@ Book::Book(const std::string& title,
     isDamaged(false),           // 기본 손상 여부: 없음
     damageType(eDamageType::None),       // 기본 손상 유형: 없음
     condition(eBookCondition::Perfect),   // 기본 상태: 완전
-    conditionValue(100)  // 새 책으로 초기화
+    conditionValue(100), // 새 책으로 초기화
+    available(true)  // 기본 사용 가능 상태: true
 {
     // TODO: 필요에 따라 추가 초기화 로직 구현
+}
+
+void Book::repair() {
+    condition = eBookCondition::Perfect;
+    isDamaged = false;
+}
+
+void Book::displayInfo() const {
+    ConsoleIO::println("책 제목: " + title);
 }
 
 std::string Book::getTitle() const {

@@ -6,8 +6,6 @@
 #include <vector>
 #include <iomanip>     // std::setw
 #include "Book.h"
-#include "FantasyBook.h"
-#include "ScienceBook.h"
 #include "ConsoleIO.h"
 #include "Player.h"
 #include "WritingElementManager.h"

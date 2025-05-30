@@ -143,11 +143,11 @@ Book* BookFactory::createBook(
 
     switch (genre) {
     case eBookGenre::Fantasy:
-        return new FantasyBook(finalTitle, finalDesc, length);
+        return new Book(finalTitle, finalDesc, genre, mood, length, edge, etc);
     case eBookGenre::SciFi:
-        return new ScienceBook(finalTitle, finalDesc, length);
+        return new Book(finalTitle, finalDesc, genre, mood, length, edge, etc);
     default:
-        return new FantasyBook("기본 판타지", "AI 생성 실패", length);
+        return new Book("기본 판타지", "AI 생성 실패", genre, mood, length, edge, etc);
     }
 }
 

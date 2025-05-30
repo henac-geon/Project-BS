@@ -1,4 +1,6 @@
-﻿#include "ReactionGame.h"
+﻿#define NOMINMAX
+
+#include "ReactionGame.h"
 #include <iostream>
 #include <chrono>
 #include <thread>

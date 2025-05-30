@@ -6,6 +6,7 @@
 #include <string>
 #include <random>
 #include "Enums.h"
+#include "ConsoleIO.h"
 
 class Book {
 private:
@@ -35,11 +36,11 @@ public:
         eBookEdge edge,
         eBookEtc etc);
 
-    virtual ~Book() = default;
+    ~Book() = default;
 
-    virtual void repair() = 0;
+    void repair();
 
-    virtual void displayInfo() const = 0;
+    void displayInfo() const;
 
     std::string getTitle() const;
     eBookCondition getCondition() const;

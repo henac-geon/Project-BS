@@ -230,11 +230,11 @@ void GameManager::performNPCPhase() {
 
         ConsoleIO::println("손님을 기다리는 중입니다...");
 
-        // 💡 로딩창 및 API 호출 시뮬레이션
+        // 로딩창 및 API 호출 시뮬레이션
         callNPCGenerationAPI();  // API 요청 흉내
         displayLoadingAnimation(3); // 3초간 로딩 애니메이션
 
-        ConsoleIO::println("\n오늘 방문한 NPC 수: " + std::to_string(numNPC));
+        ConsoleIO::println("\n곧 손님이 방문할 것 같습니다.");
 
         for (int i = 0; i < numNPC; ++i) {
             NPC* npc = RandomNPC::create(eNPCGenerationMode::CreativeAI);

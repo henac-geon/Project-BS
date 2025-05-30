@@ -143,7 +143,6 @@
     <ClCompile Include="CsvIO.cpp" />
     <ClCompile Include="ElfScholarNPC..cpp" />
     <ClCompile Include="enum_utils.cpp" />
-    <ClCompile Include="FantasyBook.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="inventory.cpp" />
     <ClCompile Include="KnightNPC.cpp" />
@@ -155,7 +154,6 @@
     <ClCompile Include="Player.cpp" />
     <ClCompile Include="RandomNPC.cpp" />
     <ClCompile Include="ReactionGame.cpp" />
-    <ClCompile Include="ScienceBook.cpp" />
     <ClCompile Include="StudentNPC.cpp" />
     <ClCompile Include="openai_client.cpp" />
     <ClCompile Include="TypingGame.cpp" />
@@ -174,7 +172,6 @@
     <ClInclude Include="ElfScholarNPC.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="enum_utils.h" />
-    <ClInclude Include="FantasyBook.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="Inventory.h" />
     <ClInclude Include="KnightNPC.h" />
@@ -184,7 +181,6 @@
     <ClInclude Include="NPC.h" />
     <ClInclude Include="Player.h" />
     <ClInclude Include="RandomNPC.h" />
-    <ClInclude Include="ScienceBook.h" />
     <ClInclude Include="StudentNPC.h" />
     <ClInclude Include="openai_client.h" />
     <ClInclude Include="TypingGame.h" />

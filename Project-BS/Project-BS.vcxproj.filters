@@ -78,12 +78,6 @@
     <ClCompile Include="BookFactory.cpp">
       <Filter>소스 파일\Book</Filter>
     </ClCompile>
-    <ClCompile Include="FantasyBook.cpp">
-      <Filter>소스 파일\Book</Filter>
-    </ClCompile>
-    <ClCompile Include="ScienceBook.cpp">
-      <Filter>소스 파일\Book</Filter>
-    </ClCompile>
     <ClCompile Include="GameManager.cpp">
       <Filter>소스 파일\Core</Filter>
     </ClCompile>
@@ -170,9 +164,6 @@
     <ClInclude Include="Enums.h">
       <Filter>헤더 파일\Common</Filter>
     </ClInclude>
-    <ClInclude Include="FantasyBook.h">
-      <Filter>헤더 파일\Book</Filter>
-    </ClInclude>
     <ClInclude Include="GameManager.h">
       <Filter>헤더 파일\Core</Filter>
     </ClInclude>
@@ -184,9 +175,6 @@
     </ClInclude>
     <ClInclude Include="RandomNPC.h">
       <Filter>헤더 파일\NPC</Filter>
-    </ClInclude>
-    <ClInclude Include="ScienceBook.h">
-      <Filter>헤더 파일\Book</Filter>
     </ClInclude>
     <ClInclude Include="StudentNPC.h">
       <Filter>헤더 파일\NPC</Filter>

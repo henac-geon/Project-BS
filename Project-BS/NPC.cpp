@@ -82,7 +82,7 @@ bool NPC::wantsRecommendation() const {
 
 // 골드 차감
 void NPC::payGold(int amount) {
-    gold = std::max(0, gold - amount);
+    gold = ((gold - amount) < 0) ? 0 : (gold - amount);
 }
 
 // 경험치(마법력) 증가
@@ -152,11 +152,11 @@ bool NPC::hasBorrowed() const {
 /////////////////////////////
 
 void NPC::setGold(int amount) {
-    gold = std::max(0, amount);
+    gold = (amount < 0) ? 0 : amount;
 }
 
 void NPC::setMagicPower(int amount) {
-    magicPower = std::max(0, amount);
+    magicPower = (amount < 0) ? 0 : amount;
 }
 
 void NPC::setRequestType(eRequestType type) {
