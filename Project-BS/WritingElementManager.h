@@ -6,6 +6,8 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <unordered_map>
+#include <algorithm>
 
 /**
  * @class WritingElementManager
@@ -18,12 +20,14 @@
 class WritingElementManager {
 private:
     std::map<std::string, std::vector<std::string>> elements;
+    std::unordered_map<std::string, std::unordered_map<std::string, int>> magicCostTable;
 
 public:
     WritingElementManager();
 
     void loadDefaultElements(); // 기본 요소 초기화
-
+    void loadMagicCosts(); // 마법기운 테이블 초기화
+    int getMagicCost(const std::string& category, const std::string& option) const; // 조회
     std::vector<std::string> getOptions(const std::string& category) const;
     std::vector<std::string> getAvailableOptions(const std::string& category, int level) const;
     void addElementOption(const std::string& category, const std::string& option);

@@ -1,4 +1,5 @@
 ﻿#include "BookFactory.h"
+#include "enum_utils.h"
 #include <codecvt>
 #include <locale>
 
@@ -6,74 +7,19 @@ namespace {
     constexpr int COLUMN_WIDTH = 16;
 }
 
-/*
- * TODO: 책을 생성하고 성공률을 체크하는 기능 추가 구현
- * TODO: 미니게임을 실행하는 기능을 추가 구현
- * TODO: 책을 복구하는 함수 추가 구현
-*/
-
 BookFactory::BookFactory() {
     elementManager.loadDefaultElements();
+    elementManager.loadMagicCosts(); // 마법기운 테이블도 초기화
 }
-
-std::string genreToString(eBookGenre g) {
-    switch (g) {
-    case eBookGenre::Fantasy: return "판타지";
-    case eBookGenre::SciFi: return "공상과학";
-    case eBookGenre::Apocalypse: return "아포칼립스";
-    case eBookGenre::Romance: return "로맨스";
-    case eBookGenre::Horror: return "공포";
-    case eBookGenre::Mystery: return "미스터리";
-    case eBookGenre::NonFiction: return "논픽션";
-    default: return "기타";
-    }
-}
-
-std::string moodToString(eBookMood mood) {
-    switch (mood) {
-    case eBookMood::Dark:        return "암울";
-    case eBookMood::Light:       return "밝음";
-    case eBookMood::Emotional:   return "감성적";
-    case eBookMood::Tense:       return "긴장감";
-    case eBookMood::Whimsical:   return "기발함";
-    default:                     return "중립";
-    }
-}
-
-std::string edgeToString(eBookEdge edge) {
-    switch (edge) {
-    case eBookEdge::None:        return "없음";
-    //case eBookEdge::Cursed:      return "저주";
-    //case eBookEdge::Blessed:     return "축복";
-    //case eBookEdge::Enchanted:   return "마법";
-    default:                     return "없음";
-    }
-}
-
-std::string etcToString(eBookEtc etc) {
-    switch (etc) {
-    case eBookEtc::None:             return "없음";
-    //case eBookEtc::Illustrated:      return "삽화";
-    //case eBookEtc::Signed:           return "서명본";
-    //case eBookEtc::Ancient:          return "고대";
-    //case eBookEtc::SecretCode:       return "숨겨진 코드";
-    //case eBookEtc::ForbiddenTech:    return "금단 기술";
-    default:                         return "없음";
-    }
-}
-
-
 
 // 유니코드 문자 너비 계산 함수
 int wcwidth(wchar_t ucs) {
     if (ucs == 0) return 0;
     if (ucs < 32 || (ucs >= 0x7F && ucs < 0xA0)) return -1;
 
-    // 결합 문자
     if ((ucs >= 0x300 && ucs <= 0x36F) || (ucs >= 0x200B && ucs <= 0x200F))
         return 0;
 
-    // 넓은 문자 (CJK, 이모지 포함)
     if ((ucs >= 0x1100 && ucs <= 0x115F) || (ucs >= 0x2E80 && ucs <= 0xA4CF) ||
         (ucs >= 0xAC00 && ucs <= 0xD7A3) || (ucs >= 0xF900 && ucs <= 0xFAFF) ||
         (ucs >= 0xFE10 && ucs <= 0xFE6F) || (ucs >= 0x1F300 && ucs <= 0x1F64F) ||
@@ -102,21 +48,18 @@ bool BookFactory::isElementAllowed(const std::string& category, const std::strin
         if (option == "미래 예시" || option == "금단 기술") return level >= 80;
     }
 
-    // 기본적으로 허용
     return true;
 }
 
-
 Book* BookFactory::createRandomBook() {
-    eBookGenre genre = static_cast<eBookGenre>(rand() % 3);  // Fantasy, Romance, Horror 예시
-    eBookMood mood = static_cast<eBookMood>(rand() % 2);     // Light, Dark 예시
-    int length = 60 + (rand() % 61); // 60~120
+    eBookGenre genre = static_cast<eBookGenre>(rand() % 3);
+    eBookMood mood = static_cast<eBookMood>(rand() % 2);
+    int length = 60 + (rand() % 61);
     eBookEdge edge = eBookEdge::None;
     eBookEtc etc = eBookEtc::None;
 
     return createBook("", "", genre, mood, length, edge, etc);
 }
-
 
 Book* BookFactory::createBook(
     const std::string& title,
@@ -126,40 +69,93 @@ Book* BookFactory::createBook(
     int length,
     eBookEdge edge,
     eBookEtc etc) {
-    std::string genreStr = genreToString(genre);
-    if (!isElementAllowed("장르", genreStr)) {
-        ConsoleIO::println("선택한 장르가 현재 레벨에서는 사용할 수 없습니다. 기본값으로 대체됩니다.");
-        genre = eBookGenre::Fantasy;
+
+    // --- [1] 각 요소의 한글 이름 추출 ---
+    std::string genreKo = EnumConverter<eBookGenre>::toKorean(genre);
+    std::string moodKo = EnumConverter<eBookMood>::toKorean(mood);
+    std::string lengthStr = std::to_string(length);
+    std::string edgeKo = EnumConverter<eBookEdge>::toKorean(edge);
+    std::string etcKo = EnumConverter<eBookEtc>::toKorean(etc);
+
+    // --- [2] 각 요소별 마법 기운 비용 조회 ---
+    int genreCost = elementManager.getMagicCost("장르", genreKo);
+    int moodCost = elementManager.getMagicCost("분위기", moodKo);
+    int lengthCost = elementManager.getMagicCost("분량", lengthStr);
+    int edgeCost = elementManager.getMagicCost("옛지 요소", edgeKo);
+    int etcCost = elementManager.getMagicCost("기타", etcKo);
+    int totalCost = genreCost + moodCost + lengthCost + edgeCost + etcCost;
+
+    // --- [3] 마법 기운 부족 시 일부 속성 축소 ---
+    if (player.getMagicPower() < totalCost) {
+        ConsoleIO::println("⚠ 마법 기운이 부족합니다. 일부 속성이 축소되어 책이 집필됩니다.");
+
+        if (player.getMagicPower() < genreCost + lengthCost) {
+            ConsoleIO::println("❌ 마법 기운이 너무 부족하여 책을 집필할 수 없습니다.");
+            return nullptr;
+        }
+
+        if (player.getMagicPower() < totalCost) {
+            if (edgeCost > 0) edge = eBookEdge::None;
+            if (etcCost > 0)  etc = eBookEtc::None;
+            if (moodCost > 40) mood = eBookMood::Light;
+        }
+
+        // 변경된 속성 기준으로 비용 재계산
+        moodKo = EnumConverter<eBookMood>::toKorean(mood);
+        edgeKo = EnumConverter<eBookEdge>::toKorean(edge);
+        etcKo = EnumConverter<eBookEtc>::toKorean(etc);
+
+        moodCost = elementManager.getMagicCost("분위기", moodKo);
+        edgeCost = elementManager.getMagicCost("옛지 요소", edgeKo);
+        etcCost = elementManager.getMagicCost("기타", etcKo);
+
+        totalCost = genreCost + moodCost + lengthCost + edgeCost + etcCost;
     }
 
+    // --- [4] 마법 기운 차감 ---
+    player.consumeMagicPower(totalCost);
+
+    // --- [5] 레벨 부족 시 대체 속성 적용 ---
+    if (!isElementAllowed("장르", genreKo)) {
+        ConsoleIO::println("⚠ 현재 레벨에서는 선택한 장르를 사용할 수 없습니다. '판타지'로 대체됩니다.");
+        genre = eBookGenre::Fantasy;
+    }
+    if (!isElementAllowed("분위기", moodKo)) {
+        ConsoleIO::println("⚠ 현재 레벨에서는 선택한 분위기를 사용할 수 없습니다. '밝음'으로 대체됩니다.");
+        mood = eBookMood::Light;
+    }
+    if (!isElementAllowed("옛지 요소", edgeKo)) {
+        ConsoleIO::println("⚠ 현재 레벨에서는 선택한 옛지 요소를 사용할 수 없습니다. '없음'으로 대체됩니다.");
+        edge = eBookEdge::None;
+    }
+    if (!isElementAllowed("기타", etcKo)) {
+        ConsoleIO::println("⚠ 현재 레벨에서는 선택한 기타 요소를 사용할 수 없습니다. '없음'으로 대체됩니다.");
+        etc = eBookEtc::None;
+    }
+
+    // --- [6] AI 생성 제목/설명 보완 ---
     std::string finalTitle = title;
     std::string finalDesc = description;
-
     if (finalTitle.empty() || finalDesc.empty()) {
         auto generated = generateTitleAndDescription(genre, mood, edge, etc);
         if (finalTitle.empty()) finalTitle = generated.first;
         if (finalDesc.empty()) finalDesc = generated.second;
     }
 
-    switch (genre) {
-    case eBookGenre::Fantasy:
-        return new Book(finalTitle, finalDesc, genre, mood, length, edge, etc);
-    case eBookGenre::SciFi:
-        return new Book(finalTitle, finalDesc, genre, mood, length, edge, etc);
-    default:
-        return new Book("기본 판타지", "AI 생성 실패", genre, mood, length, edge, etc);
-    }
+    // --- [7] 책 객체 생성 후 반환 ---
+    return new Book(finalTitle, finalDesc, genre, mood, length, edge, etc);
 }
+
 
 std::pair<std::string, std::string> BookFactory::generateTitleAndDescription(
     eBookGenre genre, eBookMood mood, eBookEdge edge, eBookEtc etc) {
 
     OpenAIClient client;
     std::string prompt = "다음 속성을 가진 책의 제목과 간단한 설명을 한국어로 생성해줘.\n\n";
-    prompt += "장르: " + genreToString(genre) + "\n";
-    prompt += "분위기: " + moodToString(mood) + "\n";
-    prompt += "특수 효과: " + edgeToString(edge) + "\n";
-    prompt += "기타: " + etcToString(etc) + "\n\n";
+    prompt += "장르: " + EnumConverter<eBookGenre>::toKorean(genre) + "\n";
+    prompt += "분위기: " + EnumConverter<eBookMood>::toKorean(mood) + "\n";
+    prompt += "특수 효과: " + EnumConverter<eBookEdge>::toKorean(edge) + "\n";
+    prompt += "기타: " + EnumConverter<eBookEtc>::toKorean(etc) + "\n\n";
     prompt += "응답 형식:\n{\n  \"title\": \"...\",\n  \"description\": \"...\"\n}";
 
     nlohmann::json response = client.sendChatCompletion(prompt);
@@ -169,10 +165,8 @@ std::pair<std::string, std::string> BookFactory::generateTitleAndDescription(
     return { title, description };
 }
 
-
 void BookFactory::displayPlayerStatus() const {
     std::string line;
-
     line += "마법 기운: " + std::to_string(player.getMagicPower()) + "   ";
     line += "골드: " + std::to_string(player.getGold()) + "   ";
     line += "LV." + std::to_string(player.getLevel()) + " (" + std::to_string(player.getExperience()) + "%)   ";
@@ -182,9 +176,6 @@ void BookFactory::displayPlayerStatus() const {
     ConsoleIO::println(line);
 }
 
-
-
-// UTF-8 문자열의 실제 출력 폭 계산
 int BookFactory::getDisplayWidth(const std::string& str) const {
     std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
     std::wstring wideStr = converter.from_bytes(str);
@@ -196,47 +187,37 @@ int BookFactory::getDisplayWidth(const std::string& str) const {
     return width;
 }
 
-// 오른쪽 패딩 적용
 std::string BookFactory::padRight(const std::string& str, int totalWidth) const {
     int padding = totalWidth - getDisplayWidth(str);
     return str + std::string((padding > 0) ? padding : 0, ' ');
 }
 
-
-// 카테고리 헤더 출력
 void BookFactory::displayCategoryHeaders(const std::vector<std::string>& categories, int colWidth) const {
     std::string headerLine;
     for (const auto& category : categories) {
-        headerLine += padRight(std::string("[") + category + std::string("]"), colWidth);
+        headerLine += padRight("[" + category + "]", colWidth);
     }
     ConsoleIO::println(headerLine);
 }
 
-// 요소 항목 출력
-// 사용 가능한 요소를 표로 출력
 void BookFactory::displayAvailableElements() const {
     const std::vector<std::string> categories = { "장르", "분위기", "분량", "옛지 요소", "기타" };
     std::vector<std::vector<std::string>> allOptions;
     size_t maxRows = 0;
     int level = player.getLevel();
 
-    // 옵션 필터링 및 최대 행 수 계산
     for (const auto& category : categories) {
         auto filtered = elementManager.getAvailableOptions(category, level);
         allOptions.push_back(filtered);
-        maxRows = (filtered.size() > maxRows) ? filtered.size() : maxRows; // 삼항 연산자 적용
+        maxRows = (filtered.size() > maxRows) ? filtered.size() : maxRows;
     }
 
-    // 헤더 출력
     std::string header;
     for (const auto& category : categories) {
         header += padRight(category, COLUMN_WIDTH) + "   ";
     }
     ConsoleIO::println(header);
 
-    // 구분선 생략 (원래는 ───────── 등)
-
-    // 항목 출력
     for (size_t row = 0; row < maxRows; ++row) {
         std::string line;
         for (size_t col = 0; col < allOptions.size(); ++col) {
@@ -244,7 +225,7 @@ void BookFactory::displayAvailableElements() const {
             std::string displayStr;
 
             if (value == "잠금") {
-                displayStr = "(잠금)  ";
+                displayStr = "(잠금)";
             }
             else {
                 std::string point;
@@ -283,3 +264,12 @@ void BookFactory::displayAvailableElements() const {
     }
 }
 
+
+//// 예시: 역변환 사용
+//void BookFactory::exampleReverseConversion() {
+//    std::string korean = "판타지";
+//    eBookGenre genre = EnumConverter<eBookGenre>::fromKorean(korean);
+//    int code = EnumConverter<eBookGenre>::toInt(genre);
+//    eBookGenre genre2 = EnumConverter<eBookGenre>::fromInt(code);
+//    ConsoleIO::println("역변환 테스트 완료: " + EnumConverter<eBookGenre>::toKorean(genre2));
+//}
