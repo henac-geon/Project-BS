@@ -3,17 +3,22 @@
 
 CrudStore::CrudStore(const std::string& storeName)
     : name(storeName), experience(0), level(1), score(0) {
+    // 초기화 작업
+    for (int i = 0; i < 5; ++i) {
+        inventory.addBook(bookFactory.createRandomBook());
+    }
 }
 
 void CrudStore::displayStatus() const {
-    std::cout << "===== [" << name << "] 상태 출력 =====" << std::endl;
-    std::cout << "레벨: " << level << " (" << experience << " XP)" << std::endl;
-    std::cout << "골드: " << player.getGold() << std::endl;
-    std::cout << "마법력: " << player.getMagicPower() << std::endl;
-    std::cout << "서점 등급: " << player.getBookstoreRank() << std::endl;
-    std::cout << "책 보유량: " << player.getBookStock() << std::endl;
-    std::cout << "평판 점수: " << score << std::endl;
-    std::cout << "====================================" << std::endl;
+    std::string line;
+
+    line += "마법 기운: " + std::to_string(player.getMagicPower()) + "   ";
+    line += "골드: " + std::to_string(player.getGold()) + "   ";
+    line += "LV." + std::to_string(player.getLevel()) + " (" + std::to_string(player.getExperience()) + "%)   ";
+    line += "서점 랭킹: Rank " + std::to_string(player.getBookstoreRank()) + "   ";
+    line += "재고 상태: " + std::to_string(player.getBookStock()) + "/" + std::to_string(player.getMaxBookStock());
+
+    ConsoleIO::println(line);
 }
 
 void CrudStore::gainExperience(int amount) {
@@ -23,6 +28,7 @@ void CrudStore::gainExperience(int amount) {
 
 bool CrudStore::checkLevelUp() {
     const int threshold = 100;
+    // TODO: 레벨업 로직 따로 만들기(레벨업을 하면 얻는 부과 효과를 구현해야 함)
     if (experience >= threshold) {
         level++;
         experience -= threshold;
@@ -37,11 +43,11 @@ int CrudStore::getLevel() const {
 }
 
 int CrudStore::calculateGoldPenalty(const Book& book) const {
-    return book.getDamage() * 10;
+    return 0; // book.getConditionValue() * 10;
 }
 
 int CrudStore::calculateMagicPenalty(const Book& book) const {
-    return book.getDamage() * 5;
+    return 0; // book.getConditionValue() * 5;
 }
 
 // 점수 시스템 구현

@@ -11,6 +11,7 @@
 #include "ConsoleIO.h"
 #include "Player.h"
 #include "WritingElementManager.h"
+#include "openai_client.h"
 
 class BookFactory {
 private:
@@ -29,7 +30,10 @@ public:
     bool isElementAllowed(const std::string& category, const std::string& option) const;
 
     // 책 생성
-    Book* createBook(eBookGenre genre, eBookMood mood, int length, eBookEdge edge, eBookEtc etc);
+    Book* createBook(const std::string& title, const std::string& description, eBookGenre genre, eBookMood mood, int length, eBookEdge edge, eBookEtc etc);
+    Book* createRandomBook();
+    std::pair<std::string, std::string> generateTitleAndDescription(
+        eBookGenre genre, eBookMood mood, eBookEdge edge, eBookEtc etc);
 
     // 출력 관련
     void displayPlayerStatus() const;

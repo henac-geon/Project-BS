@@ -3,53 +3,70 @@
 #ifndef NPC_H
 #define NPC_H
 
-#include <string>      // std::string 사용을 위한 헤더
-#include <vector>      // std::vector 사용을 위한 헤더
-#include "Book.h"     // Book 클래스 정의 포함
-#include "Enums.h"    // eBookGenre, eBookMood 열거형 정의 포함
-#include "AsciiArtRepository.h"
+#include <string>
+#include <vector>
+#include "Book.h"
+#include "Enums.h"
 
-// NPC(Non-Player Character) 추상 클래스
-// 게임 내에서 책을 요청하고 평점 매기기, 손상된 책에 대한 보상을 처리하는 인터페이스 역할을 합니다.
+// NPC 클래스는 게임 내 책을 대여하거나 반환하는 손님 역할을 수행합니다.
 class NPC {
 protected:
-    std::string name;
-    eBookGenre preferredGenre;      // 선호하는 책 장르 (Enums.h 참조)
-    eBookMood preferredMood;        // 현재 기분에 맞춰 선호하는 책 분위기
-    std::vector<Book*> inventory;   // 소유하거나 대여 가능한 책 목록
-    int gold;                       // 보유한 금화 (경제 시스템에서 사용)
-    int magicPower;                 // 마법력 (특정 보상 또는 상호작용에 활용)
-    eRequestType requestType = eRequestType::GenreAndMood;  // NPC가 원하는 책 추천 조건
+    std::string name;                         // NPC 이름
+    bool isMale;                              // 성별
+    eBookGenre preferredGenre;                // 선호 장르
+    eBookMood preferredMood;                  // 선호 분위기
+    int gold;                                 // 보유 골드
+    int magicPower;                           // 마법 기운
+    bool borrowed;                            // 대여 여부
+    eRequestType requestType;                 // 요청 유형
+    std::vector<Book*> inventory;             // 소지한 책들
+    std::vector<std::string> dialogues;       // 대사 목록
+
+    Book* currentBook = nullptr;              // 현재 들고 있는 책
+    bool hasBook = false;                     // 책 소지 여부
 
 public:
-    NPC(const std::string& name, eBookGenre genre, eBookMood mood, int gold, int magicPower);
+    // 생성자 및 소멸자
+    NPC(const std::string& name, bool isMale, eBookGenre genre, eBookMood mood, int gold, int magicPower);
     virtual ~NPC() = default;
 
-    virtual Book* requestBook(const std::vector<Book*>& candidates) = 0;
+    // 순수 가상 함수 (자식 클래스에서 구현 필요)
+    virtual bool rateBook(Book* book) const = 0;           // 책 평가
+    virtual bool borrowBook(Book* book) = 0;               // 책 대여 시도
+    virtual Book* returnBook() = 0;                        // 책 반환
+    virtual bool isReturningBook() const = 0;              // 책을 반환할지 여부
+    virtual bool wantsRecommendation() const = 0;          // 추천을 원하는지 여부
+    virtual void compensateForDamage(Book* book) = 0;      // 책이 손상되었을 때 보상 처리
+    virtual void debugPrint() const = 0;                   // 디버깅 정보 출력
 
-    /// 요청한 책을 평가하는 함수
-    virtual bool rateBook(Book* book) const;
-
-    /// NPC가 손상된 책에 대해 보상하는 함수
-    virtual void compensateForDamage(Book* book) = 0;
-
-
+    // Getter
     std::string getName() const;
+    bool getIsMale() const;
     eBookGenre getPreferredGenre() const;
     eBookMood getPreferredMood() const;
-    const std::vector<Book*>& getInventory() const;
     int getGold() const;
     int getMagicPower() const;
     eRequestType getRequestType() const;
-    std::string getArt() const;
-    std::string getDialogue() const;
+    Book* getCurrentBook() const;
+    bool isHoldingBook() const;
+    const std::vector<Book*>& getInventory() const;
+    bool hasBookInInventory(const Book* book) const;
+    bool hasBorrowed() const;                              // 책을 대여한 상태인지
 
-    void setName(const std::string& newName);
-    void setPreferredGenre(eBookGenre genre);
-    void setPreferredMood(eBookMood mood);
-    void setGold(int newGold);
-    void setMagicPower(int newMagicPower);
+    // Setter
+    void setGold(int amount);
+    void setMagicPower(int amount);
     void setRequestType(eRequestType type);
+    void setDialogues(const std::vector<std::string>& lines);
+
+    // 행동 관련 메서드
+    void payGold(int amount);                              // 골드 지불
+    void gainExp(int amount);                              // 경험치 지불
+    void removeBookFromInventory(Book* book);              // 책 제거
+    std::string getArt() const;                            // NPC 아트 반환
+
+    // 대사 관련
+    const std::vector<std::string>& getDialogues() const;
 };
 
 #endif // NPC_H

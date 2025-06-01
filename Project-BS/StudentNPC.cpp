@@ -1,33 +1,60 @@
-﻿#include "NPC.h"
-#include "StudentNPC.h"
+﻿#include "StudentNPC.h"
 #include "ConsoleIO.h"
+#include <cstdlib>
 
-/**
+bool StudentNPC::rateBook(Book* book) const {
+    if (!book) return false;
 
-StudentNPC::StudentNPC(const std::string& name)
-    : NPC(name, eBookGenre::Mystery, eBookMood::Light, 100, 10) {
+    ConsoleIO::print("학생이 책의 교육적 가치를 평가합니다.");
+    return true;
 }
 
-*/
+bool StudentNPC::borrowBook(Book* book) {
+    if (!book) return false;
 
-StudentNPC::StudentNPC(const std::string& name,
-    eBookGenre genre,
-    eBookMood mood,
-    int gold,
-    int magicPower)
-    : NPC(name, genre, mood, gold, magicPower) {
+    ConsoleIO::print(name + "이(가) \"" + book->getTitle() + "\" 책을 빌립니다.");
+    borrowed = true;
+    inventory.push_back(book);
+    book->setAvailable(false);
+    return true;
 }
 
-Book* StudentNPC::requestBook(const std::vector<Book*>& candidates) {
-    if (!candidates.empty()) return candidates.front();
+Book* StudentNPC::returnBook() {
+    if (!inventory.empty()) {
+        Book* b = inventory.back();
+        inventory.pop_back();
+        borrowed = false;
+        ConsoleIO::print(name + "이(가) \"" + b->getTitle() + "\" 책을 반납합니다.");
+        b->setAvailable(true);
+        return b;
+    }
     return nullptr;
 }
 
-bool StudentNPC::rateBook(Book* book) const {
-    return NPC::rateBook(book);  // 학생 NPC 책 평가
+bool StudentNPC::isReturningBook() const {
+    return borrowed;  // 책을 빌렸으면 반납
+}
+
+bool StudentNPC::wantsRecommendation() const {
+    return !borrowed;  // 책을 빌리지 않은 경우 추천을 원함
 }
 
 void StudentNPC::compensateForDamage(Book* book) {
-    ConsoleIO::println(getName() + " compensates 10 gold.");
-    setGold(getGold() - 10);
+    if (!book) return;
+
+    ConsoleIO::print("학생이 책 손상에 대해 5골드로 보상합니다.");
+    gold -= 5;
+}
+
+void StudentNPC::debugPrint() const {
+    ConsoleIO::print("=== 학생 NPC 디버그 정보 ===");
+    ConsoleIO::print("이름: " + name);
+    ConsoleIO::print("보유 골드: " + std::to_string(gold));
+    ConsoleIO::print("마력 수치: " + std::to_string(magicPower));
+    ConsoleIO::print("책 보유 여부: " + std::string(borrowed ? "예" : "아니오"));
+    if (!inventory.empty()) {
+        ConsoleIO::print("보유한 책 수: " + std::to_string(inventory.size()));
+        ConsoleIO::print("마지막 책 제목: " + inventory.back()->getTitle());
+    }
+    ConsoleIO::print("===========================");
 }

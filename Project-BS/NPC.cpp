@@ -1,115 +1,208 @@
-﻿#include "NPC.h"    // NPC 클래스 정의 헤더 포함
+﻿#include "NPC.h"
+#include "AsciiArtRepository.h"
+#include <iostream>
+#include <cstdlib>
+#include <algorithm>
 
-/**
- * @brief NPC 클래스 생성자 구현
- *
- * @param name        NPC의 고유 이름
- * @param genre       NPC가 선호하는 책 장르 (Enums.h에 정의된 eBookGenre)
- * @param mood        NPC가 선호하는 책 분위기 (Enums.h에 정의된 eBookMood)
- * @param gold        초기 금화량 (게임 내 경제 시스템에서 사용)
- * @param magicPower  초기 마법력 (특정 상호작용이나 보상 시스템에서 사용)
- *
- * 본 생성자에서는 멤버 초기화 리스트를 사용하여 각 멤버 변수를
- * 전달받은 인수로 간결하고 안전하게 초기화합니다.
- */
-NPC::NPC(
-    const std::string& name,
-    eBookGenre genre,
-    eBookMood mood,
-    int gold,
-    int magicPower)
+// 생성자: NPC 속성 초기화 및 랜덤 요청 타입 설정
+NPC::NPC(const std::string& name, bool isMale, eBookGenre genre, eBookMood mood, int gold, int magicPower)
     : name(name),
+    isMale(isMale),
     preferredGenre(genre),
     preferredMood(mood),
     gold(gold),
-    magicPower(magicPower)
+    magicPower(magicPower),
+    requestType(eRequestType::GenreOnly),
+    borrowed(false)
 {
-    // TODO: 필요 시 초기화 후 추가 로직을 여기에 구현
-    // 예: 기본 인벤토리(Book 포인터)를 설정하거나,
-    //     초기화 메시지 출력, 통계 증가 등
-}
-
-// NPC가 받은 책을 평가하는 함수
-bool NPC::rateBook(Book* book) const {
-    if (!book) return false;    // 추천 못 받았을 경우
-
-    switch (requestType) {
-    case eRequestType::GenreOnly:    // 장르만 추천받는 타입
-        return book->getGenre() == this->preferredGenre;
-    case eRequestType::MoodOnly:     // 무드만 추천받는 타입
-        return book->getMood() == this->preferredMood;
-    case eRequestType::GenreAndMood:     // 둘다 추천받는 타입
-        return book->getGenre() == this->preferredGenre && book->getMood() == this->preferredMood;
-    case eRequestType::AnyBook: // 장르, 무드 상관없이 추천만 받으면 OK
-        return true;
+    // 요청 타입 무작위 설정
+    int r = rand() % 3;
+    switch (r) {
+    case 0: requestType = eRequestType::GenreOnly; break;
+    case 1: requestType = eRequestType::MoodOnly; break;
+    case 2: requestType = eRequestType::GenreAndMood; break;
     }
 
-    return false;   // 예외
+    // 기본 대사 설정
+    dialogues = { "오늘은 뭔가 끌리는 책이 있을까요?" };
 }
 
-/**
-* 
-* NPC.h에서 만들었던 get 함수와 set 함수 정의
-* 
-*/
+/////////////////////////////
+// 평가/대여/반환 관련 메서드
+/////////////////////////////
+
+// 추천된 책 평가
+bool NPC::rateBook(Book* book) const {
+    if (!book) return false;
+
+    switch (requestType) {
+    case eRequestType::GenreOnly:
+        return book->getGenre() == preferredGenre;
+    case eRequestType::MoodOnly:
+        return book->getMood() == preferredMood;
+    case eRequestType::GenreAndMood:
+        return book->getGenre() == preferredGenre && book->getMood() == preferredMood;
+    case eRequestType::AnyBook:
+        return true;
+    }
+    return false;
+}
+
+// 책 대여 시도
+bool NPC::borrowBook(Book* book) {
+    if (!book || borrowed) return false;
+    inventory.push_back(book);
+    borrowed = true;
+    return true;
+}
+
+// 책 반환
+Book* NPC::returnBook() {
+    if (!borrowed || inventory.empty()) return nullptr;
+
+    Book* book = inventory.back();
+    inventory.pop_back();
+    borrowed = false;
+    return book;
+}
+
+// 책 반납 여부 결정 (50% 확률)
+bool NPC::isReturningBook() const {
+    return borrowed && (rand() % 2 == 0);
+}
+
+// 추천 요청 여부 결정 (책 미보유 + 50% 확률)
+bool NPC::wantsRecommendation() const {
+    return !borrowed && (rand() % 2 == 0);
+}
+
+/////////////////////////////
+// 골드/경험치 관련 메서드
+/////////////////////////////
+
+// 골드 차감
+void NPC::payGold(int amount) {
+    gold = std::max(0, gold - amount);
+}
+
+// 경험치(마법력) 증가
+void NPC::gainExp(int amount) {
+    magicPower += amount;
+}
+
+// 책 손상 보상 처리 (기본 미구현)
+void NPC::compensateForDamage(Book* book) {
+    std::cout << "[주의] 이 NPC는 기본 보상 로직이 구현되지 않았습니다." << std::endl;
+}
+
+/////////////////////////////
+// Getter
+/////////////////////////////
 
 std::string NPC::getName() const {
     return name;
 }
 
-void NPC::setName(const std::string& newName) {
-    name = newName;
+bool NPC::getIsMale() const {
+    return isMale;
 }
 
 eBookGenre NPC::getPreferredGenre() const {
     return preferredGenre;
 }
 
-void NPC::setPreferredGenre(eBookGenre genre) {
-    preferredGenre = genre;
-}
-
 eBookMood NPC::getPreferredMood() const {
     return preferredMood;
-}
-
-void NPC::setPreferredMood(eBookMood mood) {
-    preferredMood = mood;
-}
-
-const std::vector<Book*>& NPC::getInventory() const {
-    return inventory;
 }
 
 int NPC::getGold() const {
     return gold;
 }
 
-void NPC::setGold(int newGold) {
-    gold = newGold;
-}
-
 int NPC::getMagicPower() const {
     return magicPower;
-}
-
-void NPC::setMagicPower(int newMagicPower) {
-    magicPower = newMagicPower;
 }
 
 eRequestType NPC::getRequestType() const {
     return requestType;
 }
 
+Book* NPC::getCurrentBook() const {
+    return currentBook;
+}
+
+bool NPC::isHoldingBook() const {
+    return hasBook;
+}
+
+const std::vector<Book*>& NPC::getInventory() const {
+    return inventory;
+}
+
+bool NPC::hasBookInInventory(const Book* book) const {
+    return std::find(inventory.begin(), inventory.end(), book) != inventory.end();
+}
+
+bool NPC::hasBorrowed() const {
+    return borrowed;
+}
+
+/////////////////////////////
+// Setter
+/////////////////////////////
+
+void NPC::setGold(int amount) {
+    gold = std::max(0, amount);
+}
+
+void NPC::setMagicPower(int amount) {
+    magicPower = std::max(0, amount);
+}
+
 void NPC::setRequestType(eRequestType type) {
     requestType = type;
 }
 
-std::string NPC::getArt() const {
-    // 기본적으로 여성 NPC 아트를 반환하되, 필요시 오버라이드 가능
-    return AsciiArt::showFemaleNPCArt(); // 또는 showRandomNPCArt()
+void NPC::setDialogues(const std::vector<std::string>& lines) {
+    dialogues = lines;
 }
 
-std::string NPC::getDialogue() const {
-    return name + ": 좋은 책 하나 추천해 주실 수 있나요?";
+/////////////////////////////
+// 기타 유틸리티
+/////////////////////////////
+
+// 책 제거
+void NPC::removeBookFromInventory(Book* book) {
+    auto it = std::find(inventory.begin(), inventory.end(), book);
+    if (it != inventory.end()) {
+        inventory.erase(it);
+    }
+}
+
+// 아트 반환
+std::string NPC::getArt() const {
+    return isMale ? AsciiArt::showMaleNPCArt() : AsciiArt::showFemaleNPCArt();
+}
+
+// 대사 반환
+const std::vector<std::string>& NPC::getDialogues() const {
+    return dialogues;
+}
+
+// 디버깅 정보 출력
+void NPC::debugPrint() const {
+    std::cout << "===== NPC DEBUG INFO =====" << std::endl;
+    std::cout << "Name: " << name << std::endl;
+    std::cout << "Preferred Genre: " << static_cast<int>(preferredGenre) << std::endl;
+    std::cout << "Preferred Mood: " << static_cast<int>(preferredMood) << std::endl;
+    std::cout << "Request Type: " << static_cast<int>(requestType) << std::endl;
+    std::cout << "Gold: " << gold << std::endl;
+    std::cout << "Magic Power: " << magicPower << std::endl;
+    std::cout << "Has Borrowed: " << (borrowed ? "Yes" : "No") << std::endl;
+    std::cout << "Inventory Size: " << inventory.size() << std::endl;
+    std::cout << "Dialogues:" << std::endl;
+    for (size_t i = 0; i < dialogues.size(); ++i) {
+        std::cout << "  [" << i + 1 << "] " << dialogues[i] << std::endl;
+    }
+    std::cout << "==========================" << std::endl;
 }

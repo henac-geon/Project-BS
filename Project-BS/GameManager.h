@@ -9,6 +9,8 @@
 
 #include <vector>
 #include <string>
+#include <thread>  // std::this_thread::sleep_for
+#include <chrono>  // std::chrono::seconds
 
 /**
  * @class GameManager
@@ -22,6 +24,7 @@ private:
     int day;                   ///< 현재 날짜
     CrudStore crud;
     std::vector<NPC*> npcs;    ///< 하루에 등장하는 NPC 리스트
+    static constexpr int MAX_NPC_COUNT = 5; ///< 최대 NPC 수
     UIManager uiManager;       ///< UI 출력 전담 관리자
    
 public:
@@ -35,6 +38,8 @@ public:
     void performNPCPhase();           ///< NPC 응대 단계
     void performSettlementPhase();    ///< 하루 마무리 정산 단계
     void endDay();                    ///< 하루 종료 및 레벨 확인
+    void callNPCGenerationAPI(); ///< NPC 생성 API 호출
+    void displayLoadingAnimation(int seconds); ///< 로딩 애니메이션 표시
 };
 
 #endif // GAME_MANAGER_H

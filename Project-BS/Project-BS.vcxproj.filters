@@ -61,6 +61,12 @@
     <Filter Include="소스 파일\Commons">
       <UniqueIdentifier>{f9dbda96-5671-4a4b-8e5e-8dcbe5cd5589}</UniqueIdentifier>
     </Filter>
+    <Filter Include="헤더 파일\AI">
+      <UniqueIdentifier>{0cf0f0f2-a8f0-40d0-bd30-398766b391d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\AI">
+      <UniqueIdentifier>{f03e56e0-7ca1-4eac-954a-cd48d46755e6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AsciiArtRepository.cpp">
@@ -102,9 +108,6 @@
     <ClCompile Include="CsvIO.cpp">
       <Filter>소스 파일\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="UIManager.cpp">
       <Filter>소스 파일\UI</Filter>
     </ClCompile>
@@ -117,11 +120,38 @@
     <ClCompile Include="WritingElementManager.cpp">
       <Filter>소스 파일\Core</Filter>
     </ClCompile>
-    <ClCompile Include="test.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="CrudStore.cpp">
       <Filter>소스 파일\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="openai_client.cpp">
+      <Filter>소스 파일\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="TypingGame.cpp">
+      <Filter>소스 파일\MiniGame</Filter>
+    </ClCompile>
+    <ClCompile Include="ReactionGame.cpp">
+      <Filter>소스 파일\MiniGame</Filter>
+    </ClCompile>
+    <ClCompile Include="ElfScholarNPC..cpp">
+      <Filter>소스 파일\NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="KnightNPC.cpp">
+      <Filter>소스 파일\NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="MerchantNPC.cpp">
+      <Filter>소스 파일\NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="VampireNPC.cpp">
+      <Filter>소스 파일\NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="LibrarianNPC.cpp">
+      <Filter>소스 파일\NPC</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="enum_utils.cpp">
+      <Filter>소스 파일\Commons</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -182,8 +212,32 @@
     <ClInclude Include="CrudStore.h">
       <Filter>헤더 파일\Core</Filter>
     </ClInclude>
-    <ClInclude Include="test.h">
-      <Filter>헤더 파일</Filter>
+    <ClInclude Include="openai_client.h">
+      <Filter>헤더 파일\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="TypingGame.h">
+      <Filter>헤더 파일\MiniGame</Filter>
+    </ClInclude>
+    <ClInclude Include="ReactionGame.h">
+      <Filter>헤더 파일\MiniGame</Filter>
+    </ClInclude>
+    <ClInclude Include="ElfScholarNPC.h">
+      <Filter>헤더 파일\NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="KnightNPC.h">
+      <Filter>헤더 파일\NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="LibrarianNPC.h">
+      <Filter>헤더 파일\NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="MerchantNPC.h">
+      <Filter>헤더 파일\NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="VampireNPC.h">
+      <Filter>헤더 파일\NPC</Filter>
+    </ClInclude>
+    <ClInclude Include="enum_utils.h">
+      <Filter>헤더 파일\Common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
