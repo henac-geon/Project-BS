@@ -126,7 +126,7 @@
     <ClCompile Include="ReactionGame.cpp">
       <Filter>소스 파일\MiniGame</Filter>
     </ClCompile>
-    <ClCompile Include="ElfScholarNPC..cpp">
+    <ClCompile Include="ElfScholarNPC.cpp">
       <Filter>소스 파일\NPC</Filter>
     </ClCompile>
     <ClCompile Include="KnightNPC.cpp">

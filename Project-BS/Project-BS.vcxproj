@@ -141,7 +141,7 @@
     <ClCompile Include="ConsoleIO.cpp" />
     <ClCompile Include="CrudStore.cpp" />
     <ClCompile Include="CsvIO.cpp" />
-    <ClCompile Include="ElfScholarNPC..cpp" />
+    <ClCompile Include="ElfScholarNPC.cpp" />
     <ClCompile Include="enum_utils.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="inventory.cpp" />
