@@ -236,7 +236,7 @@ void GameManager::performNPCPhase() {
 
         bool shouldRemove = false;
 
-        if (npc->isReturningBook()) {
+        if (npc->hasBorrowed()) {
             Book* returnedBook = npc->returnBook();
             if (returnedBook) {
                 // TODO: 고객 책 반납 시 처리;
@@ -278,7 +278,7 @@ void GameManager::performNPCPhase() {
                 bool satisfied = npc->rateBook(selected);
                 if (satisfied) {
                     ConsoleIO::println("고객이 만족해했습니다!");
-                    // TODO: 고객 만족 시 보상 처리
+                    // 고객 만족 시 보상 처리
                     npc->borrowBook(selected);
                     crud.addDailyGold(npc->payGold(10));       // 일일 골드
                     crud.addDailyMagicPower(npc->payMagicPower(10)); // 마법력 증가
@@ -287,7 +287,7 @@ void GameManager::performNPCPhase() {
                 }
                 else {
                     ConsoleIO::println("고객이 불만족해합니다...");
-                    // TODO: 고객 불만족 시 패널티 처리
+                    // 고객 불만족 시 패널티 처리
                     crud.addDailyScore(-3);      // 일일 점수도 반영
                 }
 
@@ -379,10 +379,11 @@ void GameManager::performSettlementPhase() {
     }
 
 
-    // TODO: 플레이어의 스텟 정산
-    // TODO: 서점 랭킹 업데이트
-    // 정산 후 하루 수익 초기화
+    // 플레이어의 스텟 정산
+    // 서점 랭킹 업데이트
     crud.displayDailySummary();
+
+    // 정산 후 하루 수익 초기화
     crud.resetDailyEarnings();
 
     std::string ans;

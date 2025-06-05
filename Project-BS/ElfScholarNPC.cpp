@@ -21,25 +21,23 @@ bool ElfScholarNPC::borrowBook(Book* book) {
     if (!book) return false;
 
     ConsoleIO::print(name + "이(가) \"" + book->getTitle() + "\" 책을 조심스럽게 빌립니다.");
-    hasBook = true;
     currentBook = book;
     book->setAvailable(false);
     return true;
 }
 
 Book* ElfScholarNPC::returnBook() {
-    if (!hasBook || !currentBook) return nullptr;
+    if (!currentBook) return nullptr;
 
     ConsoleIO::print(name + "이(가) \"" + currentBook->getTitle() + "\" 책을 정중하게 반납합니다.");
     currentBook->setAvailable(true);
-    hasBook = false;
     Book* returned = currentBook;
     currentBook = nullptr;
     return returned;
 }
 
 bool ElfScholarNPC::isReturningBook() const {
-    return hasBook;  // 엘프는 항상 반납함
+    return currentBook ? true : false;  // 엘프는 항상 반납함
 }
 
 bool ElfScholarNPC::wantsRecommendation() const {
@@ -60,7 +58,7 @@ void ElfScholarNPC::debugPrint() const {
     ConsoleIO::print("선호 분위기: " + std::to_string(static_cast<int>(preferredMood)));
     ConsoleIO::print("보유 골드: " + std::to_string(gold));
     ConsoleIO::print("마력 수치: " + std::to_string(magicPower));
-    ConsoleIO::print("현재 책 보유 여부: " + std::string(hasBook ? "예" : "아니오"));
+    ConsoleIO::print("현재 책 보유 여부: " + std::string(currentBook ? "예" : "아니오"));
     if (currentBook) {
         ConsoleIO::print("책 제목: " + currentBook->getTitle());
     }

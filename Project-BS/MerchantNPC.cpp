@@ -13,24 +13,22 @@ bool MerchantNPC::borrowBook(Book* book) {
     if (!book) return false;
 
     ConsoleIO::print(name + "이(가) \"" + book->getTitle() + "\" 책을 빌려갑니다.");
-    borrowed = true;
-    inventory.push_back(book);
+    currentBook = book;
     book->setAvailable(false);
     return true;
 }
 
 Book* MerchantNPC::returnBook() {
-    if (borrowed && rand() % 4 == 0) {
+    if (currentBook && rand() % 4 == 0) {
         ConsoleIO::print("상인이 책을 도난당했다고 주장합니다!");
-        borrowed = false;
+        currentBook = nullptr;
         return nullptr;
     }
 
-    if (!inventory.empty()) {
-        Book* b = inventory.back();
-        inventory.pop_back();
-        borrowed = false;
-        ConsoleIO::print(name + "이(가) \"" + b->getTitle() + "\" 책을 반납합니다.");
+    if (currentBook) {
+        ConsoleIO::print(name + "이(가) \"" + currentBook->getTitle() + "\" 책이 형편없다며 반납합니다.");
+        Book* b = currentBook;
+        currentBook = nullptr;
         b->setAvailable(true);
         return b;
     }
@@ -57,11 +55,8 @@ void MerchantNPC::debugPrint() const {
     ConsoleIO::print("=== 상인 NPC 디버그 정보 ===");
     ConsoleIO::print("이름: " + name);
     ConsoleIO::print("보유 골드: " + std::to_string(gold));
-    ConsoleIO::print("책 보유 여부: " + std::string(borrowed ? "예" : "아니오"));
-    if (!inventory.empty()) {
-        ConsoleIO::print("보유한 책 수: " + std::to_string(inventory.size()));
-        ConsoleIO::print("마지막 책 제목: " + inventory.back()->getTitle());
-    }
+    ConsoleIO::print("책 보유 여부: " + std::string(currentBook ? "예" : "아니오"));
+    ConsoleIO::print("현재 책: " + (currentBook ? currentBook->getTitle() : "없음"));
     ConsoleIO::print("===========================");
 }
 

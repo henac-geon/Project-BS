@@ -79,7 +79,7 @@ enum class eDamageType {
 // NPC의 요청 조건 유형
 //
 enum class eRequestType {
-
+    ReturnBook,      // 책 반납
     GenreOnly,       // 장르만 요구
     MoodOnly,        // 분위기만 요구
     GenreAndMood,    // 둘 다 요구

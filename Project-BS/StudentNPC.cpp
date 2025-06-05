@@ -13,30 +13,27 @@ bool StudentNPC::borrowBook(Book* book) {
     if (!book) return false;
 
     ConsoleIO::print(name + "이(가) \"" + book->getTitle() + "\" 책을 빌립니다.");
-    borrowed = true;
-    inventory.push_back(book);
+    currentBook = book;
     book->setAvailable(false);
     return true;
 }
 
 Book* StudentNPC::returnBook() {
-    if (!inventory.empty()) {
-        Book* b = inventory.back();
-        inventory.pop_back();
-        borrowed = false;
-        ConsoleIO::print(name + "이(가) \"" + b->getTitle() + "\" 책을 반납합니다.");
-        b->setAvailable(true);
-        return b;
-    }
-    return nullptr;
+    if (!currentBook) return nullptr;
+
+    ConsoleIO::print(name + "이(가) \"" + currentBook->getTitle() + "\" 책을 반납합니다.");
+    currentBook->setAvailable(true);
+    Book* returned = currentBook;
+    currentBook = nullptr;
+    return returned;
 }
 
 bool StudentNPC::isReturningBook() const {
-    return borrowed;  // 책을 빌렸으면 반납
+    return currentBook ? true : false;  // 책을 빌렸는지 확인
 }
 
 bool StudentNPC::wantsRecommendation() const {
-    return !borrowed;  // 책을 빌리지 않은 경우 추천을 원함
+    return currentBook ? true : false;  // 책을 빌리지 않은 경우 추천을 원함
 }
 
 void StudentNPC::compensateForDamage(Book* book) {
@@ -51,11 +48,8 @@ void StudentNPC::debugPrint() const {
     ConsoleIO::print("이름: " + name);
     ConsoleIO::print("보유 골드: " + std::to_string(gold));
     ConsoleIO::print("마력 수치: " + std::to_string(magicPower));
-    ConsoleIO::print("책 보유 여부: " + std::string(borrowed ? "예" : "아니오"));
-    if (!inventory.empty()) {
-        ConsoleIO::print("보유한 책 수: " + std::to_string(inventory.size()));
-        ConsoleIO::print("마지막 책 제목: " + inventory.back()->getTitle());
-    }
+    ConsoleIO::print("책 보유 여부: " + std::string(currentBook ? "예" : "아니오"));
+    ConsoleIO::print("현재 책: " + (currentBook ? currentBook->getTitle() : "없음"));
     ConsoleIO::print("===========================");
 }
 

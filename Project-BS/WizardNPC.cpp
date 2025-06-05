@@ -5,37 +5,43 @@
 bool WizardNPC::rateBook(Book* book) const {
     if (!book) return false;
 
-    ConsoleIO::print("마법사는 책에서 마법적 에너지를 감지하려 합니다.");
-    ConsoleIO::print("흐름이 느껴지는군요... (평가 통과)");
-    return true;
+    ConsoleIO::print("마법사는 책에서 마법적 에너지를 감지하려 합니다...");
+
+    // 예: 책이 마법 장르거나 마법 에너지를 포함해야 함
+    if (book->getGenre() == eBookGenre::Fantasy || book->getGenre() == eBookGenre::Mystery || book->getGenre() == eBookGenre::NonFiction) {
+        ConsoleIO::print("흐름이 느껴지는군요... (평가 통과)");
+        return true;
+    }
+    else {
+        ConsoleIO::print("...이 책엔 마법이 느껴지지 않습니다. (평가 실패)");
+        return false;
+    }
 }
+
 
 bool WizardNPC::borrowBook(Book* book) {
     if (!book) return false;
 
     ConsoleIO::print(name + "이(가) \"" + book->getTitle() + "\" 책을 조심스럽게 대출합니다.");
-    borrowed = true;
-    inventory.push_back(book);
+    currentBook = book;
     book->setAvailable(false);
     return true;
 }
 
 Book* WizardNPC::returnBook() {
-    if (!inventory.empty()) {
-        Book* b = inventory.back();
-        inventory.pop_back();
-        borrowed = false;
-        ConsoleIO::print(name + "이(가) \"" + b->getTitle() + "\" 책을 되돌려 놓습니다.");
-        b->setAvailable(true);
-        return b;
-    }
-    return nullptr;
+    if (!currentBook) return nullptr;
+
+    ConsoleIO::print(name + "이(가) \"" + currentBook->getTitle() + "\" 책을 되돌려 놓습니다.");
+    currentBook->setAvailable(true);
+    Book* returned = currentBook;
+    currentBook = nullptr;
+    return returned;
 }
 
 bool WizardNPC::isReturningBook() const {
-    // 마법력 수치가 짝수일 경우에만 반납
-    return borrowed && (magicPower % 2 == 0);
+    return (currentBook != nullptr) && (magicPower % 2 == 0);
 }
+
 
 bool WizardNPC::wantsRecommendation() const {
     return magicPower > 50;  // 마력이 높을수록 새로운 지식을 갈망함
@@ -54,11 +60,8 @@ void WizardNPC::debugPrint() const {
     ConsoleIO::print("이름: " + name);
     ConsoleIO::print("마력: " + std::to_string(magicPower));
     ConsoleIO::print("보유 골드: " + std::to_string(gold));
-    ConsoleIO::print("책 보유 여부: " + std::string(borrowed ? "예" : "아니오"));
-    if (!inventory.empty()) {
-        ConsoleIO::print("보유한 책 수: " + std::to_string(inventory.size()));
-        ConsoleIO::print("마지막 책 제목: " + inventory.back()->getTitle());
-    }
+    ConsoleIO::print("책 보유 여부: " + std::string(currentBook ? "예" : "아니오"));
+    ConsoleIO::print("현재 책: " + (currentBook ? currentBook->getTitle() : "없음"));
     ConsoleIO::print("==============================");
 }
 

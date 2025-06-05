@@ -17,13 +17,10 @@ protected:
     eBookMood preferredMood;                  // 선호 분위기
     int gold;                                 // 보유 골드
     int magicPower;                           // 마법 기운
-    bool borrowed;                            // 대여 여부
     eRequestType requestType;                 // 요청 유형
-    std::vector<Book*> inventory;             // 소지한 책들
     std::vector<std::string> dialogues;       // 대사 목록
 
-    Book* currentBook = nullptr;              // 현재 들고 있는 책
-    bool hasBook = false;                     // 책 소지 여부
+    Book* currentBook = nullptr;              // 현재 들고 있는 책, 대여여부까지 체크 가능
 
 public:
     // 생성자 및 소멸자
@@ -52,10 +49,6 @@ public:
     int getGold() const;
     int getMagicPower() const;
     eRequestType getRequestType() const;
-    Book* getCurrentBook() const;
-    bool isHoldingBook() const;
-    const std::vector<Book*>& getInventory() const;
-    bool hasBookInInventory(const Book* book) const;
     bool hasBorrowed() const;                              // 책을 대여한 상태인지
 
     // Setter
@@ -65,7 +58,7 @@ public:
     void setDialogues(const std::vector<std::string>& lines);
 
     // 행동 관련 메서드
-    void removeBookFromInventory(Book* book);              // 책 제거
+    void removeBook(Book* book); // 책 제거
     std::string getArt() const;                            // NPC 아트 반환
 
     // 대사 관련

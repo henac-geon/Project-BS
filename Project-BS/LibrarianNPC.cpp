@@ -27,25 +27,23 @@ bool LibrarianNPC::borrowBook(Book* book) {
     if (!book) return false;
 
     ConsoleIO::print(name + "이(가) \"" + book->getTitle() + "\" 책을 대여합니다.");
-    hasBook = true;
     currentBook = book;
     book->setAvailable(false);
     return true;
 }
 
 Book* LibrarianNPC::returnBook() {
-    if (!hasBook || !currentBook) return nullptr;
+    if (!currentBook) return nullptr;
 
     ConsoleIO::print(name + "이(가) \"" + currentBook->getTitle() + "\" 책을 반납합니다.");
     currentBook->setAvailable(true);
-    hasBook = false;
     Book* returned = currentBook;
     currentBook = nullptr;
     return returned;
 }
 
 bool LibrarianNPC::isReturningBook() const {
-    return hasBook && (rand() % 2 == 0);
+    return currentBook && (rand() % 2 == 0);
 }
 
 bool LibrarianNPC::wantsRecommendation() const {
@@ -67,9 +65,11 @@ void LibrarianNPC::debugPrint() const {
     ConsoleIO::print("선호 분위기: " + std::to_string(static_cast<int>(preferredMood)));
     ConsoleIO::print("보유 골드: " + std::to_string(gold));
     ConsoleIO::print("마력 수치: " + std::to_string(magicPower));
-    ConsoleIO::print("현재 책 보유 여부: " + std::string(hasBook ? "예" : "아니오"));
+    ConsoleIO::print("현재 책 보유 여부: " + std::string(currentBook ? "예" : "아니오"));
     if (currentBook) {
-        ConsoleIO::print("책 제목: " + currentBook->getTitle());
+        ConsoleIO::print("현재 대여 중인 책: " + currentBook->getTitle());
+    } else {
+        ConsoleIO::print("현재 대여 중인 책: 없음");
     }
     ConsoleIO::print("===============================");
 }
