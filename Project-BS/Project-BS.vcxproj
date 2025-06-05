@@ -131,6 +131,7 @@
     <ClCompile Include="Book.cpp" />
     <ClCompile Include="BookFactory.cpp" />
     <ClCompile Include="CsvIO.cpp" />
+    <ClCompile Include="DictationGame.cpp" />
     <ClCompile Include="FantasyBook.cpp" />
     <ClCompile Include="Inventory.cpp" />
     <ClCompile Include="LevelSystem.cpp" />
@@ -152,6 +153,7 @@
     <ClInclude Include="Book.h" />
     <ClInclude Include="BookFactory.h" />
     <ClInclude Include="CsvIO.h" />
+    <ClInclude Include="DictationGame.h" />
     <ClInclude Include="Enums.h" />
     <ClInclude Include="FantasyBook.h" />
     <ClInclude Include="NPC.h" />
