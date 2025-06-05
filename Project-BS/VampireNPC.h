@@ -19,6 +19,10 @@ public:
     bool wantsRecommendation() const override;
     void compensateForDamage(Book* book) override;
     void debugPrint() const override;
+
+    int payGold(int amount = 0) override;               // 골드 지불 (구현 방식 다양화)
+    int payMagicPower(int amount = 0) override;         // 마법 포인트 지불 (구현 방식 다양화)
+    int payExp(int amount = 0) override;                // 경험치 지불 (구현 방식 다양화)
 };
 
 #endif

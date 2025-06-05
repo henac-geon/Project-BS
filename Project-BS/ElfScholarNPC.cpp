@@ -66,3 +66,29 @@ void ElfScholarNPC::debugPrint() const {
     }
     ConsoleIO::print("===============================");
 }
+
+int ElfScholarNPC::payGold(int amount) {
+    if (amount <= 0) return 0;
+
+    int paid = (amount < gold) ? amount : gold;
+    gold -= paid;
+
+    ConsoleIO::print(name + "이(가) " + std::to_string(paid) + " 골드를 정중하게 지불합니다.");
+    return paid;
+}
+
+int ElfScholarNPC::payMagicPower(int amount) {
+    if (amount <= 0) return 0;
+
+    int paid = (amount < magicPower) ? amount : magicPower;
+    magicPower -= paid;
+
+    ConsoleIO::print(name + "의 마법 기운이 " + std::to_string(paid) + "만큼 소모되었습니다.");
+    return paid;
+}
+
+int ElfScholarNPC::payExp(int amount) {
+    // 엘프는 경험치를 소모하지 않고, 지식의 축적만을 추구한다고 가정
+    ConsoleIO::print(name + "은(는) 경험치를 소모하는 대신, 명상으로 지혜를 얻습니다.");
+    return 0; // 경험치 소모하지 않음
+}

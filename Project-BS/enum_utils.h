@@ -92,3 +92,21 @@ DEFINE_ENUM_CONVERTER(eBookGenre, {
         {eNPCGenerationMode::CreativeAI,  "CreativeAI",  "창의AI",     2}
         })
 
+    namespace enum_utils {
+
+    template <typename T>
+    std::string toKoreanString(T value) {
+        return EnumConverter<T>::toKorean(value);
+    }
+
+    template <typename T>
+    std::string toEnglishString(T value) {
+        return EnumConverter<T>::toString(value);
+    }
+
+    template <typename T>
+    int toIntValue(T value) {
+        return EnumConverter<T>::toInt(value);
+    }
+
+}

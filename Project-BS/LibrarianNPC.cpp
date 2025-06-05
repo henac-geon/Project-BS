@@ -73,3 +73,33 @@ void LibrarianNPC::debugPrint() const {
     }
     ConsoleIO::print("===============================");
 }
+
+
+int LibrarianNPC::payGold(int amount) {
+    if (amount <= 0) return 0;
+
+    int paid = (amount < gold) ? amount : gold;
+    gold -= paid;
+
+    ConsoleIO::print(name + "이(가) 도서관 운영비로 " + std::to_string(paid) + " 골드를 차감합니다.");
+    return paid;
+}
+
+int LibrarianNPC::payMagicPower(int amount) {
+    if (amount <= 0) return 0;
+
+    // 사서는 마법을 통해 책을 보존하거나 복원한다고 가정
+    int paid = (amount < magicPower) ? amount : magicPower;
+    magicPower -= paid;
+
+    ConsoleIO::print(name + "이(가) 고대 마법으로 " + std::to_string(paid) + "의 마력을 사용합니다.");
+    return paid;
+}
+
+int LibrarianNPC::payExp(int amount) {
+    // 사서는 경험치를 소모하여 서고 관리 기술을 습득하는 것으로 해석
+    if (amount <= 0) return 0;
+
+    ConsoleIO::print(name + "이(가) 기록 관리 향상을 위해 " + std::to_string(amount) + " 경험치를 소모합니다.");
+    return amount;
+}

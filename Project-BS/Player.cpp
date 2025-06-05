@@ -21,6 +21,53 @@ void Player::consumeMagicPower(int amount) {
     if (magicPower < 0) magicPower = 0;
 }
 
+void Player::restoreMagicPower(int amount) {
+    if (amount < 0) return;
+    magicPower += amount;
+    if (magicPower > MAX_MAGIC_POWER) magicPower = MAX_MAGIC_POWER;
+}
+
+void Player::addMagicPower(int amount) {
+    if (amount < 0) return;
+    magicPower += amount;
+    if (magicPower > MAX_MAGIC_POWER) magicPower = MAX_MAGIC_POWER;
+}
+
+void Player::setMagicPower(int amount) {
+    if (amount < 0) amount = 0;
+    if (amount > MAX_MAGIC_POWER) amount = MAX_MAGIC_POWER;
+    magicPower = amount;
+}
+
+void Player::setGold(int amount) {
+    if (amount < 0) amount = 0;
+    if (amount > MAX_GOLD) amount = MAX_GOLD;
+    gold = amount;
+}
+
+void Player::setLevel(int lvl) {
+    if (lvl < 1) lvl = 1;
+    if (lvl > MAX_LEVEL) lvl = MAX_LEVEL;
+    level = lvl;
+}
+
+void Player::setExperience(double amount) {
+    if (amount < 0.0) amount = 0.0;
+    experience = amount;
+    levelUpIfNeeded();
+}
+
+void Player::setBookstoreRank(int rank) {
+    if (rank >= 1 && rank <= MAX_BOOKSTORE_RANK)
+        bookstoreRank = rank;
+}
+
+void Player::setBookStock(int stock) {
+    if (stock < 0) stock = 0;
+    if (stock > MAX_BOOK_STOCK) stock = MAX_BOOK_STOCK;
+    bookStock = stock;
+}
+
 void Player::addGold(int amount) {
     if (amount < 0) return;
     gold += amount;
@@ -51,7 +98,6 @@ void Player::levelUpIfNeeded() {
         }
     }
 
-    // 최대 레벨 도달 시 경험치 고정
     if (level >= MAX_LEVEL) {
         level = MAX_LEVEL;
         experience = 0.0;

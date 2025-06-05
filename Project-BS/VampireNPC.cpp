@@ -65,3 +65,30 @@ void VampireNPC::debugPrint() const {
     }
     ConsoleIO::print("===============================");
 }
+
+int VampireNPC::payGold(int amount) {
+    if (amount <= 0) return 0;
+
+    int paid = (amount < gold) ? amount : gold;
+    gold -= paid;
+
+    ConsoleIO::print(name + "이(가) 인간 세계의 관습에 따라 " + std::to_string(paid) + " 골드를 지불합니다.");
+    return paid;
+}
+
+int VampireNPC::payMagicPower(int amount) {
+    if (amount <= 0) return 0;
+
+    int paid = (amount < magicPower) ? amount : magicPower;
+    magicPower -= paid;
+
+    ConsoleIO::print(name + "이(가) 피의 주문으로 " + std::to_string(paid) + " 마력을 소모합니다.");
+    return paid;
+}
+
+int VampireNPC::payExp(int amount) {
+    if (amount <= 0) return 0;
+
+    ConsoleIO::print(name + "이(가) 고대의 지식을 끌어내기 위해 " + std::to_string(amount) + " 경험치를 희생합니다.");
+    return amount; // 그대로 지불
+}

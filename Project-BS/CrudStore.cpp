@@ -83,3 +83,55 @@ WritingElementManager& CrudStore::getWritingElementManager() {
 const std::string& CrudStore::getStoreName() const {
     return name;
 }
+
+void CrudStore::addDailyGold(int amount) {
+    dailyGoldEarned += amount;
+    player.addGold(amount);
+}
+
+void CrudStore::addDailyScore(int amount) {
+    dailyScoreEarned += amount;
+    addScore(amount);
+}
+
+void CrudStore::addDailyMagicPower(int amount) {
+    dailyMagicPowerEarned += amount;
+    player.addMagicPower(amount);
+}
+
+void CrudStore::addDailyExperience(int amount) {
+    dailyExperienceEarned += amount;
+    gainExperience(amount);
+}
+
+int CrudStore::getDailyGoldEarned() const {
+    return dailyGoldEarned;
+}
+
+int CrudStore::getDailyScoreEarned() const {
+    return dailyScoreEarned;
+}
+
+int CrudStore::getDailyMagicPowerEarned() const {
+    return dailyMagicPowerEarned;
+}
+
+int CrudStore::getDailyExperienceEarned() const {
+    return dailyExperienceEarned;
+}
+
+void CrudStore::resetDailyEarnings() {
+    dailyGoldEarned = 0;
+    dailyScoreEarned = 0;
+    dailyMagicPowerEarned = 0;
+    dailyExperienceEarned = 0;
+}
+
+void CrudStore::displayDailySummary() const {
+    ConsoleIO::println("\n[오늘의 정산 요약]");
+    ConsoleIO::println("- 획득 골드: " + dailyGoldEarned);
+    ConsoleIO::println("- 획득 점수: " + dailyScoreEarned);
+    ConsoleIO::println("- 획득 마법 기운: " + dailyMagicPowerEarned);
+    ConsoleIO::println("- 총 점수: " + score);
+    ConsoleIO::println("- 현재 레벨: " + player.getLevel());
+}

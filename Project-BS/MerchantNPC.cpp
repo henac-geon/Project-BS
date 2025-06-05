@@ -64,3 +64,28 @@ void MerchantNPC::debugPrint() const {
     }
     ConsoleIO::print("===========================");
 }
+
+int MerchantNPC::payGold(int amount) {
+    if (amount <= 0) return 0;
+
+    // 상인은 항상 협상하려 들므로 최대 지불량을 줄임
+    int paid = (amount > gold / 2) ? gold / 2 : amount;
+    gold -= paid;
+
+    ConsoleIO::print(name + "이(가) 교묘하게 " + std::to_string(paid) + " 골드만 지불합니다.");
+    return paid;
+}
+
+int MerchantNPC::payMagicPower(int amount) {
+    // 상인은 마법을 거의 사용하지 않음
+    ConsoleIO::print(name + "은(는) 마법을 믿지 않습니다. 마력 지불 없음.");
+    return 0;
+}
+
+int MerchantNPC::payExp(int amount) {
+    if (amount <= 0) return 0;
+
+    // 경험치는 교섭술 향상에 활용
+    ConsoleIO::print(name + "이(가) 협상 능력을 키우기 위해 " + std::to_string(amount) + " 경험치를 소모합니다.");
+    return amount;
+}

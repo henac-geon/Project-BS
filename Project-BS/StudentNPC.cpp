@@ -58,3 +58,29 @@ void StudentNPC::debugPrint() const {
     }
     ConsoleIO::print("===========================");
 }
+
+int StudentNPC::payGold(int amount) {
+    if (amount <= 0) return 0;
+
+    int paid = (amount < gold) ? amount : gold;
+    gold -= paid;
+
+    ConsoleIO::print(name + "이(가) 아껴둔 용돈 중 " + std::to_string(paid) + " 골드를 지불합니다.");
+    return paid;
+}
+
+int StudentNPC::payMagicPower(int amount) {
+    if (amount <= 0) return 0;
+
+    int paid = (amount < magicPower) ? amount : magicPower;
+    magicPower -= paid;
+
+    ConsoleIO::print(name + "이(가) 시험 공부로 " + std::to_string(paid) + " 마력을 소모합니다.");
+    return paid;
+}
+
+int StudentNPC::payExp(int amount) {
+    // 학생은 아직 성장 중이라 경험치를 소모하지 않고 축적만 한다고 가정
+    ConsoleIO::print(name + "은(는) 아직 경험치를 쓸 수 있는 단계가 아닙니다.");
+    return 0;
+}

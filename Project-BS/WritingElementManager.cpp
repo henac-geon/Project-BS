@@ -1,115 +1,148 @@
-﻿#include "WritingElementManager.h"
-#include <algorithm>
+﻿// WritingElementManager.cpp
+#include "WritingElementManager.h"
 
 WritingElementManager::WritingElementManager() {
-    loadDefaultElements();
-    loadMagicCosts(); // 마법기운 테이블 초기화
+    loadElements();
 }
 
-void WritingElementManager::loadDefaultElements() {
-    elements.clear();
-
-    elements["장르"] = { "판타지", "공상과학", "아포칼립스" };
-    elements["분위기"] = { "몽환", "암울", "공포", "기묘", "무거움" };
-    elements["분량"] = { "30", "90", "120" };
-    elements["옛지 요소"] = { "없음", "반전" };
-    elements["기타"] = { "없음", "숨겨진 코드", "고대 룬", "운명의 반전", "미래 예시", "금단 기술" };
-}
-
-
-void WritingElementManager::loadMagicCosts() {
-    magicCostTable.clear();
-
-    magicCostTable["장르"] = {
-        {"판타지", 10}, {"공상과학", 50}, {"아포칼립스", 90}
+// 초기 요소 정의 및 설정
+void WritingElementManager::loadElements() {
+    genres = {
+        {eBookGenre::Fantasy, 10, 0},
+        {eBookGenre::SciFi, 50, 2},
+        {eBookGenre::Apocalypse, 90, 5}
     };
-    magicCostTable["분위기"] = {
-        {"밝음", 20}, {"암울", 40}, {"공포", 50}, {"기묘", 60}, {"무거움", 60}
+    moods = {
+        {eBookMood::Light, 20, 0},
+        {eBookMood::Dark, 40, 2},
+        {eBookMood::Whimsical, 60, 10},
+        {eBookMood::Tense, 60, 10}
     };
-    magicCostTable["분량"] = {
-        {"30", 30}, {"90", 90}, {"120", 120}
+    lengths = {
+        {"30", 30, 0},
+        {"90", 90, 2},
+        {"120", 120, 5}
     };
-    magicCostTable["옛지 요소"] = {
-        {"없음", 0}, {"반전", 100}
+    edges = {
+        {eBookEdge::None, 0, 0},
+        {eBookEdge::Reversal, 100, 5}
     };
-    magicCostTable["기타"] = {
-        {"없음", 0}, {"숨겨진 코드", 70}, {"고대 룬", 100}, {"운명의 반전", 100},
-        {"미래 예시", 110}, {"금단 기술", 120}
+    etcs = {
+        {eBookEtc::None, 0, 0}
     };
 }
 
-int WritingElementManager::getMagicCost(const std::string& category, const std::string& option) const {
-    auto catIt = magicCostTable.find(category);
-    if (catIt != magicCostTable.end()) {
-        const auto& innerMap = catIt->second;
-        auto optIt = innerMap.find(option);
-        if (optIt != innerMap.end()) {
-            return optIt->second;
-        }
+std::vector<eBookGenre> WritingElementManager::getAvailableGenres(int level) const {
+    std::vector<eBookGenre> result;
+    for (const auto& elem : genres) {
+        if (level >= elem.requiredLevel) result.push_back(elem.element);
+    }
+    return result;
+}
+
+std::vector<eBookMood> WritingElementManager::getAvailableMoods(int level) const {
+    std::vector<eBookMood> result;
+    for (const auto& elem : moods) {
+        if (level >= elem.requiredLevel) result.push_back(elem.element);
+    }
+    return result;
+}
+
+std::vector<std::string> WritingElementManager::getAvailableLengths(int level) const {
+    std::vector<std::string> result;
+    for (const auto& elem : lengths) {
+        if (level >= elem.requiredLevel) result.push_back(elem.element);
+    }
+    return result;
+}
+
+std::vector<eBookEdge> WritingElementManager::getAvailableEdges(int level) const {
+    std::vector<eBookEdge> result;
+    for (const auto& elem : edges) {
+        if (level >= elem.requiredLevel) result.push_back(elem.element);
+    }
+    return result;
+}
+
+std::vector<eBookEtc> WritingElementManager::getAvailableEtcs(int level) const {
+    std::vector<eBookEtc> result;
+    for (const auto& elem : etcs) {
+        if (level >= elem.requiredLevel) result.push_back(elem.element);
+    }
+    return result;
+}
+
+int WritingElementManager::getMagicCost(WritingElementCategory category, int enumValue) const {
+    switch (category) {
+    case WritingElementCategory::Genre:
+        for (const auto& elem : genres)
+            if (static_cast<int>(elem.element) == enumValue) return elem.magicCost;
+        break;
+    case WritingElementCategory::Mood:
+        for (const auto& elem : moods)
+            if (static_cast<int>(elem.element) == enumValue) return elem.magicCost;
+        break;
+    case WritingElementCategory::Length:
+        for (const auto& elem : lengths)
+            if (std::stoi(elem.element) == enumValue) return elem.magicCost;
+        break;
+    case WritingElementCategory::Edge:
+        for (const auto& elem : edges)
+            if (static_cast<int>(elem.element) == enumValue) return elem.magicCost;
+        break;
+    case WritingElementCategory::Etc:
+        for (const auto& elem : etcs)
+            if (static_cast<int>(elem.element) == enumValue) return elem.magicCost;
+        break;
     }
     return 0;
 }
 
-// TODO: 1. 각 카테고리별로 잠금 해제 조건을 설정합니다.
-// 2. 배열로 구현하여 좀더 보기 좋게 해야 함
-std::vector<std::string> WritingElementManager::getAvailableOptions(const std::string& category, int level) const {
-    std::vector<std::string> filtered;
-    auto it = elements.find(category);
-    if (it == elements.end()) return filtered;
+void WritingElementManager::addGenreOption(eBookGenre genre, int cost, int level) {
+    genres.push_back({ genre, cost, level });
+}
 
-    for (const auto& option : it->second) {
-        bool unlocked = false;
+void WritingElementManager::addMoodOption(eBookMood mood, int cost, int level) {
+    moods.push_back({ mood, cost, level });
+}
 
-        if (category == "장르") {
-            if (option == "판타지") unlocked = true;
-            else if (option == "공상과학" && level >= 2) unlocked = true;
-            else if (option == "아포칼립스" && level >= 5) unlocked = true;
-        }
-        else if (category == "분위기") {
-            if (option == "밝음") unlocked = true;
-            else if (option == "암울" && level >= 2) unlocked = true;
-            else if (option == "공포" && level >= 5) unlocked = true;
-            else if ((option == "기묘" || option == "무거움") && level >= 10) unlocked = true;
-        }
-        else if (category == "분량") {
-            if (option == "30") unlocked = true;
-            else if (option == "90" && level >= 2) unlocked = true;
-            else if (option == "120" && level >= 5) unlocked = true;
-        }
-        else if (category == "옛지 요소") {
-            if (option == "없음") unlocked = true;
-            else if (option == "반전" && level >= 5) unlocked = true;
-        }
-        else if (category == "기타") {
-            if (option == "없음") unlocked = true;
-            else if (option == "숨겨진 코드" && level >= 30) unlocked = true;
-            else if ((option == "고대 룬" || option == "운명의 반전") && level >= 50) unlocked = true;
-            else if ((option == "미래 예시" || option == "금단 기술") && level >= 80) unlocked = true;
-        }
+bool WritingElementManager::isGenreOptionAvailable(eBookGenre genre) const {
+    return std::any_of(genres.begin(), genres.end(), [&](const auto& e) { return e.element == genre; });
+}
 
-        filtered.push_back(unlocked ? option : "잠금");
+bool WritingElementManager::isMoodOptionAvailable(eBookMood mood) const {
+    return std::any_of(moods.begin(), moods.end(), [&](const auto& e) { return e.element == mood; });
+}
+
+std::vector<std::string> WritingElementManager::getGenreNames() const {
+    std::vector<std::string> result;
+    for (const auto& e : genres) {
+        result.push_back(enum_utils::toKoreanString(e.element));
     }
-
-    return filtered;
+    return result;
 }
 
-
-
-std::vector<std::string> WritingElementManager::getOptions(const std::string& category) const {
-    auto it = elements.find(category);
-    return (it != elements.end()) ? it->second : std::vector<std::string>{};
-}
-
-void WritingElementManager::addElementOption(const std::string& category, const std::string& option) {
-    elements[category].push_back(option);
-}
-
-
-bool WritingElementManager::isOptionAvailable(const std::string& category, const std::string& option) const {
-    auto it = elements.find(category);
-    if (it != elements.end()) {
-        const auto& opts = it->second;
-        return std::find(opts.begin(), opts.end(), option) != opts.end();
+std::vector<std::string> WritingElementManager::getMoodNames() const {
+    std::vector<std::string> result;
+    for (const auto& e : moods) {
+        result.push_back(enum_utils::toKoreanString(e.element));
     }
-    return false;
+    return result;
 }
+
+std::vector<std::string> WritingElementManager::getEdgeNames() const {
+    std::vector<std::string> result;
+    for (const auto& e : edges) {
+        result.push_back(enum_utils::toKoreanString(e.element));
+    }
+    return result;
+}
+
+std::vector<std::string> WritingElementManager::getEtcNames() const {
+    std::vector<std::string> result;
+    for (const auto& e : etcs) {
+        result.push_back(enum_utils::toKoreanString(e.element));
+    }
+    return result;
+}
+

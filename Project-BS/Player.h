@@ -37,6 +37,14 @@ public:
 
     // Modifier functions
     void consumeMagicPower(int amount);
+    void restoreMagicPower(int amount);
+    void addMagicPower(int amount);
+    void setMagicPower(int amount);
+    void setGold(int amount);
+    void setLevel(int level);
+    void setExperience(double amount);
+    void setBookstoreRank(int rank);
+    void setBookStock(int stock);
     void addGold(int amount);
     void useGold(int amount);
     void gainExperience(double amount);

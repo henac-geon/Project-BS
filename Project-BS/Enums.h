@@ -30,6 +30,14 @@ enum class eBookMood {
     Whimsical    // 엉뚱하고 유쾌한
 };
 
+enum class WritingElementCategory {
+    Genre,
+    Mood,
+    Length,
+    Edge,
+    Etc
+};
+
 //
 // 책의 상태 (퍼센트 기반)
 //
@@ -71,6 +79,7 @@ enum class eDamageType {
 // NPC의 요청 조건 유형
 //
 enum class eRequestType {
+
     GenreOnly,       // 장르만 요구
     MoodOnly,        // 분위기만 요구
     GenreAndMood,    // 둘 다 요구

@@ -36,6 +36,11 @@ public:
     virtual Book* returnBook() = 0;                        // 책 반환
     virtual bool isReturningBook() const = 0;              // 책을 반환할지 여부
     virtual bool wantsRecommendation() const = 0;          // 추천을 원하는지 여부
+
+    virtual int payGold(int amount = 0) = 0;               // 골드 지불 (구현 방식 다양화)
+    virtual int payMagicPower(int amount = 0) = 0;         // 마법 기운 지불 (구현 방식 다양화)
+    virtual int payExp(int amount = 0) = 0;                // 경험치 획득 처리 (구현 방식 다양화)
+
     virtual void compensateForDamage(Book* book) = 0;      // 책이 손상되었을 때 보상 처리
     virtual void debugPrint() const = 0;                   // 디버깅 정보 출력
 
@@ -60,8 +65,6 @@ public:
     void setDialogues(const std::vector<std::string>& lines);
 
     // 행동 관련 메서드
-    void payGold(int amount);                              // 골드 지불
-    void gainExp(int amount);                              // 경험치 지불
     void removeBookFromInventory(Book* book);              // 책 제거
     std::string getArt() const;                            // NPC 아트 반환
 

@@ -71,24 +71,14 @@ bool NPC::isReturningBook() const {
     return borrowed && (rand() % 2 == 0);
 }
 
-// 추천 요청 여부 결정 (책 미보유 + 50% 확률)
+// 추천 요청 여부 결정 (책 미보유 + 90% 확률)
 bool NPC::wantsRecommendation() const {
-    return !borrowed && (rand() % 2 == 0);
+    return !borrowed && (rand() % 10 < 9);
 }
 
 /////////////////////////////
 // 골드/경험치 관련 메서드
 /////////////////////////////
-
-// 골드 차감
-void NPC::payGold(int amount) {
-    gold = ((gold - amount) < 0) ? 0 : (gold - amount);
-}
-
-// 경험치(마법력) 증가
-void NPC::gainExp(int amount) {
-    magicPower += amount;
-}
 
 // 책 손상 보상 처리 (기본 미구현)
 void NPC::compensateForDamage(Book* book) {

@@ -61,3 +61,30 @@ void WizardNPC::debugPrint() const {
     }
     ConsoleIO::print("==============================");
 }
+
+int WizardNPC::payGold(int amount) {
+    if (amount <= 0) return 0;
+
+    int paid = (amount < gold) ? amount : gold;
+    gold -= paid;
+
+    ConsoleIO::print(name + "이(가) 마법 상회에 " + std::to_string(paid) + " 골드를 전달합니다.");
+    return paid;
+}
+
+int WizardNPC::payMagicPower(int amount) {
+    if (amount <= 0) return 0;
+
+    int paid = (amount < magicPower) ? amount : magicPower;
+    magicPower -= paid;
+
+    ConsoleIO::print(name + "이(가) 주문을 위해 " + std::to_string(paid) + "의 마력을 방출합니다.");
+    return paid;
+}
+
+int WizardNPC::payExp(int amount) {
+    if (amount <= 0) return 0;
+
+    ConsoleIO::print(name + "이(가) 고대 주문을 완성하기 위해 " + std::to_string(amount) + " 경험치를 소모합니다.");
+    return amount;
+}
