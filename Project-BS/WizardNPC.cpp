@@ -8,7 +8,7 @@ bool WizardNPC::rateBook(Book* book) const {
     ConsoleIO::print("마법사는 책에서 마법적 에너지를 감지하려 합니다...");
 
     // 예: 책이 마법 장르거나 마법 에너지를 포함해야 함
-    if (book->getGenre() == eBookGenre::Fantasy || book->getGenre() == eBookGenre::Mystery || book->getGenre() == eBookGenre::NonFiction) {
+    if (book->getGenre() == eBookGenre::Fantasy || book->getGenre() == eBookGenre::Mystery) {
         ConsoleIO::print("흐름이 느껴지는군요... (평가 통과)");
         return true;
     }

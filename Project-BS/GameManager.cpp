@@ -67,7 +67,7 @@ void GameManager::performWritingPhase() {
         ConsoleIO::println("※ 책을 집필하지 않고 손님 응대로 바로 가려면 \"건너뛰기\"를 입력하세요.\n");
 
         ConsoleIO::println("[현재 사용 가능한 집필 요소]");
-        crud.getBookFactory().displayAvailableElements();
+        crud.displayAvailableElements();
 
         std::string ans;
         ConsoleIO::println("\n[집필 요소] 입력");
@@ -101,13 +101,13 @@ void GameManager::performWritingPhase() {
             (genreStr == "공포") ? eBookGenre::Horror :
             (genreStr == "미스터리") ? eBookGenre::Mystery :
             (genreStr == "로맨스") ? eBookGenre::Romance :
-            (genreStr == "논픽션") ? eBookGenre::NonFiction :
+            (genreStr == "아포칼립스") ? eBookGenre::Apocalypse :
             eBookGenre::Fantasy;
 
-        eBookMood mood = (moodStr == "명랑") ? eBookMood::Light :
-            (moodStr == "감성") ? eBookMood::Emotional :
+        eBookMood mood = (moodStr == "명랑") ? eBookMood::Bright :
+            (moodStr == "감성") ? eBookMood::Touching :
             (moodStr == "긴장감") ? eBookMood::Tense :
-            (moodStr == "엉뚱") ? eBookMood::Whimsical :
+            (moodStr == "엉뚱") ? eBookMood::Strange :
             eBookMood::Dark;
 
         eBookEdge edge = (edgeStr == "반전") ? eBookEdge::Reversal : eBookEdge::None;
@@ -213,9 +213,9 @@ void GameManager::performNPCPhase() {
 
     while (npcs.size() < MAX_NPC_COUNT) {
         // 1. API 호출 및 로딩 애니메이션
-        callNPCGenerationAPI();
-        displayLoadingAnimation(3);
-        ConsoleIO::println("\n곧 손님이 방문할 것 같습니다.");
+        //callNPCGenerationAPI();
+        //displayLoadingAnimation(3);
+        //ConsoleIO::println("\n곧 손님이 방문할 것 같습니다.");
 
         // 2. NPC 생성 및 리스트 추가
         NPC* npc = RandomNPC::create(eNPCGenerationMode::CreativeAI);
@@ -239,12 +239,12 @@ void GameManager::performNPCPhase() {
         if (npc->hasBorrowed()) {
             Book* returnedBook = npc->returnBook();
             if (returnedBook) {
-                // TODO: 고객 책 반납 시 처리;
+                // TODO: 고객 책 반납 시 처리, 책의 상태에 따라 재화 획득량이 달라짐
                 ConsoleIO::println("고객이 \"" + returnedBook->getTitle() + "\" 책을 반납했습니다.");
                 crud.getInventory().addBook(returnedBook);
                 crud.addDailyGold(npc->payGold(10));       // 일일 골드
                 crud.addDailyMagicPower(npc->payMagicPower(10)); // 마법력 증가
-                crud.addDailyExperience(npc->payExp(10)); // 일일 경험치
+                crud.addDailyExperience(npc->payExp(20)); // 일일 경험치, 일부 NPC는 경험치 지급 로직이 다름
                 crud.addDailyScore(3);       // 일일 점수
             }
             else {
@@ -278,16 +278,17 @@ void GameManager::performNPCPhase() {
                 bool satisfied = npc->rateBook(selected);
                 if (satisfied) {
                     ConsoleIO::println("고객이 만족해했습니다!");
-                    // 고객 만족 시 보상 처리
+                    // 고객 만족 시 보상 처리, 책의 상태에 따라 재화 획득량이 달라짐
                     npc->borrowBook(selected);
                     crud.addDailyGold(npc->payGold(10));       // 일일 골드
                     crud.addDailyMagicPower(npc->payMagicPower(10)); // 마법력 증가
-                    crud.addDailyExperience(npc->payExp(10)); // 일일 경험치
+                    crud.addDailyExperience(npc->payExp(10)); // 일일 경험치, 일부 NPC는 경험치 지급 로직이 다름
                     crud.addDailyScore(3);       // 일일 점수
                 }
                 else {
                     ConsoleIO::println("고객이 불만족해합니다...");
-                    // 고객 불만족 시 패널티 처리
+                    // 고객 불만족 시 패널티 처리, 책의 상태에 따라 재화 획득량이 달라짐
+                    crud.addDailyExperience(npc->payExp(5)); // 일일 경험치, 일부 NPC는 경험치 지급 로직이 다름
                     crud.addDailyScore(-3);      // 일일 점수도 반영
                 }
 

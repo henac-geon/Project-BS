@@ -83,6 +83,6 @@ int VampireNPC::payMagicPower(int amount) {
 int VampireNPC::payExp(int amount) {
     if (amount <= 0) return 0;
 
-    ConsoleIO::print(name + "이(가) 고대의 지식을 끌어내기 위해 " + std::to_string(amount) + " 경험치를 희생합니다.");
+    ConsoleIO::print(name + "이(가) 고대의 지식을 끌어내기 위해 " + std::to_string(amount) + " 경험치를 지불합니다.");
     return amount; // 그대로 지불
 }

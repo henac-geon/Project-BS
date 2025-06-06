@@ -75,6 +75,6 @@ int StudentNPC::payMagicPower(int amount) {
 
 int StudentNPC::payExp(int amount) {
     // 학생은 아직 성장 중이라 경험치를 소모하지 않고 축적만 한다고 가정
-    ConsoleIO::print(name + "은(는) 아직 경험치를 쓸 수 있는 단계가 아닙니다.");
+    ConsoleIO::print(name + "은(는) 아직 경험치를 지급 할 수 있는 나이가 아닙니다.");
     return 0;
 }

@@ -57,46 +57,24 @@ std::string Book::getConditionPercentText() const {
 }
 
 
+#include "enum_utils.h"
+
 std::string Book::getGenreName() const {
-    switch (genre) {
-    case eBookGenre::Fantasy: return "판타지";
-    case eBookGenre::Romance: return "로맨스";
-    case eBookGenre::Horror: return "공포";
-    case eBookGenre::Mystery: return "미스터리";
-    case eBookGenre::SciFi: return "SF";
-    case eBookGenre::Apocalypse: return "종말";
-    case eBookGenre::NonFiction: return "논픽션";
-    default: return "기타";
-    }
+    return enum_utils::toKoreanString(genre);
 }
 
 std::string Book::getMoodName() const {
-    switch (mood) {
-    case eBookMood::Dark: return "암울";
-    case eBookMood::Light: return "밝음";
-    case eBookMood::Emotional: return "감정적";
-    case eBookMood::Tense: return "긴장감";
-    case eBookMood::Whimsical: return "기발함";
-    default: return "중립";
-    }
+    return enum_utils::toKoreanString(mood);
 }
 
 std::string Book::getEdgeName() const {
-    switch (edge) {
-    //case eBookEdge::Twist: return "반전";
-    case eBookEdge::None: return "없음";
-    default: return "기타";
-    }
+    return enum_utils::toKoreanString(edge);
 }
 
 std::string Book::getEtcName() const {
-    switch (etc) {
-    case eBookEtc::None: return "없음";
-    //case eBookEtc::Adult: return "성인";
-    //case eBookEtc::Illustrated: return "삽화";
-    default: return "기타";
-    }
+    return enum_utils::toKoreanString(etc);
 }
+
 
 //std::string Book::getStockSymbol() const {
 //    switch (condition) {

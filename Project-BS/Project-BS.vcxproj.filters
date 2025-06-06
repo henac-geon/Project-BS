@@ -108,9 +108,6 @@
     <ClCompile Include="ConsoleIO.cpp">
       <Filter>소스 파일\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="Player.cpp">
-      <Filter>소스 파일\Core</Filter>
-    </ClCompile>
     <ClCompile Include="WritingElementManager.cpp">
       <Filter>소스 파일\Core</Filter>
     </ClCompile>
@@ -190,9 +187,6 @@
     </ClInclude>
     <ClInclude Include="NPC.h">
       <Filter>헤더 파일\NPC</Filter>
-    </ClInclude>
-    <ClInclude Include="Player.h">
-      <Filter>헤더 파일\Core</Filter>
     </ClInclude>
     <ClInclude Include="WritingElementManager.h">
       <Filter>헤더 파일\Core</Filter>

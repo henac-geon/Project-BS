@@ -11,7 +11,7 @@ bool KnightNPC::rateBook(Book* book) const {
         ConsoleIO::print("이 책은 나의 사명과 잘 어울립니다!");
         return true;
     }
-    else if (book->getGenre() == eBookGenre::Fantasy || book->getGenre() == eBookGenre::NonFiction) {
+    else if (book->getGenre() == eBookGenre::Fantasy) {
         ConsoleIO::print("이 장르는 기사 정신에 부합합니다.");
         return true;
     }

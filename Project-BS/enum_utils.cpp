@@ -2,81 +2,112 @@
 
 // -------------------- eBookGenre --------------------
 const std::unordered_map<eBookGenre, std::string> EnumConverter<eBookGenre>::to_string_map = {
-    {eBookGenre::Fantasy, "Fantasy"}, {eBookGenre::Romance, "Romance"},
-    {eBookGenre::Horror, "Horror"}, {eBookGenre::Mystery, "Mystery"},
-    {eBookGenre::SciFi, "SciFi"}, {eBookGenre::Apocalypse, "Apocalypse"},
-    {eBookGenre::NonFiction, "NonFiction"}
+    {eBookGenre::Fantasy, "Fantasy"},
+    {eBookGenre::Romance, "Romance"},
+    {eBookGenre::Horror, "Horror"},
+    {eBookGenre::Mystery, "Mystery"},
+    {eBookGenre::SciFi, "SciFi"},
+    {eBookGenre::Apocalypse, "Apocalypse"},
+    {eBookGenre::Documentary, "Documentary"}
 };
 
 const std::unordered_map<eBookGenre, std::string> EnumConverter<eBookGenre>::to_korean_map = {
-    {eBookGenre::Fantasy, "판타지"}, {eBookGenre::Romance, "로맨스"},
-    {eBookGenre::Horror, "공포"}, {eBookGenre::Mystery, "미스터리"},
-    {eBookGenre::SciFi, "공상과학"}, {eBookGenre::Apocalypse, "종말"},
-    {eBookGenre::NonFiction, "논픽션"}
+    {eBookGenre::Fantasy, "판타지"},
+    {eBookGenre::Romance, "로맨스"},
+    {eBookGenre::Horror, "공포"},
+    {eBookGenre::Mystery, "미스터리"},
+    {eBookGenre::SciFi, "공상과학"},
+    {eBookGenre::Apocalypse, "종말"},
+    {eBookGenre::Documentary, "다큐멘터리"}
 };
 
 const std::unordered_map<eBookGenre, int> EnumConverter<eBookGenre>::to_int_map = {
-    {eBookGenre::Fantasy, 0}, {eBookGenre::Romance, 1},
-    {eBookGenre::Horror, 2}, {eBookGenre::Mystery, 3},
-    {eBookGenre::SciFi, 4}, {eBookGenre::Apocalypse, 5},
-    {eBookGenre::NonFiction, 6}
+    {eBookGenre::Fantasy, 0},
+    {eBookGenre::Romance, 1},
+    {eBookGenre::Horror, 2},
+    {eBookGenre::Mystery, 3},
+    {eBookGenre::SciFi, 4},
+    {eBookGenre::Apocalypse, 5},
+    {eBookGenre::Documentary, 6}
 };
 
 const std::unordered_map<std::string, eBookGenre> EnumConverter<eBookGenre>::from_string_map = {
-    {"Fantasy", eBookGenre::Fantasy}, {"Romance", eBookGenre::Romance},
-    {"Horror", eBookGenre::Horror}, {"Mystery", eBookGenre::Mystery},
-    {"SciFi", eBookGenre::SciFi}, {"Apocalypse", eBookGenre::Apocalypse},
-    {"NonFiction", eBookGenre::NonFiction}
+    {"Fantasy", eBookGenre::Fantasy},
+    {"Romance", eBookGenre::Romance},
+    {"Horror", eBookGenre::Horror},
+    {"Mystery", eBookGenre::Mystery},
+    {"SciFi", eBookGenre::SciFi},
+    {"Apocalypse", eBookGenre::Apocalypse},
+    {"Documentary", eBookGenre::Documentary}
 };
 
 const std::unordered_map<std::string, eBookGenre> EnumConverter<eBookGenre>::from_korean_map = {
-    {"판타지", eBookGenre::Fantasy}, {"로맨스", eBookGenre::Romance},
-    {"공포", eBookGenre::Horror}, {"미스터리", eBookGenre::Mystery},
-    {"공상과학", eBookGenre::SciFi}, {"종말", eBookGenre::Apocalypse},
-    {"논픽션", eBookGenre::NonFiction}
+    {"판타지", eBookGenre::Fantasy},
+    {"로맨스", eBookGenre::Romance},
+    {"공포", eBookGenre::Horror},
+    {"미스터리", eBookGenre::Mystery},
+    {"공상과학", eBookGenre::SciFi},
+    {"종말", eBookGenre::Apocalypse},
+    {"다큐멘터리", eBookGenre::Documentary}
 };
 
 const std::unordered_map<int, eBookGenre> EnumConverter<eBookGenre>::from_int_map = {
-    {0, eBookGenre::Fantasy}, {1, eBookGenre::Romance}, {2, eBookGenre::Horror},
-    {3, eBookGenre::Mystery}, {4, eBookGenre::SciFi}, {5, eBookGenre::Apocalypse},
-    {6, eBookGenre::NonFiction}
+    {0, eBookGenre::Fantasy},
+    {1, eBookGenre::Romance},
+    {2, eBookGenre::Horror},
+    {3, eBookGenre::Mystery},
+    {4, eBookGenre::SciFi},
+    {5, eBookGenre::Apocalypse},
+    {6, eBookGenre::Documentary}
 };
 
 // -------------------- eBookMood --------------------
 const std::unordered_map<eBookMood, std::string> EnumConverter<eBookMood>::to_string_map = {
-    {eBookMood::Dark, "Dark"}, {eBookMood::Light, "Light"},
-    {eBookMood::Emotional, "Emotional"}, {eBookMood::Tense, "Tense"},
-    {eBookMood::Whimsical, "Whimsical"}
+    {eBookMood::Dark, "Dark"},
+    {eBookMood::Bright, "Bright"},
+    {eBookMood::Touching, "Touching"},
+    {eBookMood::Tense, "Tense"},
+    {eBookMood::Strange, "Strange"}
 };
 
 const std::unordered_map<eBookMood, std::string> EnumConverter<eBookMood>::to_korean_map = {
-    {eBookMood::Dark, "어두움"}, {eBookMood::Light, "밝음"},
-    {eBookMood::Emotional, "감성적"}, {eBookMood::Tense, "긴장감"},
-    {eBookMood::Whimsical, "엉뚱함"}
+    {eBookMood::Dark, "어두움"},
+    {eBookMood::Bright, "밝음"},
+    {eBookMood::Touching, "감성"},
+    {eBookMood::Tense, "긴장감"},
+    {eBookMood::Strange, "엉뚱"}
 };
 
 const std::unordered_map<eBookMood, int> EnumConverter<eBookMood>::to_int_map = {
-    {eBookMood::Dark, 0}, {eBookMood::Light, 1},
-    {eBookMood::Emotional, 2}, {eBookMood::Tense, 3},
-    {eBookMood::Whimsical, 4}
+    {eBookMood::Dark, 0},
+    {eBookMood::Bright, 1},
+    {eBookMood::Touching, 2},
+    {eBookMood::Tense, 3},
+    {eBookMood::Strange, 4}
 };
 
 const std::unordered_map<std::string, eBookMood> EnumConverter<eBookMood>::from_string_map = {
-    {"Dark", eBookMood::Dark}, {"Light", eBookMood::Light},
-    {"Emotional", eBookMood::Emotional}, {"Tense", eBookMood::Tense},
-    {"Whimsical", eBookMood::Whimsical}
+    {"Dark", eBookMood::Dark},
+    {"Bright", eBookMood::Bright},
+    {"Touching", eBookMood::Touching},
+    {"Tense", eBookMood::Tense},
+    {"Strange", eBookMood::Strange}
 };
 
 const std::unordered_map<std::string, eBookMood> EnumConverter<eBookMood>::from_korean_map = {
-    {"어두움", eBookMood::Dark}, {"밝음", eBookMood::Light},
-    {"감성적", eBookMood::Emotional}, {"긴장감", eBookMood::Tense},
-    {"엉뚱함", eBookMood::Whimsical}
+    {"어두움", eBookMood::Dark},
+    {"밝음", eBookMood::Bright},
+    {"감성", eBookMood::Touching},
+    {"긴장감", eBookMood::Tense},
+    {"엉뚱", eBookMood::Strange}
 };
 
 const std::unordered_map<int, eBookMood> EnumConverter<eBookMood>::from_int_map = {
-    {0, eBookMood::Dark}, {1, eBookMood::Light},
-    {2, eBookMood::Emotional}, {3, eBookMood::Tense},
-    {4, eBookMood::Whimsical}
+    {0, eBookMood::Dark},
+    {1, eBookMood::Bright},
+    {2, eBookMood::Touching},
+    {3, eBookMood::Tense},
+    {4, eBookMood::Strange}
 };
 
 // -------------------- eBookCondition --------------------
@@ -155,27 +186,51 @@ const std::unordered_map<int, eBookEdge> EnumConverter<eBookEdge>::from_int_map 
 
 // -------------------- eBookEtc --------------------
 const std::unordered_map<eBookEtc, std::string> EnumConverter<eBookEtc>::to_string_map = {
-    {eBookEtc::None, "None"}
+    {eBookEtc::None, "None"},
+    {eBookEtc::Fragrance, "Fragrance"},
+    {eBookEtc::Label, "Label"},
+    {eBookEtc::Promotion, "Promotion"},
+    {eBookEtc::Branding, "Branding"}
 };
 
 const std::unordered_map<eBookEtc, std::string> EnumConverter<eBookEtc>::to_korean_map = {
-    {eBookEtc::None, "없음"}
+    {eBookEtc::None, "없음"},
+    {eBookEtc::Fragrance, "향기"},
+    {eBookEtc::Label, "표지"},
+    {eBookEtc::Promotion, "프로모션"},
+    {eBookEtc::Branding, "브랜딩"}
 };
 
 const std::unordered_map<eBookEtc, int> EnumConverter<eBookEtc>::to_int_map = {
-    {eBookEtc::None, 0}
+    {eBookEtc::None, 0},
+    {eBookEtc::Fragrance, 1},
+    {eBookEtc::Label, 2},
+    {eBookEtc::Promotion, 3},
+    {eBookEtc::Branding, 4}
 };
 
 const std::unordered_map<std::string, eBookEtc> EnumConverter<eBookEtc>::from_string_map = {
-    {"None", eBookEtc::None}
+    {"None", eBookEtc::None},
+    {"Fragrance", eBookEtc::Fragrance},
+    {"Label", eBookEtc::Label},
+    {"Promotion", eBookEtc::Promotion},
+    {"Branding", eBookEtc::Branding}
 };
 
 const std::unordered_map<std::string, eBookEtc> EnumConverter<eBookEtc>::from_korean_map = {
-    {"없음", eBookEtc::None}
+    {"없음", eBookEtc::None},
+    {"향기", eBookEtc::Fragrance},
+    {"표지", eBookEtc::Label},
+    {"프로모션", eBookEtc::Promotion},
+    {"브랜딩", eBookEtc::Branding}
 };
 
 const std::unordered_map<int, eBookEtc> EnumConverter<eBookEtc>::from_int_map = {
-    {0, eBookEtc::None}
+    {0, eBookEtc::None},
+    {1, eBookEtc::Fragrance},
+    {2, eBookEtc::Label},
+    {3, eBookEtc::Promotion},
+    {4, eBookEtc::Branding}
 };
 
 // -------------------- eDamageType --------------------

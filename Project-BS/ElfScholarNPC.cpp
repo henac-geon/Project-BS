@@ -41,7 +41,7 @@ bool ElfScholarNPC::isReturningBook() const {
 }
 
 bool ElfScholarNPC::wantsRecommendation() const {
-    return preferredMood == eBookMood::Whimsical;
+    return currentBook ? false : true;
 }
 
 void ElfScholarNPC::compensateForDamage(Book* book) {
