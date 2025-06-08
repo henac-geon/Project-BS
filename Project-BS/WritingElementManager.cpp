@@ -170,28 +170,26 @@ bool WritingElementManager::isMoodOptionAvailable(eBookMood mood) const {
     return std::any_of(moods.begin(), moods.end(), [&](const auto& e) { return e.element == mood; });
 }
 
-// 카테고리별 요소 데이터 반환 (템플릿 버전)
-template <typename T>
-std::vector<ElementData<T>> WritingElementManager::getElements(WritingElementCategory category) const {
-    switch (category) {
-    case WritingElementCategory::Genre:
-        if (std::is_same<T, eBookGenre>::value) return reinterpret_cast<const std::vector<ElementData<T>>&>(genres);
-        break;
-    case WritingElementCategory::Mood:
-        if (std::is_same<T, eBookMood>::value) return reinterpret_cast<const std::vector<ElementData<T>>&>(moods);
-        break;
-    case WritingElementCategory::Length:
-        if (std::is_same<T, int>::value) return reinterpret_cast<const std::vector<ElementData<T>>&>(lengths);
-        break;
-    case WritingElementCategory::Edge:
-        if (std::is_same<T, eBookEdge>::value) return reinterpret_cast<const std::vector<ElementData<T>>&>(edges);
-        break;
-    case WritingElementCategory::Etc:
-        if (std::is_same<T, eBookEtc>::value) return reinterpret_cast<const std::vector<ElementData<T>>&>(etcs);
-        break;
-    }
-    return {};
+std::vector<ElementData<eBookGenre>> WritingElementManager::getGenreElements() const {
+    return genres;
 }
+
+std::vector<ElementData<eBookMood>> WritingElementManager::getMoodElements() const {
+    return moods;
+}
+
+std::vector<ElementData<int>> WritingElementManager::getLengthElements() const {
+    return lengths;
+}
+
+std::vector<ElementData<eBookEdge>> WritingElementManager::getEdgeElements() const {
+    return edges;
+}
+
+std::vector<ElementData<eBookEtc>> WritingElementManager::getEtcElements() const {
+    return etcs;
+}
+
 
 // 이름 목록 반환 (한글)
 std::vector<std::string> WritingElementManager::getGenreNames() const {

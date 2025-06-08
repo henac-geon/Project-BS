@@ -36,9 +36,11 @@ public:
     bool isGenreOptionAvailable(eBookGenre genre) const;
     bool isMoodOptionAvailable(eBookMood mood) const;
 
-    template <typename T>
-    std::vector<ElementData<T>> getElements(WritingElementCategory category) const;
-
+    std::vector<ElementData<eBookGenre>> getGenreElements() const;
+    std::vector<ElementData<eBookMood>> getMoodElements() const;
+    std::vector<ElementData<int>> getLengthElements() const;
+    std::vector<ElementData<eBookEdge>> getEdgeElements() const;
+    std::vector<ElementData<eBookEtc>> getEtcElements() const;
 
     std::vector<std::string> getGenreNames() const;
     std::vector<std::string> getMoodNames() const;

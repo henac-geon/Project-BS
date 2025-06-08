@@ -264,11 +264,11 @@ void CrudStore::displayAvailableElements() const {
     printCategoryHeaders({ "장르", "분위기", "분량", "엣지 요소", "기타" });
 
     // 요소 목록 가져오기 (Enum_Utils + WritingElementManager 사용)
-    auto genreList = writingElementManager.getAvailableGenres(level);
-    auto moodList = writingElementManager.getAvailableMoods(level);
-    auto lengthList = writingElementManager.getAvailableLengths(level);
-    auto edgeList = writingElementManager.getAvailableEdges(level);
-    auto etcList = writingElementManager.getAvailableEtcs(level);
+    auto genreList = writingElementManager.getGenreElements();
+    auto moodList = writingElementManager.getMoodElements();
+    auto lengthList = writingElementManager.getLengthElements();
+    auto edgeList = writingElementManager.getEdgeElements();
+    auto etcList = writingElementManager.getEtcElements();
 
     // 가장 긴 목록 기준 반복
     size_t maxRows = genreList.size();
@@ -281,12 +281,22 @@ void CrudStore::displayAvailableElements() const {
     for (size_t row = 0; row < maxRows; ++row) {
         std::string line;
 
-        // 각 열 출력. 존재하지 않으면 "(잠금)"
-        line += padRight((row < genreList.size() ? formatEnumElement(WritingElementCategory::Genre, static_cast<int>(genreList[row])) : "(잠금)"), COLUMN_WIDTH) + "  ";
-        line += padRight((row < moodList.size() ? formatEnumElement(WritingElementCategory::Mood, static_cast<int>(moodList[row])) : "(잠금)"), COLUMN_WIDTH) + "  ";
-        line += padRight((row < lengthList.size() ? formatEnumElement(WritingElementCategory::Length, lengthList[row]) : "(잠금)"), COLUMN_WIDTH) + "  ";
-        line += padRight((row < edgeList.size() ? formatEnumElement(WritingElementCategory::Edge, static_cast<int>(edgeList[row])) : "(잠금)"), COLUMN_WIDTH) + "  ";
-        line += padRight((row < etcList.size() ? formatEnumElement(WritingElementCategory::Etc, static_cast<int>(etcList[row])) : "(잠금)"), COLUMN_WIDTH);
+        auto getFormatted = [&](auto& list, WritingElementCategory category) -> std::string {
+            if (row >= list.size()) return "";
+            const auto& elem = list[row];
+            if (level >= elem.requiredLevel) {
+                return formatEnumElement(category, static_cast<int>(elem.element));
+            }
+            else {
+                return "(잠금)";
+            }
+            };
+
+        line += padRight(getFormatted(genreList, WritingElementCategory::Genre), COLUMN_WIDTH) + "  ";
+        line += padRight(getFormatted(moodList, WritingElementCategory::Mood), COLUMN_WIDTH) + "  ";
+        line += padRight(getFormatted(lengthList, WritingElementCategory::Length), COLUMN_WIDTH) + "  ";
+        line += padRight(getFormatted(edgeList, WritingElementCategory::Edge), COLUMN_WIDTH) + "  ";
+        line += padRight(getFormatted(etcList, WritingElementCategory::Etc), COLUMN_WIDTH);
 
         ConsoleIO::println(line);
     }
