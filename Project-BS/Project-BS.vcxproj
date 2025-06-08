@@ -106,6 +106,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(VCPKG_ROOT)\installed\x64-windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp14</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -135,15 +136,15 @@
   </ItemDefinitionGroup>
   <!-- 소스 파일들 -->
   <ItemGroup>
+    <ClCompile Include="AINPC.cpp" />
     <ClCompile Include="AsciiArtRepository.cpp" />
     <ClCompile Include="Book.cpp" />
     <ClCompile Include="BookFactory.cpp" />
     <ClCompile Include="ConsoleIO.cpp" />
     <ClCompile Include="CrudStore.cpp" />
     <ClCompile Include="CsvIO.cpp" />
-    <ClCompile Include="ElfScholarNPC..cpp" />
-    <ClCompile Include="enum_utils.cpp" />
-    <ClCompile Include="FantasyBook.cpp" />
+    <ClCompile Include="ElfScholarNPC.cpp" />
+    <ClCompile Include="Enum_Utils.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="inventory.cpp" />
     <ClCompile Include="KnightNPC.cpp" />
@@ -152,12 +153,10 @@
     <ClCompile Include="MerchantNPC.cpp" />
     <ClCompile Include="MiniGame.cpp" />
     <ClCompile Include="NPC.cpp" />
-    <ClCompile Include="Player.cpp" />
     <ClCompile Include="RandomNPC.cpp" />
     <ClCompile Include="ReactionGame.cpp" />
-    <ClCompile Include="ScienceBook.cpp" />
     <ClCompile Include="StudentNPC.cpp" />
-    <ClCompile Include="openai_client.cpp" />
+    <ClCompile Include="Openai_Chat_Client.cpp" />
     <ClCompile Include="TypingGame.cpp" />
     <ClCompile Include="UIManager.cpp" />
     <ClCompile Include="VampireNPC.cpp" />
@@ -165,6 +164,7 @@
     <ClCompile Include="WritingElementManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AINPC.h" />
     <ClInclude Include="AsciiArtRepository.h" />
     <ClInclude Include="Book.h" />
     <ClInclude Include="BookFactory.h" />
@@ -173,8 +173,7 @@
     <ClInclude Include="CsvIO.h" />
     <ClInclude Include="ElfScholarNPC.h" />
     <ClInclude Include="Enums.h" />
-    <ClInclude Include="enum_utils.h" />
-    <ClInclude Include="FantasyBook.h" />
+    <ClInclude Include="Enum_utils.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="Inventory.h" />
     <ClInclude Include="KnightNPC.h" />
@@ -182,11 +181,9 @@
     <ClInclude Include="MerchantNPC.h" />
     <ClInclude Include="MiniGame.h" />
     <ClInclude Include="NPC.h" />
-    <ClInclude Include="Player.h" />
     <ClInclude Include="RandomNPC.h" />
-    <ClInclude Include="ScienceBook.h" />
     <ClInclude Include="StudentNPC.h" />
-    <ClInclude Include="openai_client.h" />
+    <ClInclude Include="Openai_Chat_Client.h" />
     <ClInclude Include="TypingGame.h" />
     <ClInclude Include="UIManager.h" />
     <ClInclude Include="VampireNPC.h" />

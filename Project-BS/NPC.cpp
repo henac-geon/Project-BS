@@ -5,7 +5,7 @@
 #include <algorithm>
 
 // 생성자: NPC 속성 초기화 및 랜덤 요청 타입 설정
-NPC::NPC(const std::string& name, bool isMale, eBookGenre genre, eBookMood mood, int gold, int magicPower)
+NPC::NPC(const std::string& name, bool isMale, eBookGenre genre, eBookMood mood, int gold, int magicPower, const std::vector<std::string>& dialogues)
     : name(name),
     isMale(isMale),
     preferredGenre(genre),
@@ -13,7 +13,7 @@ NPC::NPC(const std::string& name, bool isMale, eBookGenre genre, eBookMood mood,
     gold(gold),
     magicPower(magicPower),
     requestType(eRequestType::GenreOnly),
-    borrowed(false)
+    dialogues(dialogues)
 {
     // 요청 타입 무작위 설정
     int r = rand() % 3;
@@ -22,9 +22,6 @@ NPC::NPC(const std::string& name, bool isMale, eBookGenre genre, eBookMood mood,
     case 1: requestType = eRequestType::MoodOnly; break;
     case 2: requestType = eRequestType::GenreAndMood; break;
     }
-
-    // 기본 대사 설정
-    dialogues = { "오늘은 뭔가 끌리는 책이 있을까요?" };
 }
 
 /////////////////////////////
@@ -50,45 +47,33 @@ bool NPC::rateBook(Book* book) const {
 
 // 책 대여 시도
 bool NPC::borrowBook(Book* book) {
-    if (!book || borrowed) return false;
-    inventory.push_back(book);
-    borrowed = true;
+    if (currentBook) return false;
+    currentBook = book;
     return true;
 }
 
 // 책 반환
 Book* NPC::returnBook() {
-    if (!borrowed || inventory.empty()) return nullptr;
+    if (!currentBook) return nullptr;
 
-    Book* book = inventory.back();
-    inventory.pop_back();
-    borrowed = false;
+    Book* book = currentBook;
+    currentBook = nullptr;
     return book;
 }
 
-// 책 반납 여부 결정 (50% 확률)
+// 책 반납 여부 결정 (80% 확률)
 bool NPC::isReturningBook() const {
-    return borrowed && (rand() % 2 == 0);
+    return currentBook && (rand() % 10 < 8);
 }
 
-// 추천 요청 여부 결정 (책 미보유 + 50% 확률)
+// 추천 요청 여부 결정 (책 미보유 + 90% 확률)
 bool NPC::wantsRecommendation() const {
-    return !borrowed && (rand() % 2 == 0);
+    return !currentBook && (rand() % 10 < 9);
 }
 
 /////////////////////////////
 // 골드/경험치 관련 메서드
 /////////////////////////////
-
-// 골드 차감
-void NPC::payGold(int amount) {
-    gold = std::max(0, gold - amount);
-}
-
-// 경험치(마법력) 증가
-void NPC::gainExp(int amount) {
-    magicPower += amount;
-}
 
 // 책 손상 보상 처리 (기본 미구현)
 void NPC::compensateForDamage(Book* book) {
@@ -127,24 +112,8 @@ eRequestType NPC::getRequestType() const {
     return requestType;
 }
 
-Book* NPC::getCurrentBook() const {
-    return currentBook;
-}
-
-bool NPC::isHoldingBook() const {
-    return hasBook;
-}
-
-const std::vector<Book*>& NPC::getInventory() const {
-    return inventory;
-}
-
-bool NPC::hasBookInInventory(const Book* book) const {
-    return std::find(inventory.begin(), inventory.end(), book) != inventory.end();
-}
-
 bool NPC::hasBorrowed() const {
-    return borrowed;
+    return currentBook ? true : false;
 }
 
 /////////////////////////////
@@ -152,11 +121,11 @@ bool NPC::hasBorrowed() const {
 /////////////////////////////
 
 void NPC::setGold(int amount) {
-    gold = std::max(0, amount);
+    gold = (amount < 0) ? 0 : amount;
 }
 
 void NPC::setMagicPower(int amount) {
-    magicPower = std::max(0, amount);
+    magicPower = (amount < 0) ? 0 : amount;
 }
 
 void NPC::setRequestType(eRequestType type) {
@@ -172,11 +141,8 @@ void NPC::setDialogues(const std::vector<std::string>& lines) {
 /////////////////////////////
 
 // 책 제거
-void NPC::removeBookFromInventory(Book* book) {
-    auto it = std::find(inventory.begin(), inventory.end(), book);
-    if (it != inventory.end()) {
-        inventory.erase(it);
-    }
+void NPC::removeBook(Book* book) {
+    currentBook = nullptr;
 }
 
 // 아트 반환
@@ -198,8 +164,7 @@ void NPC::debugPrint() const {
     std::cout << "Request Type: " << static_cast<int>(requestType) << std::endl;
     std::cout << "Gold: " << gold << std::endl;
     std::cout << "Magic Power: " << magicPower << std::endl;
-    std::cout << "Has Borrowed: " << (borrowed ? "Yes" : "No") << std::endl;
-    std::cout << "Inventory Size: " << inventory.size() << std::endl;
+    std::cout << "Has Borrowed: " << (currentBook ? "Yes" : "No") << std::endl;
     std::cout << "Dialogues:" << std::endl;
     for (size_t i = 0; i < dialogues.size(); ++i) {
         std::cout << "  [" << i + 1 << "] " << dialogues[i] << std::endl;

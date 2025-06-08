@@ -1,4 +1,4 @@
-﻿#include "openai_client.h"
+﻿#include "Openai_Chat_Client.h"
 #include <fstream>
 #include <sstream>
 #include <iostream>
@@ -12,7 +12,7 @@ static size_t WriteCallback(void* contents, size_t size, size_t nmemb, std::stri
     return totalSize;
 }
 
-OpenAIClient::OpenAIClient(const std::string& configFile) {
+OpenAIChatClient::OpenAIChatClient(const std::string& configFile) {
     std::ifstream file(configFile);
     if (!file.is_open()) {
         std::cerr << "[오류] config.env 파일을 열 수 없습니다." << std::endl;
@@ -38,7 +38,7 @@ OpenAIClient::OpenAIClient(const std::string& configFile) {
     }
 }
 
-json OpenAIClient::sendChatCompletion(const std::string& prompt) {
+json OpenAIChatClient::sendChatCompletion(const std::string& prompt) {
     std::string response;
     CURL* curl = curl_easy_init();
 

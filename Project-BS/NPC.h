@@ -17,17 +17,13 @@ protected:
     eBookMood preferredMood;                  // 선호 분위기
     int gold;                                 // 보유 골드
     int magicPower;                           // 마법 기운
-    bool borrowed;                            // 대여 여부
     eRequestType requestType;                 // 요청 유형
-    std::vector<Book*> inventory;             // 소지한 책들
     std::vector<std::string> dialogues;       // 대사 목록
-
-    Book* currentBook = nullptr;              // 현재 들고 있는 책
-    bool hasBook = false;                     // 책 소지 여부
+    Book* currentBook = nullptr;              // 현재 들고 있는 책, 대여여부까지 체크 가능
 
 public:
     // 생성자 및 소멸자
-    NPC(const std::string& name, bool isMale, eBookGenre genre, eBookMood mood, int gold, int magicPower);
+    NPC(const std::string& name, bool isMale, eBookGenre genre, eBookMood mood, int gold, int magicPower, const std::vector<std::string>& dialogues);
     virtual ~NPC() = default;
 
     // 순수 가상 함수 (자식 클래스에서 구현 필요)
@@ -36,6 +32,11 @@ public:
     virtual Book* returnBook() = 0;                        // 책 반환
     virtual bool isReturningBook() const = 0;              // 책을 반환할지 여부
     virtual bool wantsRecommendation() const = 0;          // 추천을 원하는지 여부
+
+    virtual int payGold(int amount = 0) = 0;               // 골드 지불 (구현 방식 다양화)
+    virtual int payMagicPower(int amount = 0) = 0;         // 마법 기운 지불 (구현 방식 다양화)
+    virtual int payExp(int amount = 0) = 0;                // 경험치 획득 처리 (구현 방식 다양화)
+
     virtual void compensateForDamage(Book* book) = 0;      // 책이 손상되었을 때 보상 처리
     virtual void debugPrint() const = 0;                   // 디버깅 정보 출력
 
@@ -47,10 +48,6 @@ public:
     int getGold() const;
     int getMagicPower() const;
     eRequestType getRequestType() const;
-    Book* getCurrentBook() const;
-    bool isHoldingBook() const;
-    const std::vector<Book*>& getInventory() const;
-    bool hasBookInInventory(const Book* book) const;
     bool hasBorrowed() const;                              // 책을 대여한 상태인지
 
     // Setter
@@ -60,9 +57,7 @@ public:
     void setDialogues(const std::vector<std::string>& lines);
 
     // 행동 관련 메서드
-    void payGold(int amount);                              // 골드 지불
-    void gainExp(int amount);                              // 경험치 지불
-    void removeBookFromInventory(Book* book);              // 책 제거
+    void removeBook(Book* book);                           // 책 제거
     std::string getArt() const;                            // NPC 아트 반환
 
     // 대사 관련

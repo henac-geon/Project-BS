@@ -7,6 +7,11 @@ void Inventory::addBook(Book* book) {
     books.push_back(book);
 }
 
+void Inventory::addBooks(const std::vector<Book*>& newBooks) {
+    books.insert(books.end(), newBooks.begin(), newBooks.end());
+}
+
+
 Book* Inventory::findBook(const std::string& title) const {
     auto it = std::find_if(books.begin(), books.end(), [&](Book* b) {
         return b->getTitle() == title;

@@ -22,6 +22,7 @@ private:
 
 public:
     void addBook(Book* book);
+    void addBooks(const std::vector<Book*>& newBooks);
     Book* findBook(const std::string& title) const;
     const std::vector<Book*>& getBooks() const;
     void removeBook(Book* book);

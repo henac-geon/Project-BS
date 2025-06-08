@@ -5,7 +5,10 @@
 
 #include <string>
 #include <random>
+#include <cstdlib>
+#include <ctime>
 #include "Enums.h"
+#include "ConsoleIO.h"
 
 class Book {
 private:
@@ -35,11 +38,11 @@ public:
         eBookEdge edge,
         eBookEtc etc);
 
-    virtual ~Book() = default;
+    ~Book() = default;
 
-    virtual void repair() = 0;
+    void repair();
 
-    virtual void displayInfo() const = 0;
+    void displayInfo() const;
 
     std::string getTitle() const;
     eBookCondition getCondition() const;
@@ -49,7 +52,7 @@ public:
     std::string getMoodName() const;
     std::string getEdgeName() const;
     std::string getEtcName() const;
-    //std::string getStockSymbol() const; // 재고 여부
+    std::string getStockSymbol() const; // 재고 여부
     int getVolume() const;  // = length
     std::string getConditionPercentText() const;
 
