@@ -136,6 +136,7 @@
   </ItemDefinitionGroup>
   <!-- 소스 파일들 -->
   <ItemGroup>
+    <ClCompile Include="AINPC.cpp" />
     <ClCompile Include="AsciiArtRepository.cpp" />
     <ClCompile Include="Book.cpp" />
     <ClCompile Include="BookFactory.cpp" />
@@ -155,7 +156,7 @@
     <ClCompile Include="RandomNPC.cpp" />
     <ClCompile Include="ReactionGame.cpp" />
     <ClCompile Include="StudentNPC.cpp" />
-    <ClCompile Include="openai_client.cpp" />
+    <ClCompile Include="Openai_Chat_Client.cpp" />
     <ClCompile Include="TypingGame.cpp" />
     <ClCompile Include="UIManager.cpp" />
     <ClCompile Include="VampireNPC.cpp" />
@@ -163,6 +164,7 @@
     <ClCompile Include="WritingElementManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AINPC.h" />
     <ClInclude Include="AsciiArtRepository.h" />
     <ClInclude Include="Book.h" />
     <ClInclude Include="BookFactory.h" />
@@ -181,7 +183,7 @@
     <ClInclude Include="NPC.h" />
     <ClInclude Include="RandomNPC.h" />
     <ClInclude Include="StudentNPC.h" />
-    <ClInclude Include="openai_client.h" />
+    <ClInclude Include="Openai_Chat_Client.h" />
     <ClInclude Include="TypingGame.h" />
     <ClInclude Include="UIManager.h" />
     <ClInclude Include="VampireNPC.h" />

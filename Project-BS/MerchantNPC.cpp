@@ -2,12 +2,58 @@
 #include "ConsoleIO.h"
 #include <cstdlib> // for rand()
 
+// TODO: 아 이거 ai서서 더 자연스럽게 하고 싶은데...
 bool MerchantNPC::rateBook(Book* book) const {
     if (!book) return false;
 
-    ConsoleIO::print("상인이 책의 시장 가치를 평가합니다.");
-    return true;  // 모든 책을 구매 대상으로 간주
+    ConsoleIO::print("상인이 책의 시장 가치를 계산하고 있습니다...");
+
+    bool genreMatch = book->getGenre() == preferredGenre;
+    bool moodMatch = book->getMood() == preferredMood;
+
+    switch (requestType) {
+    case eRequestType::GenreOnly:
+        if (genreMatch) {
+            ConsoleIO::print("이 장르의 책은 요즘 잘 팔립니다. 수익이 나겠군요.");
+            return true;
+        }
+        else {
+            ConsoleIO::print("수요는 좀 떨어지지만, 팔 수는 있겠네요.");
+            return true;
+        }
+
+    case eRequestType::MoodOnly:
+        if (moodMatch) {
+            ConsoleIO::print("이 분위기의 책이 최근 인기입니다. 거래 가치가 있군요.");
+            return true;
+        }
+        else {
+            ConsoleIO::print("흐름을 잘 타진 못하겠지만, 가격만 맞으면 팔립니다.");
+            return true;
+        }
+
+    case eRequestType::GenreAndMood:
+        if (genreMatch && moodMatch) {
+            ConsoleIO::print("완벽한 조합입니다! 이건 분명히 이윤이 남을 상품이에요.");
+            return true;
+        }
+        else if (genreMatch || moodMatch) {
+            ConsoleIO::print("절반의 조건만 맞지만, 괜찮은 딜이 될 수 있겠군요.");
+            return true;
+        }
+        else {
+            ConsoleIO::print("시장성이 떨어지긴 하지만... 어쩌면 틈새시장이 있을지도?");
+            return true;
+        }
+
+    case eRequestType::AnyBook:
+        ConsoleIO::print("모든 책은 상품입니다. 가격만 맞으면 뭐든 환영이죠.");
+        return true;
+    }
+
+    return true;
 }
+
 
 bool MerchantNPC::borrowBook(Book* book) {
     if (!book) return false;

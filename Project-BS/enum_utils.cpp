@@ -231,3 +231,55 @@ eBookCondition Enum_Utils::fromIntCondition(int i) {
     default: throw std::invalid_argument("Invalid eBookCondition int: " + std::to_string(i));
     }
 }
+
+
+// === eRequestType ===
+std::string Enum_Utils::toKorean(eRequestType v) {
+    switch (v) {
+    case eRequestType::ReturnBook: return "책 반납";
+    case eRequestType::GenreOnly: return "장르만 요구";
+    case eRequestType::MoodOnly: return "분위기만 요구";
+    case eRequestType::GenreAndMood: return "둘 다 요구";
+    case eRequestType::AnyBook: return "아무 책이나 허용";
+    default: return "<알 수 없음>";
+    }
+}
+std::string Enum_Utils::toEnglish(eRequestType v) {
+    switch (v) {
+    case eRequestType::ReturnBook: return "책 반납";
+    case eRequestType::GenreOnly: return "장르만 요구";
+    case eRequestType::MoodOnly: return "분위기만 요구";
+    case eRequestType::GenreAndMood: return "둘 다 요구";
+    case eRequestType::AnyBook: return "아무 책이나 허용";
+    default: return "Unknown";
+    }
+}
+int Enum_Utils::toInt(eRequestType v) {
+    return static_cast<int>(v);
+}
+eRequestType Enum_Utils::fromKoreanRequestType(const std::string& s) {
+    if (s == "책 반납") return eRequestType::ReturnBook;
+    if (s == "장르만 요구") return eRequestType::GenreOnly;
+    if (s == "분위기만 요구") return eRequestType::MoodOnly;
+    if (s == "둘 다 요구") return eRequestType::GenreAndMood;
+    if (s == "아무 책이나 허용") return eRequestType::AnyBook;
+    throw std::invalid_argument("Invalid eBookCondition Korean: " + s);
+}
+eRequestType Enum_Utils::fromEnglishRequestType(const std::string& s) {
+    if (s == "책 반납") return eRequestType::ReturnBook;
+    if (s == "GenreOnly") return eRequestType::GenreOnly;
+    if (s == "MoodOnly") return eRequestType::MoodOnly;
+    if (s == "GenreAndMood") return eRequestType::GenreAndMood;
+    if (s == "AnyBook") return eRequestType::AnyBook;
+    throw std::invalid_argument("Invalid eBookCondition English: " + s);
+}
+eRequestType Enum_Utils::fromIntRequestType(int i) {
+    switch (i) {
+    case 0: return eRequestType::ReturnBook;
+    case 1:  return eRequestType::GenreOnly;
+    case 2:  return eRequestType::MoodOnly;
+    case 3:   return eRequestType::GenreAndMood;
+    case 4:   return eRequestType::AnyBook;
+    default: throw std::invalid_argument("Invalid eBookCondition int: " + std::to_string(i));
+    }
+}

@@ -63,7 +63,7 @@ void GameManager::performWritingPhase() {
 
         crud.displayStatus();
         ConsoleIO::println("\n\"(장르), (분위기), (분량), (엣지요소), (기타), (제목)\" 순서로 입력해주세요.");
-        ConsoleIO::println("\"입력 예시: 판타지, 암울, 120, 반전, 없음, 다크소울\"\n");
+        ConsoleIO::println("\"입력 예시: 판타지, 어두움, 120, 반전, 없음, 다크소울\"\n");
         ConsoleIO::println("※ 책을 집필하지 않고 손님 응대로 바로 가려면 \"건너뛰기\"를 입력하세요.\n");
 
         ConsoleIO::println("[현재 사용 가능한 집필 요소]");
@@ -74,7 +74,7 @@ void GameManager::performWritingPhase() {
         std::cin.ignore();
         std::getline(std::cin, ans);
 
-        // 건너뛰기 기능 추가
+        // 건너뛰기 기능
         if (ans == "건너뛰기") {
             ConsoleIO::println("책 집필을 건너뛰고 손님 응대로 이동합니다.");
             return;
@@ -94,28 +94,48 @@ void GameManager::performWritingPhase() {
             continue;
         }
 
-        std::string genreStr = tokens[0], moodStr = tokens[1], edgeStr = tokens[3], etcStr = tokens[4], title = tokens[5];
-        int length = std::stoi(tokens[2]);
+        std::string genreStr = tokens[0];
+        std::string moodStr = tokens[1];
+        std::string lengthStr = tokens[2];
+        std::string edgeStr = tokens[3];
+        std::string etcStr = tokens[4];
+        std::string title = tokens[5];
+        int length;
 
-        eBookGenre genre = (genreStr == "공상과학") ? eBookGenre::SciFi :
-            (genreStr == "공포") ? eBookGenre::Horror :
-            (genreStr == "미스터리") ? eBookGenre::Mystery :
-            (genreStr == "로맨스") ? eBookGenre::Romance :
-            (genreStr == "아포칼립스") ? eBookGenre::Apocalypse :
-            eBookGenre::Fantasy;
+        try {
+            length = std::stoi(lengthStr);
+        }
+        catch (const std::exception& e) {
+            ConsoleIO::println("분량은 정수로 입력해주세요. 예외: " + std::string(e.what()));
+            continue;
+        }
+        catch (...) {
+            ConsoleIO::println("분량 변환 중 알 수 없는 예외가 발생했습니다.");
+            continue;
+        }
 
-        eBookMood mood = (moodStr == "명랑") ? eBookMood::Bright :
-            (moodStr == "감성") ? eBookMood::Touching :
-            (moodStr == "긴장감") ? eBookMood::Tense :
-            (moodStr == "엉뚱") ? eBookMood::Strange :
-            eBookMood::Dark;
+        eBookGenre genre;
+        eBookMood mood;
+        eBookEdge edge;
+        eBookEtc etc;
 
-        eBookEdge edge = (edgeStr == "반전") ? eBookEdge::Reversal : eBookEdge::None;
-        eBookEtc  etc = (etcStr == "없음") ? eBookEtc::None : eBookEtc::None;
+        try {
+            genre = Enum_Utils::fromKoreanGenre(genreStr);
+            mood = Enum_Utils::fromKoreanMood(moodStr);
+            edge = Enum_Utils::fromKoreanEdge(edgeStr);
+            etc = Enum_Utils::fromKoreanEtc(etcStr);
+        }
+        catch (const std::exception& e) {
+            ConsoleIO::println("입력값 중 올바르지 않은 항목이 있습니다. 예외: " + std::string(e.what()));
+            continue;
+        }
+        catch (...) {
+            ConsoleIO::println("입력값 처리 중 알 수 없는 예외가 발생했습니다.");
+            continue;
+        }
 
         Book* newBook = crud.getBookFactory().createBook(title, "수동 제작", genre, mood, length, edge, etc);
         crud.getInventory().addBook(newBook);
-
         ConsoleIO::println("책이 성공적으로 집필되었습니다: " + title);
 
         // 다음 행동 선택
@@ -133,10 +153,10 @@ void GameManager::performWritingPhase() {
             }
             else if (command == "인벤토리") {
                 performShowInventoryPhase();
-                break; // 인벤토리 보기 → 다시 루프 반복
+                continue; // 인벤토리 보기 후 루프 반복
             }
             else if (command == "응대") {
-                return; // 응대로 넘어감
+                return; // 응대 단계로 이동
             }
             else {
                 ConsoleIO::println("올바른 명령어가 아닙니다. 다시 입력해주세요.");
@@ -145,6 +165,7 @@ void GameManager::performWritingPhase() {
     }
 }
 
+
 // 재고 확인 단계
 void GameManager::performShowInventoryPhase() {
     uiManager.clearScreen();
@@ -152,17 +173,36 @@ void GameManager::performShowInventoryPhase() {
 
     while (true) {
         std::string input;
-        ConsoleIO::println("> 책 소각 마법: \"[책 제목] arDeat\" 입력         책 복구 마법: \"[책 제목] arRegen\" 입력          뒤로가기: \"뒤로가기\" 입력");
+        ConsoleIO::println("> 책 소각 마법: \"[책 제목] 소각\" 입력         책 복구 마법: \"[책 제목] RepARARe\" 입력          뒤로가기: \"뒤로가기\" 입력");
         ConsoleIO::print("입력: ");
         std::getline(std::cin, input);
 
         if (input == "뒤로가기") return;
 
-        if (input.size() > 7) {
+        if (input.size() > 5) {
             std::string suffix = input.substr(input.size() - 6);
-            std::string title = input.substr(0, input.size() - 7);
+            std::string title;
 
-            if (suffix == "arDeat") {
+            if (input.size() >= 6 && input.substr(input.size() - 6) == "RepARARe") {
+                title = input.substr(0, input.size() - 8);  // 8 = length of " RepARARe"
+                Book* target = crud.getInventory().findBook(title);
+                if (target) {
+                    if (target->getCondition() != eBookCondition::Perfect) {
+                        MiniGame* game = new TypingGame();
+                        crud.getInventory().attemptToRestoreDamagedBook(target, game);
+                        delete game;
+                        target->repair();
+                        ConsoleIO::println(AsciiArt::showRestoreBookArt());
+                        ConsoleIO::println(target->getTitle() + " 복원 완료!");
+                    }
+                    ConsoleIO::println("\"" + title + "\" 책이 복구되었습니다.");
+                }
+                else {
+                    ConsoleIO::println("복구할 수 있는 책이 없습니다: \"" + title + "\"");
+                }
+            }
+            else if (input.size() >= 4 && input.substr(input.size() - 4) == "소각") {
+                title = input.substr(0, input.size() - 4);  // 4 = length of "소각"
                 Book* target = crud.getInventory().findBook(title);
                 if (target) {
                     crud.getInventory().removeBook(target);
@@ -170,31 +210,6 @@ void GameManager::performShowInventoryPhase() {
                 }
                 else {
                     ConsoleIO::println("해당 제목의 책을 찾을 수 없습니다: \"" + title + "\"");
-                }
-            }
-            else if (suffix == "arRege") { // arRegen에서 마지막 n이 잘리므로 주의
-                if (input.size() >= 8 && input.substr(input.size() - 7) == "arRegen") {
-                    title = input.substr(0, input.size() - 8);
-                    Book* target = crud.getInventory().findBook(title);
-                    if (target) {
-                        if (target->getCondition() != eBookCondition::Perfect) {
-                            // 책 복구용 미니 게임 추가
-                            // TODO: 책 복구 시 재화 소모 로직 추가
-                            MiniGame* game = new TypingGame();  // 또는 ReactionGame
-                            crud.getInventory().attemptToRestoreDamagedBook(target, game);
-                            delete game;
-                            target->repair();
-                            ConsoleIO::println(AsciiArt::showRestoreBookArt());
-                            ConsoleIO::println(target->getTitle() + " 복원 완료!");
-                        }
-                        ConsoleIO::println("\"" + title + "\" 책이 복구되었습니다.");
-                    }
-                    else {
-                        ConsoleIO::println("복구할 수 있는 책이 없습니다: \"" + title + "\"");
-                    }
-                }
-                else {
-                    ConsoleIO::println("올바른 명령어 형식이 아닙니다.");
                 }
             }
             else {
@@ -206,6 +221,7 @@ void GameManager::performShowInventoryPhase() {
         }
     }
 }
+
 
 void GameManager::performNPCPhase() {
     uiManager.clearScreen();
@@ -261,7 +277,7 @@ void GameManager::performNPCPhase() {
 
                 if (input == "재고 확인") {
                     performShowInventoryPhase();
-                    break;
+                    continue; // 빠져 나오면 다시 입력 대기
                 }
                 else if (input == "패스") {
                     ConsoleIO::println("NPC는 고개를 끄덕이고 떠났습니다.");

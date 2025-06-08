@@ -5,6 +5,8 @@
 
 #include <string>
 #include <random>
+#include <cstdlib>
+#include <ctime>
 #include "Enums.h"
 #include "ConsoleIO.h"
 
@@ -50,7 +52,7 @@ public:
     std::string getMoodName() const;
     std::string getEdgeName() const;
     std::string getEtcName() const;
-    //std::string getStockSymbol() const; // 재고 여부
+    std::string getStockSymbol() const; // 재고 여부
     int getVolume() const;  // = length
     std::string getConditionPercentText() const;
 

@@ -5,14 +5,15 @@
 #include <algorithm>
 
 // 생성자: NPC 속성 초기화 및 랜덤 요청 타입 설정
-NPC::NPC(const std::string& name, bool isMale, eBookGenre genre, eBookMood mood, int gold, int magicPower)
+NPC::NPC(const std::string& name, bool isMale, eBookGenre genre, eBookMood mood, int gold, int magicPower, const std::vector<std::string>& dialogues)
     : name(name),
     isMale(isMale),
     preferredGenre(genre),
     preferredMood(mood),
     gold(gold),
     magicPower(magicPower),
-    requestType(eRequestType::GenreOnly)
+    requestType(eRequestType::GenreOnly),
+    dialogues(dialogues)
 {
     // 요청 타입 무작위 설정
     int r = rand() % 3;
@@ -21,9 +22,6 @@ NPC::NPC(const std::string& name, bool isMale, eBookGenre genre, eBookMood mood,
     case 1: requestType = eRequestType::MoodOnly; break;
     case 2: requestType = eRequestType::GenreAndMood; break;
     }
-
-    // 기본 대사 설정
-    dialogues = { "오늘은 뭔가 끌리는 책이 있을까요?" };
 }
 
 /////////////////////////////

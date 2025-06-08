@@ -8,30 +8,36 @@ Book::Book(const std::string& title,
     int length,
     eBookEdge edge,
     eBookEtc etc)
-    : title(title),               // 제목 초기화
-    description(description),   // 설명 초기화
-    genre(genre),               // 장르 초기화
-    mood(mood),                 // 분위기 초기화
-    length(length),             // 분량 초기화
+    : title(title),                       // 제목 초기화
+    description(description),             // 설명 초기화
+    genre(genre),                         // 장르 초기화
+    mood(mood),                           // 분위기 초기화
+    length(length),                       // 분량 초기화
     edge(edge),
-    etc(etc),                   // 기타 정보 초기화
-    isDamaged(false),           // 기본 손상 여부: 없음
-    damageType(eDamageType::None),       // 기본 손상 유형: 없음
+    etc(etc),                             // 기타 정보 초기화
+    isDamaged(false),                     // 기본 손상 여부: 없음
+    damageType(eDamageType::None),        // 기본 손상 유형: 없음
     condition(eBookCondition::Perfect),   // 기본 상태: 완전
-    conditionValue(100), // 새 책으로 초기화
-    available(true)  // 기본 사용 가능 상태: true
+    conditionValue(100),                  // 새 책으로 초기화
+    available(true)                       // 기본 사용 가능 상태: true
 {
     // TODO: 필요에 따라 추가 초기화 로직 구현
+    std::srand(static_cast<unsigned int>(std::time(nullptr)));
+    // setCondition(condition);
 }
 
+// 책 수리
 void Book::repair() {
     condition = eBookCondition::Perfect;
+    conditionValue = 100;  // 수리 후 상태를 완전으로 설정
     isDamaged = false;
 }
 
+// 책 정보 출력 함수
 void Book::displayInfo() const {
     ConsoleIO::println("책 제목: " + title);
 }
+
 
 std::string Book::getTitle() const {
     return title;  // title 멤버 반환
@@ -54,6 +60,7 @@ int Book::getConditionValue() const {
 }
 
 std::string Book::getConditionPercentText() const {
+    //std::cout << "책 상태: " << conditionValue << "%" << std::endl;
     return std::to_string(conditionValue) + "%";
 }
 
@@ -75,14 +82,15 @@ std::string Book::getEtcName() const {
 }
 
 
-//std::string Book::getStockSymbol() const {
-//    switch (condition) {
-//    case eBookCondition::Good: return "●";
-//    case eBookCondition::Fair: return "○";
-//    case eBookCondition::Bad: return "×";
-//    default: return "?";
-//    }
-//}
+std::string Book::getStockSymbol() const {
+    switch (condition) {
+    case eBookCondition::Perfect: return "●";
+    case eBookCondition::Worn: return "○";
+    case eBookCondition::Damaged: return "×";
+    case eBookCondition::Destroyed: return "X";
+    default: return "?";
+    }
+}
 
 int Book::getVolume() const {
     return length;
@@ -91,10 +99,7 @@ int Book::getVolume() const {
 
 // 책의 상태를 범위 형태로 반환하는 함수
 int Book::getRandomInRange(int min, int max) const {
-    static std::random_device rd;
-    static std::mt19937 gen(rd());
-    std::uniform_int_distribution<> dis(min, max);
-    return dis(gen);
+    return min + std::rand() % (max - min + 1);
 }
 
 void Book::setTitle(const std::string& newTitle) {

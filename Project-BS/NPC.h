@@ -19,12 +19,11 @@ protected:
     int magicPower;                           // 마법 기운
     eRequestType requestType;                 // 요청 유형
     std::vector<std::string> dialogues;       // 대사 목록
-
     Book* currentBook = nullptr;              // 현재 들고 있는 책, 대여여부까지 체크 가능
 
 public:
     // 생성자 및 소멸자
-    NPC(const std::string& name, bool isMale, eBookGenre genre, eBookMood mood, int gold, int magicPower);
+    NPC(const std::string& name, bool isMale, eBookGenre genre, eBookMood mood, int gold, int magicPower, const std::vector<std::string>& dialogues);
     virtual ~NPC() = default;
 
     // 순수 가상 함수 (자식 클래스에서 구현 필요)
@@ -58,7 +57,7 @@ public:
     void setDialogues(const std::vector<std::string>& lines);
 
     // 행동 관련 메서드
-    void removeBook(Book* book); // 책 제거
+    void removeBook(Book* book);                           // 책 제거
     std::string getArt() const;                            // NPC 아트 반환
 
     // 대사 관련

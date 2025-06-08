@@ -48,6 +48,15 @@ namespace Enum_Utils {
     eBookCondition fromEnglishCondition(const std::string& s);
     eBookCondition fromIntCondition(int i);
 
+
+    // ----- eRequestType -----
+    std::string toKorean(eRequestType v);
+    std::string toEnglish(eRequestType v);
+    int toInt(eRequestType v);
+    eRequestType fromKoreanRequestType(const std::string& s);
+    eRequestType fromEnglishRequestType(const std::string& s);
+    eRequestType fromIntRequestType(int i);
+
 } // namespace enum_utils
 
 #endif // ENUM_UTILS_H

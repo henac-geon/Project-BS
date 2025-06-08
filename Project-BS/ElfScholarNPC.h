@@ -8,8 +8,8 @@
 
 class ElfScholarNPC : public NPC {
 public:
-    ElfScholarNPC(const std::string& n, bool s, eBookGenre g, eBookMood m, int gold, int mp)
-        : NPC(n, s, g, m, gold, mp) {
+    ElfScholarNPC(const std::string& n, bool s, eBookGenre g, eBookMood m, int gold, int mp, const std::vector<std::string>& dialogues)
+        : NPC(n, s, g, m, gold, mp, dialogues) {
     }
 
     bool rateBook(Book* book) const override;

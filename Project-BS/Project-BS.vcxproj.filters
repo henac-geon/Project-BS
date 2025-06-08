@@ -114,7 +114,7 @@
     <ClCompile Include="CrudStore.cpp">
       <Filter>소스 파일\Core</Filter>
     </ClCompile>
-    <ClCompile Include="openai_client.cpp">
+    <ClCompile Include="Openai_Chat_Client.cpp">
       <Filter>소스 파일\AI</Filter>
     </ClCompile>
     <ClCompile Include="TypingGame.cpp">
@@ -143,6 +143,9 @@
     </ClCompile>
     <ClCompile Include="Enum_Utils.cpp">
       <Filter>소스 파일\Commons</Filter>
+    </ClCompile>
+    <ClCompile Include="AINPC.cpp">
+      <Filter>소스 파일\NPC</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -194,7 +197,7 @@
     <ClInclude Include="CrudStore.h">
       <Filter>헤더 파일\Core</Filter>
     </ClInclude>
-    <ClInclude Include="openai_client.h">
+    <ClInclude Include="Openai_Chat_Client.h">
       <Filter>헤더 파일\AI</Filter>
     </ClInclude>
     <ClInclude Include="TypingGame.h">
@@ -220,6 +223,9 @@
     </ClInclude>
     <ClInclude Include="Enum_utils.h">
       <Filter>헤더 파일\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="AINPC.h">
+      <Filter>헤더 파일\NPC</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

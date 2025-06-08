@@ -7,9 +7,10 @@
 CrudStore::CrudStore()
     : experience(0), level(1), score(0),
     magicPower(MAX_MAGIC_POWER), gold(0), bookstoreRank(1), bookStock(0) {
-    for (int i = 0; i < 5; ++i) {
-        inventory.addBook(bookFactory.createRandomBook());
-    }
+
+    // 초기화: Inventory 생성
+    std::vector<Book*> books = bookFactory.initBooks();
+    inventory.addBooks(books);
 }
 
 void CrudStore::displayStatus() const {

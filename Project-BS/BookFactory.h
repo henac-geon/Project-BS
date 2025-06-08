@@ -10,11 +10,13 @@
 
 class BookFactory {
 public:
+    std::vector<Book*> initBooks(int count = 15);
     Book* createBook(const std::string& title, const std::string& description,
         eBookGenre genre, eBookMood mood, int length,
         eBookEdge edge, eBookEtc etc);
 
     Book* createRandomBook();
+
 
 private:
     std::pair<std::string, std::string> generateTitleAndDescription(

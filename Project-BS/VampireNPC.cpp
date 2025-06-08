@@ -2,20 +2,58 @@
 #include "ConsoleIO.h"
 #include <cstdlib>
 
+// TODO: 아 이거 ai서서 더 자연스럽게 하고 싶은데...
 bool VampireNPC::rateBook(Book* book) const {
     if (!book) return false;
 
-    ConsoleIO::print("뱀파이어는 어두운 분위기의 책을 좋아합니다.");
+    ConsoleIO::print("뱀파이어가 책의 어둠과 매혹의 깊이를 느껴봅니다...");
 
-    if (book->getMood() == preferredMood && preferredMood == eBookMood::Dark) {
-        ConsoleIO::print("이 책은 나의 어두운 영혼을 만족시켜주는군요...");
+    bool genreMatch = book->getGenre() == preferredGenre;
+    bool moodMatch = book->getMood() == preferredMood;
+
+    switch (requestType) {
+    case eRequestType::GenreOnly:
+        if (genreMatch) {
+            ConsoleIO::print("이 장르는 피처럼 짙은 매력을 품고 있군...");
+            return true;
+        }
+        else {
+            ConsoleIO::print("이 장르는 나의 영혼을 자극하지 못하네...");
+            return false;
+        }
+
+    case eRequestType::MoodOnly:
+        if (moodMatch) {
+            ConsoleIO::print("이 분위기... 어둠 속에서 숨 쉬는 듯하군.");
+            return true;
+        }
+        else {
+            ConsoleIO::print("너무 밝아. 이건 나의 기호가 아니야.");
+            return false;
+        }
+
+    case eRequestType::GenreAndMood:
+        if (genreMatch && moodMatch) {
+            ConsoleIO::print("장르도, 분위기도... 완벽하다. 오랜 잠에서 깨어날 이유가 생겼군.");
+            return true;
+        }
+        else if (genreMatch || moodMatch) {
+            ConsoleIO::print("조금은 아쉽지만, 여운은 남는군...");
+            return true;
+        }
+        else {
+            ConsoleIO::print("이 책은 나의 밤과는 아무런 관련이 없어.");
+            return false;
+        }
+
+    case eRequestType::AnyBook:
+        ConsoleIO::print("책이라면 무엇이든 피처럼 마셔줄 수 있지...");
         return true;
     }
-    else {
-        ConsoleIO::print("이 책은 내 취향이 아닙니다.");
-        return false;
-    }
+
+    return false;
 }
+
 
 bool VampireNPC::borrowBook(Book* book) {
     if (!book) return false;
