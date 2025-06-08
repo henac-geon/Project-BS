@@ -1,4 +1,5 @@
 ﻿#include "Book.h"    // Book 클래스 정의 헤더 포함
+#include "Enum_Utils.h"
 
 Book::Book(const std::string& title,
     const std::string& description,
@@ -57,22 +58,20 @@ std::string Book::getConditionPercentText() const {
 }
 
 
-#include "enum_utils.h"
-
 std::string Book::getGenreName() const {
-    return enum_utils::toKoreanString(genre);
+    return Enum_Utils::toKorean(genre);
 }
 
 std::string Book::getMoodName() const {
-    return enum_utils::toKoreanString(mood);
+    return Enum_Utils::toKorean(mood);
 }
 
 std::string Book::getEdgeName() const {
-    return enum_utils::toKoreanString(edge);
+    return Enum_Utils::toKorean(edge);
 }
 
 std::string Book::getEtcName() const {
-    return enum_utils::toKoreanString(etc);
+    return Enum_Utils::toKorean(etc);
 }
 
 

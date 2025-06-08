@@ -1,5 +1,5 @@
 ﻿#include "BookFactory.h"
-#include "enum_utils.h"
+#include "Enum_Utils.h"
 #include "openai_client.h"
 
 #include <codecvt>
@@ -35,10 +35,10 @@ std::pair<std::string, std::string> BookFactory::generateTitleAndDescription(
     eBookGenre genre, eBookMood mood, eBookEdge edge, eBookEtc etc) {
     OpenAIClient client;
     std::string prompt = "다음 속성을 가진 책의 제목과 간단한 설명을 한국어로 생성해줘.\n\n";
-    prompt += "장르: " + enum_utils::toKoreanString(genre) + "\n";
-    prompt += "분위기: " + enum_utils::toKoreanString(mood) + "\n";
-    prompt += "특수 효과: " + enum_utils::toKoreanString(edge) + "\n";
-    prompt += "기타: " + enum_utils::toKoreanString(etc) + "\n\n";
+    prompt += "장르: " + Enum_Utils::toKorean(genre) + "\n";
+    prompt += "분위기: " + Enum_Utils::toKorean(mood) + "\n";
+    prompt += "특수 효과: " + Enum_Utils::toKorean(edge) + "\n";
+    prompt += "기타: " + Enum_Utils::toKorean(etc) + "\n\n";
     prompt += "응답 형식:\n{\n  \"title\": \"...\",\n  \"description\": \"...\"\n}";
 
     nlohmann::json response = client.sendChatCompletion(prompt);

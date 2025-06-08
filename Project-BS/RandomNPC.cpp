@@ -1,6 +1,6 @@
 ﻿#include "RandomNPC.h"
 #include "openai_client.h"
-#include "enum_utils.h"
+#include "Enum_Utils.h"
 #include <cstdlib>
 #include <ctime>
 #include <vector>
@@ -109,8 +109,8 @@ NPC* RandomNPC::createNpcFromOpenAICreative() {
     int gold = json.value("gold", 100);
     int magic = rand() % 51 + 20;
 
-    eBookGenre genre = EnumConverter<eBookGenre>::fromString(genreStr);
-    eBookMood mood = EnumConverter<eBookMood>::fromString(moodStr);
+    eBookGenre genre = Enum_Utils::fromEnglishGenre(genreStr);
+    eBookMood mood = Enum_Utils::fromEnglishMood(moodStr);
 
     NPC* npc = nullptr;
     if (typeStr == "wizard") {
@@ -136,8 +136,8 @@ NPC* RandomNPC::createNpcFromOpenAISimple(NPC* baseNPC) {
     OpenAIClient client;
     std::string name = baseNPC->getName();
     std::string genderStr = baseNPC->getIsMale() ? "male" : "female";
-    std::string genreStr = EnumConverter<eBookGenre>::toString(baseNPC->getPreferredGenre());
-    std::string moodStr = EnumConverter<eBookMood>::toString(baseNPC->getPreferredMood());
+    std::string genreStr = Enum_Utils::toEnglish(baseNPC->getPreferredGenre());
+    std::string moodStr = Enum_Utils::toEnglish(baseNPC->getPreferredMood());
 
     std::string prompt = R"(
 다음 NPC의 정보를 참고하여 간단한 대사 3줄을 JSON 형식으로 생성해줘.

@@ -1,6 +1,8 @@
 ﻿#include "CrudStore.h"
 #include <iostream>
 #include "ConsoleIO.h"
+#include <type_traits>
+#include "Enum_Utils.h"
 
 CrudStore::CrudStore()
     : experience(0), level(1), score(0),
@@ -168,24 +170,6 @@ void CrudStore::displayDailySummary() const {
     ConsoleIO::println("- 현재 레벨: " + std::to_string(level));
 }
 
-//사용 가능한 요소 필터링
-template <typename T>
-std::vector<ElementData<T> > CrudStore::getAvailableElements(WritingElementCategory category) const {
-    std::vector<ElementData<T> > all = writingElementManager.getElements<T>(category);
-    std::vector<ElementData<T> > available;
-
-    for (typename std::vector<ElementData<T> >::const_iterator it = all.begin(); it != all.end(); ++it) {
-        const ElementData<T>& elem = *it;
-        if (level >= elem.requiredLevel &&
-            magicPower >= elem.magicCost &&
-            gold >= elem.goldCost) {
-            available.push_back(elem);
-        }
-    }
-
-    return available;
-}
-
 
 // 장르, 분위기, 길이, 엣지, 기타 요소에 대한 책 집필 가능 여부 확인
 // 책 생성 전 요소 유효성 검증
@@ -222,14 +206,52 @@ Book* CrudStore::tryWriteBook(const std::string& title, const std::string& desc,
     return bookFactory.createBook(title, desc, genre, mood, length, edge, etc);
 }
 
-void CrudStore::displayAvailableElements() const {
-    constexpr int COLUMN_WIDTH = 16;
+// Enum 값 + category만 받아 포맷된 문자열을 반환하는 함수
+std::string CrudStore::formatEnumElement(WritingElementCategory category, int enumValue) const {
+    std::string name;
+    switch (category) {
+    case WritingElementCategory::Genre:
+        name = Enum_Utils::toKorean(static_cast<eBookGenre>(enumValue));
+        break;
+    case WritingElementCategory::Mood:
+        name = Enum_Utils::toKorean(static_cast<eBookMood>(enumValue));
+        break;
+    case WritingElementCategory::Length:
+        name = std::to_string(enumValue);
+        break;
+    case WritingElementCategory::Edge:
+        name = Enum_Utils::toKorean(static_cast<eBookEdge>(enumValue));
+        break;
+    case WritingElementCategory::Etc:
+        name = Enum_Utils::toKorean(static_cast<eBookEtc>(enumValue));
+        break;
+    default:
+        name = "<알 수 없음>";
+    }
 
+    std::string cost;
+    int magic = writingElementManager.getMagicCost(category, enumValue);
+    int gold = writingElementManager.getGoldCost(category, enumValue);
+    if (magic > 0) cost += "◆" + std::to_string(magic);
+    if (gold > 0) {
+        if (!cost.empty()) cost += " ";
+        cost += "◎" + std::to_string(gold);
+    }
+
+    return name + (cost.empty() ? "" : " [" + cost + "]");
+}
+
+// 사용 가능한 모든 요소(장르, 분위기 등)를 출력하는 함수
+void CrudStore::displayAvailableElements() const {
+    constexpr int COLUMN_WIDTH = 16; // 각 요소 칼럼 너비 고정
+
+    // 문자열 오른쪽 공백 채우기 유틸
     auto padRight = [](const std::string& str, int totalWidth) -> std::string {
         int padding = totalWidth - static_cast<int>(str.length());
         return str + std::string((padding > 0) ? padding : 0, ' ');
         };
 
+    // 요소 카테고리 헤더 출력
     auto printCategoryHeaders = [&](const std::vector<std::string>& headers) {
         std::string line;
         for (const auto& h : headers) {
@@ -240,43 +262,30 @@ void CrudStore::displayAvailableElements() const {
 
     printCategoryHeaders({ "장르", "분위기", "분량", "엣지 요소", "기타" });
 
-    auto genreList = getAvailableElements<eBookGenre>(WritingElementCategory::Genre);
-    auto moodList = getAvailableElements<eBookMood>(WritingElementCategory::Mood);
-    auto lengthList = getAvailableElements<int>(WritingElementCategory::Length);
-    auto edgeList = getAvailableElements<eBookEdge>(WritingElementCategory::Edge);
-    auto etcList = getAvailableElements<eBookEtc>(WritingElementCategory::Etc);
+    // 요소 목록 가져오기 (Enum_Utils + WritingElementManager 사용)
+    auto genreList = writingElementManager.getAvailableGenres(level);
+    auto moodList = writingElementManager.getAvailableMoods(level);
+    auto lengthList = writingElementManager.getAvailableLengths(level);
+    auto edgeList = writingElementManager.getAvailableEdges(level);
+    auto etcList = writingElementManager.getAvailableEtcs(level);
 
-    // std::max 없이 최대 행 수 계산
+    // 가장 긴 목록 기준 반복
     size_t maxRows = genreList.size();
     if (moodList.size() > maxRows) maxRows = moodList.size();
     if (lengthList.size() > maxRows) maxRows = lengthList.size();
     if (edgeList.size() > maxRows) maxRows = edgeList.size();
     if (etcList.size() > maxRows) maxRows = etcList.size();
 
+
     for (size_t row = 0; row < maxRows; ++row) {
         std::string line;
 
-        auto format = [](const auto& elem) -> std::string {
-            std::string name = enum_utils::toKoreanString(elem.element);
-            std::string cost;
-            if (elem.magicCost > 0) cost += "◆" + std::to_string(elem.magicCost);
-            if (elem.goldCost > 0) {
-                if (!cost.empty()) cost += " ";
-                cost += "◎" + std::to_string(elem.goldCost);
-            }
-            return name + (cost.empty() ? "" : " [" + cost + "]");
-            };
-
-        auto getOrLock = [&](const auto& list) -> std::string {
-            if (row < list.size()) return format(list[row]);
-            return "(잠금)";
-        };
-
-        line += padRight(getOrLock(genreList), COLUMN_WIDTH) + "  ";
-        line += padRight(getOrLock(moodList), COLUMN_WIDTH) + "  ";
-        line += padRight(getOrLock(lengthList), COLUMN_WIDTH) + "  ";
-        line += padRight(getOrLock(edgeList), COLUMN_WIDTH) + "  ";
-        line += padRight(getOrLock(etcList), COLUMN_WIDTH);
+        // 각 열 출력. 존재하지 않으면 "(잠금)"
+        line += padRight((row < genreList.size() ? formatEnumElement(WritingElementCategory::Genre, static_cast<int>(genreList[row])) : "(잠금)"), COLUMN_WIDTH) + "  ";
+        line += padRight((row < moodList.size() ? formatEnumElement(WritingElementCategory::Mood, static_cast<int>(moodList[row])) : "(잠금)"), COLUMN_WIDTH) + "  ";
+        line += padRight((row < lengthList.size() ? formatEnumElement(WritingElementCategory::Length, lengthList[row]) : "(잠금)"), COLUMN_WIDTH) + "  ";
+        line += padRight((row < edgeList.size() ? formatEnumElement(WritingElementCategory::Edge, static_cast<int>(edgeList[row])) : "(잠금)"), COLUMN_WIDTH) + "  ";
+        line += padRight((row < etcList.size() ? formatEnumElement(WritingElementCategory::Etc, static_cast<int>(etcList[row])) : "(잠금)"), COLUMN_WIDTH);
 
         ConsoleIO::println(line);
     }

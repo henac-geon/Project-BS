@@ -141,7 +141,7 @@
     <ClCompile Include="main.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
-    <ClCompile Include="enum_utils.cpp">
+    <ClCompile Include="Enum_Utils.cpp">
       <Filter>소스 파일\Commons</Filter>
     </ClCompile>
   </ItemGroup>
@@ -218,7 +218,7 @@
     <ClInclude Include="VampireNPC.h">
       <Filter>헤더 파일\NPC</Filter>
     </ClInclude>
-    <ClInclude Include="enum_utils.h">
+    <ClInclude Include="Enum_utils.h">
       <Filter>헤더 파일\Common</Filter>
     </ClInclude>
   </ItemGroup>

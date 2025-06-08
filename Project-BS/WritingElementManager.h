@@ -6,8 +6,8 @@
 #include <vector>
 #include <string>
 #include <algorithm>
-#include "enum_utils.h"
-#include "enums.h"
+#include "Enum_Utils.h"
+#include "Enums.h"
 
 template <typename T>
 struct ElementData {
@@ -35,6 +35,10 @@ public:
 
     bool isGenreOptionAvailable(eBookGenre genre) const;
     bool isMoodOptionAvailable(eBookMood mood) const;
+
+    template <typename T>
+    std::vector<ElementData<T>> getElements(WritingElementCategory category) const;
+
 
     std::vector<std::string> getGenreNames() const;
     std::vector<std::string> getMoodNames() const;

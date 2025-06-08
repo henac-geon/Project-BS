@@ -148,26 +148,53 @@ bool WritingElementManager::isMoodOptionAvailable(eBookMood mood) const {
     return std::any_of(moods.begin(), moods.end(), [&](const auto& e) { return e.element == mood; });
 }
 
+template <typename T>
+std::vector<ElementData<T> > WritingElementManager::getElements(WritingElementCategory category) const {
+    switch (category) {
+    case WritingElementCategory::Genre:
+        if (std::is_same<T, eBookGenre>::value) return reinterpret_cast<const std::vector<ElementData<T> >&>(genres);
+        break;
+    case WritingElementCategory::Mood:
+        if (std::is_same<T, eBookMood>::value) return reinterpret_cast<const std::vector<ElementData<T> >&>(moods);
+        break;
+    case WritingElementCategory::Length:
+        if (std::is_same<T, int>::value) return reinterpret_cast<const std::vector<ElementData<T> >&>(lengths);
+        break;
+    case WritingElementCategory::Edge:
+        if (std::is_same<T, eBookEdge>::value) return reinterpret_cast<const std::vector<ElementData<T> >&>(edges);
+        break;
+    case WritingElementCategory::Etc:
+        if (std::is_same<T, eBookEtc>::value) return reinterpret_cast<const std::vector<ElementData<T> >&>(etcs);
+        break;
+    }
+    return {}; // 빈 벡터 반환
+}
+
+
 std::vector<std::string> WritingElementManager::getGenreNames() const {
     std::vector<std::string> result;
-    for (const auto& e : genres) result.push_back(enum_utils::toKoreanString(e.element));
+    for (const auto& e : genres)
+        result.push_back(Enum_Utils::toKorean(e.element));
     return result;
 }
 
 std::vector<std::string> WritingElementManager::getMoodNames() const {
     std::vector<std::string> result;
-    for (const auto& e : moods) result.push_back(enum_utils::toKoreanString(e.element));
+    for (const auto& e : moods)
+        result.push_back(Enum_Utils::toKorean(e.element));
     return result;
 }
 
 std::vector<std::string> WritingElementManager::getEdgeNames() const {
     std::vector<std::string> result;
-    for (const auto& e : edges) result.push_back(enum_utils::toKoreanString(e.element));
+    for (const auto& e : edges)
+        result.push_back(Enum_Utils::toKorean(e.element));
     return result;
 }
 
 std::vector<std::string> WritingElementManager::getEtcNames() const {
     std::vector<std::string> result;
-    for (const auto& e : etcs) result.push_back(enum_utils::toKoreanString(e.element));
+    for (const auto& e : etcs)
+        result.push_back(Enum_Utils::toKorean(e.element));
     return result;
 }

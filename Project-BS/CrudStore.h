@@ -3,104 +3,113 @@
 #ifndef CURD_STORE_H
 #define CURD_STORE_H
 
+#include <vector>
 #include <string>
+#include "Book.h"
 #include "BookFactory.h"
 #include "Inventory.h"
 #include "WritingElementManager.h"
+#include "Enums.h"
+
+// 상수 정의 (적절한 값 지정 필요)
+constexpr int MAX_MAGIC_POWER = 100;
+constexpr int MAX_GOLD = 99999;
+constexpr int MAX_LEVEL = 10;
+constexpr int MAX_BOOKSTORE_RANK = 5;
+constexpr int MAX_BOOK_STOCK = 50;
 
 class CrudStore {
+private:
+    int level;
+    double experience;
+    int magicPower;
+    int gold;
+    int score;
+    int bookstoreRank;
+    int bookStock;
+
+    int dailyGoldEarned = 0;
+    int dailyScoreEarned = 0;
+    int dailyMagicPowerEarned = 0;
+    int dailyExperienceEarned = 0;
+
+    Inventory inventory;
+    BookFactory bookFactory;
+    WritingElementManager writingElementManager;
+
 public:
     CrudStore();
 
-    // 상태 출력
+    // 상태 표시
     void displayStatus() const;
     void displayDailySummary() const;
 
-    // 경험치/레벨
+    // 경험치 및 레벨 관련
     void gainExperience(int amount);
     bool checkLevelUp();
     int getLevel() const;
+    double getExperience() const;
 
-    // 점수
+    // 마법 기운 관련
+    int getMagicPower() const;
+    void consumeMagicPower(int amount);
+    void restoreMagicPower(int amount);
+    void addMagicPower(int amount);
+    void setMagicPower(int amount);
+
+    // 골드 관련
+    int getGold() const;
+    void setGold(int amount);
+    void addGold(int amount);
+    void useGold(int amount);
+
+    // 점수 관련
+    int getScore() const;
     void addScore(int amount);
     void deductScore(int amount);
-    int getScore() const;
 
-    // 페널티 계산
-    int calculateGoldPenalty(const Book& book) const;
-    int calculateMagicPenalty(const Book& book) const;
+    // 랭킹 / 재고
+    int getBookstoreRank() const;
+    void setBookstoreRank(int rank);
+    int getBookStock() const;
+    void setBookStock(int stock);
+    int getMaxBookStock() const;
+    void adjustBookStock(int delta);
+
+    // 일일 수익 기록
+    void addDailyGold(int amount);
+    void addDailyScore(int amount);
+    void addDailyMagicPower(int amount);
+    void addDailyExperience(int amount);
+    int getDailyGoldEarned() const;
+    int getDailyScoreEarned() const;
+    int getDailyMagicPowerEarned() const;
+    int getDailyExperienceEarned() const;
+    void resetDailyEarnings();
 
     // 요소 접근자
     Inventory& getInventory();
     BookFactory& getBookFactory();
     WritingElementManager& getWritingElementManager();
 
-    // 일일 리워드
-    void addDailyGold(int amount);
-    void addDailyScore(int amount);
-    void addDailyMagicPower(int amount);
-    void addDailyExperience(int amount);
-    void resetDailyEarnings();
-    int getDailyGoldEarned() const;
-    int getDailyScoreEarned() const;
-    int getDailyMagicPowerEarned() const;
-    int getDailyExperienceEarned() const;
+    std::string formatEnumElement(WritingElementCategory category, int enumValue) const;
 
-    // 리소스 관리 (통합된 Player 기능)
-    int getMagicPower() const;
-    int getGold() const;
-    double getExperience() const;
-    int getBookstoreRank() const;
-    int getBookStock() const;
-    int getMaxBookStock() const;
 
-    void consumeMagicPower(int amount);
-    void restoreMagicPower(int amount);
-    void addMagicPower(int amount);
-    void setMagicPower(int amount);
-    void setGold(int amount);
-    void addGold(int amount);
-    void useGold(int amount);
-    void setBookstoreRank(int rank);
-    void setBookStock(int stock);
-    void adjustBookStock(int delta);
+    // 책 집필 전 요소 가능 여부 검사
+    bool canAffordBookElements(eBookGenre genre, eBookMood mood, int length,
+        eBookEdge edge, eBookEtc etc) const;
 
-    bool canAffordBookElements(eBookGenre genre, eBookMood mood, int length, eBookEdge edge, eBookEtc etc) const;
-    Book* tryWriteBook(const std::string& title, const std::string& desc, eBookGenre genre, eBookMood mood, int length, eBookEdge edge, eBookEtc etc);
+    // 책 집필 시도
+    Book* tryWriteBook(const std::string& title, const std::string& desc,
+        eBookGenre genre, eBookMood mood, int length,
+        eBookEdge edge, eBookEtc etc);
 
-    template <typename T>
-    std::vector<ElementData<T>> getAvailableElements(WritingElementCategory category) const;
-
+    // 요소 목록 출력
     void displayAvailableElements() const;
 
-private:
-    // 게임 진행 상태
-    int level = 1;
-    double experience = 0.0;
-    int score = 0;
-
-    // 리소스 (Player 기능)
-    int magicPower = 100;
-    int gold = 0;
-    int bookstoreRank = 1;
-    int bookStock = 0;
-
-    static constexpr int MAX_MAGIC_POWER = 100;
-    static constexpr int MAX_GOLD = 99999;
-    static constexpr int MAX_LEVEL = 99;
-    static constexpr int MAX_BOOKSTORE_RANK = 5;
-    static constexpr int MAX_BOOK_STOCK = 50;
-
-    // 구성 요소
-    Inventory inventory;
-    BookFactory bookFactory;
-    WritingElementManager writingElementManager;
-
-    // 일일 리워드
-    int dailyGoldEarned = 0;
-    int dailyScoreEarned = 0;
-    int dailyMagicPowerEarned = 0;
-    int dailyExperienceEarned = 0;
+    // 추후 구현
+    int calculateGoldPenalty(const Book& book) const;
+    int calculateMagicPenalty(const Book& book) const;
 };
 
 #endif // KURDS_STORE_H
