@@ -55,6 +55,7 @@ public:
     void setMagicPower(int amount);
     void setRequestType(eRequestType type);
     void setDialogues(const std::vector<std::string>& lines);
+    void setName(const std::string& newName);
 
     // 행동 관련 메서드
     void removeBook(Book* book);                           // 책 제거

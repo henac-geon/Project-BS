@@ -108,19 +108,24 @@ void Book::setTitle(const std::string& newTitle) {
 
 void Book::setCondition(eBookCondition newCondition) {
     condition = newCondition;
+    isDamaged = (newCondition != eBookCondition::Perfect);
 
-    // 선택: 수치화 값도 자동 조정 (일관성 유지용)
     switch (condition) {
-        case eBookCondition::Perfect:
-            conditionValue = 100;
-        case eBookCondition::Worn:
-            conditionValue = getRandomInRange(80, 99);
-        case eBookCondition::Damaged:
-            conditionValue = getRandomInRange(40, 79);
-        case eBookCondition::Destroyed:
-            conditionValue = getRandomInRange(0, 39);
-        default:
-            conditionValue = -1;  // 에러 상황
+    case eBookCondition::Perfect:
+        conditionValue = 100;
+        break;
+    case eBookCondition::Worn:
+        conditionValue = getRandomInRange(80, 99);
+        break;
+    case eBookCondition::Damaged:
+        conditionValue = getRandomInRange(40, 79);
+        break;
+    case eBookCondition::Destroyed:
+        conditionValue = getRandomInRange(0, 39);
+        break;
+    default:
+        conditionValue = -1;  // 에러 상황
+        break;
     }
 }
 

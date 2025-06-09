@@ -1,4 +1,6 @@
-﻿#include "GameManager.h"
+﻿#define NOMINMAX
+
+#include "GameManager.h"
 #include "AsciiArtRepository.h"
 #include "CrudStore.h"
 #include "RandomNPC.h"
@@ -6,6 +8,8 @@
 #include <string>
 #include <sstream>
 #include <algorithm>
+#include <limits>
+
 
 GameManager::GameManager() : day(1) {
     // 초기화 작업
@@ -159,16 +163,19 @@ void GameManager::performShowInventoryPhase() {
     uiManager.displayInventory(crud.getInventory());
 
     while (true) {
-        // TODO: 책 복원 페이즈 만들기
+        ConsoleIO::println("\n───────────────────────────────────────────────────────");
         ConsoleIO::println("> 책 소각: \"[제목] 소각\"  |  복원: \"[제목] RepARARe\"  |  뒤로가기: \"뒤로가기\"");
         ConsoleIO::print("입력: ");
+
         std::string input;
-        std::getline(std::cin, input);
+        std::getline(std::cin, input);  // 입력 받기
 
         if (input == "뒤로가기") return;
 
+        // 책 소각
         if (input.size() > 4 && input.substr(input.size() - 4) == "소각") {
             std::string title = input.substr(0, input.size() - 4);
+            title.erase(title.find_last_not_of(" \t") + 1); // 공백 제거
             Book* target = crud.getInventory().findBook(title);
             if (target) {
                 crud.getInventory().removeBook(target);
@@ -178,8 +185,12 @@ void GameManager::performShowInventoryPhase() {
                 ConsoleIO::println("해당 제목의 책을 찾을 수 없습니다.");
             }
         }
-        else if (input.size() > 8 && input.substr(input.size() - 8) == " RepARARe") {
-            std::string title = input.substr(0, input.size() - 8);
+        // 책 복원
+        else if (input.find("RepARARe") != std::string::npos) {
+            size_t pos = input.rfind("RepARARe");
+            std::string title = input.substr(0, pos);
+            title.erase(title.find_last_not_of(" \t") + 1);
+
             Book* target = crud.getInventory().findBook(title);
             if (target && target->getCondition() != eBookCondition::Perfect) {
                 MiniGame* game = new TypingGame();
@@ -194,51 +205,46 @@ void GameManager::performShowInventoryPhase() {
             }
         }
         else {
-            ConsoleIO::println("올바른 명령어 형식이 아닙니다.");
+            ConsoleIO::println("올바른 명령어 형식이 아닙니다. 다시 시도해주세요.");
         }
     }
 }
 
+void GameManager::renderCurrentNPCInteraction(NPC* npc) {
+    uiManager.clearScreen();
+    ConsoleIO::println(npc->getArt());
+    ConsoleIO::println("[NPC 접객 시작]");
+    ConsoleIO::println("고객은 책을 반납하거나 대여하거나, 아무 말 없이 그냥 갈 수도 있습니다!");
+    AsciiArt::getLine();
+
+    crud.displayStatus();
+
+    for (const auto& line : npc->getDialogues()) {
+        ConsoleIO::println("NPC: " + line);
+    }
+}
 
 void GameManager::performNPCPhase() {
     uiManager.clearScreen();
     ConsoleIO::println("손님을 기다리는 중입니다...");
 
     while (npcs.size() < MAX_NPC_COUNT) {
-        // 1. API 호출 및 로딩 애니메이션
-        //callNPCGenerationAPI();
-        //displayLoadingAnimation(3);
-        //ConsoleIO::println("\n곧 손님이 방문할 것 같습니다.");
-
-        // 2. NPC 생성 및 리스트 추가
-        NPC* npc = RandomNPC::create(eNPCGenerationMode::CreativeAI);
+        NPC* npc = RandomNPC::create(eNPCGenerationMode::SimpleAI);
         npcs.push_back(npc);
 
-        // 3. 응대 시작
-        uiManager.clearScreen();
-        crud.displayStatus();
-        ConsoleIO::println(npc->getArt());
-
-        ConsoleIO::println("[NPC 접객 시작]");
-        ConsoleIO::println("고객은 책을 반납하거나 대여하거나, 아무 말 없이 그냥 갈 수도 있습니다!");
-        AsciiArt::getLine();
-
-        for (const auto& line : npc->getDialogues()) {
-            ConsoleIO::println(line);
-        }
+        renderCurrentNPCInteraction(npc);
 
         bool shouldRemove = false;
 
         if (npc->hasBorrowed()) {
             Book* returnedBook = npc->returnBook();
             if (returnedBook) {
-                // TODO: 고객 책 반납 시 처리, 책의 상태에 따라 재화 획득량이 달라짐
                 ConsoleIO::println("고객이 \"" + returnedBook->getTitle() + "\" 책을 반납했습니다.");
                 crud.getInventory().addBook(returnedBook);
-                crud.addDailyGold(npc->payGold(10));       // 일일 골드
-                crud.addDailyMagicPower(npc->payMagicPower(10)); // 마법력 증가
-                crud.addDailyExperience(npc->payExp(20)); // 일일 경험치, 일부 NPC는 경험치 지급 로직이 다름
-                crud.addDailyScore(3);       // 일일 점수
+                crud.addDailyGold(npc->payGold(10));
+                crud.addDailyMagicPower(npc->payMagicPower(10));
+                crud.addDailyExperience(npc->payExp(20));
+                crud.addDailyScore(3);
             }
             else {
                 ConsoleIO::println("반납할 책이 없습니다.");
@@ -254,7 +260,8 @@ void GameManager::performNPCPhase() {
 
                 if (input == "재고 확인") {
                     performShowInventoryPhase();
-                    continue; // 빠져 나오면 다시 입력 대기
+                    renderCurrentNPCInteraction(npc);
+                    continue;
                 }
                 else if (input == "패스") {
                     ConsoleIO::println("NPC는 고개를 끄덕이고 떠났습니다.");
@@ -271,22 +278,20 @@ void GameManager::performNPCPhase() {
                 bool satisfied = npc->rateBook(selected);
                 if (satisfied) {
                     ConsoleIO::println("고객이 만족해했습니다!");
-                    // 고객 만족 시 보상 처리, 책의 상태에 따라 재화 획득량이 달라짐
                     npc->borrowBook(selected);
-                    selected->setAvailable(false); // 책을 대여 상태로 변경
-                    crud.addDailyGold(npc->payGold(10));       // 일일 골드
-                    crud.addDailyMagicPower(npc->payMagicPower(10)); // 마법력 증가
-                    crud.addDailyExperience(npc->payExp(10)); // 일일 경험치, 일부 NPC는 경험치 지급 로직이 다름
-                    crud.addDailyScore(3);       // 일일 점수
+                    selected->setAvailable(false);
+                    crud.addDailyGold(npc->payGold(10));
+                    crud.addDailyMagicPower(npc->payMagicPower(10));
+                    crud.addDailyExperience(npc->payExp(10));
+                    crud.addDailyScore(3);
+                    crud.incrementSatisfied();
                 }
                 else {
                     ConsoleIO::println("고객이 불만족해합니다...");
-                    // 고객 불만족 시 패널티 처리, 책의 상태에 따라 재화 획득량이 달라짐
-                    crud.addDailyExperience(npc->payExp(5)); // 일일 경험치, 일부 NPC는 경험치 지급 로직이 다름
-                    crud.addDailyScore(-3);      // 일일 점수도 반영
+                    crud.addDailyExperience(npc->payExp(5));
+                    crud.addDailyScore(-3);
+                    crud.incrementDissatisfied();
                 }
-
-                // crud.getInventory().removeBook(selected);
 
                 shouldRemove = false;
                 break;
@@ -299,10 +304,9 @@ void GameManager::performNPCPhase() {
 
         if (shouldRemove) {
             delete npc;
-            npcs.pop_back(); // 방금 추가한 NPC 제거
+            npcs.pop_back();
         }
 
-        // 4. 다음 손님 받을지 확인
         if (npcs.size() < MAX_NPC_COUNT) {
             std::string decision;
             while (true) {
@@ -312,20 +316,17 @@ void GameManager::performNPCPhase() {
                 if (decision == "yes") break;
                 else if (decision == "no") {
                     ConsoleIO::println("오늘의 장사를 마감합니다...");
-
-                    // 책을 빌린 NPC는 제외하고 나머지 NPC 제거
                     for (auto it = npcs.begin(); it != npcs.end(); ) {
-                        if (!(*it)->hasBorrowed()) {  // 책을 빌리지 않은 경우
-                            delete* it;               // 메모리 해제
-                            it = npcs.erase(it);     // 리스트에서 제거하고 반복자 갱신
+                        if (!(*it)->hasBorrowed()) {
+                            delete* it;
+                            it = npcs.erase(it);
                         }
                         else {
-                            ++it;                     // 다음 NPC로
+                            ++it;
                         }
                     }
                     return;
                 }
-
                 else {
                     ConsoleIO::println("올바른 입력이 아닙니다. 'yes' 또는 'no'를 입력해주세요.");
                 }
@@ -336,30 +337,14 @@ void GameManager::performNPCPhase() {
     ConsoleIO::println("모든 NPC 응대가 완료되었습니다.");
 }
 
-// API 호출 흉내 함수
-void GameManager::callNPCGenerationAPI() {
-    ConsoleIO::println("[API 호출] NPC 생성 요청 중...");
-    // 여기에서 실제 API 호출이 있다면 REST 요청 등을 수행
-    std::this_thread::sleep_for(std::chrono::seconds(1)); // 1초 대기
-}
-
-// 로딩 애니메이션 함수
-void GameManager::displayLoadingAnimation(int seconds) {
-    for (int i = 0; i < seconds; ++i) {
-        ConsoleIO::print(".");
-        std::this_thread::sleep_for(std::chrono::seconds(1));
-    }
-    ConsoleIO::println(""); // 줄바꿈
-}
-
 void GameManager::promptMagicCommand() {
     ConsoleIO::println("<STSTEM> 접객을 종료할 시간입니다. 정리 마법을 사용해 주세요");
     ConsoleIO::println("> 정리 마법 사용: \"MeraM\"");
-    std::string response;
     ConsoleIO::print("입력: ");
-    std::cin.ignore();
+
+    std::string response;
     while (true) {
-        std::cin >> response;
+        std::getline(std::cin, response);
         if (response == "MeraM") {
             ConsoleIO::println("<STSTEM> 마법이 불러일으킨 바람이 어질러진 서고를 정리합니다.");
             ConsoleIO::println("<STSTEM> 무거운 쇠사슬이 뱀처럼 움직여 정문을 굳게 잠굽니다.");
@@ -374,11 +359,11 @@ void GameManager::promptMagicCommand() {
 
 void GameManager::promptSettlementConfirmation() {
     ConsoleIO::println("> \"정산 결과 확인\" 입력:");
-    std::string response;
     ConsoleIO::print("입력: ");
-    std::cin.ignore();
+
+    std::string response;
     while (true) {
-        std::cin >> response;
+        std::getline(std::cin, response);
         if (response == "정산 결과 확인") {
             crud.displayDailySummary();
             crud.resetDailyEarnings();
@@ -393,15 +378,19 @@ void GameManager::promptSettlementConfirmation() {
     }
 }
 
+
+
 void GameManager::promptSatisfactionCheck() {
     ConsoleIO::println("> \"만족도 확인\" 입력:");
-    std::string response;
     ConsoleIO::print("입력: ");
-    std::cin.ignore();
+
+    std::string response;
     while (true) {
-        std::cin >> response;
+        std::getline(std::cin, response);
         if (response == "만족도 확인") {
             // TODO: 만족도 출력 로직 구현
+            crud.displayCustomerSatisfaction();
+            crud.resetSatisfactionCounters();
             break;
         }
         else {
@@ -410,19 +399,21 @@ void GameManager::promptSatisfactionCheck() {
     }
 }
 
+
 void GameManager::promptBookRestoration() {
     ConsoleIO::println("> \"책 복원 시작\" 입력:               다음날로 넘기기: \"다음 날\" 입력               재고 확인: \"재고 확인\" 입력");
-    std::string response;
     ConsoleIO::print("입력: ");
-    std::cin.ignore();
-    std::cin >> response;
+
+    std::string response;
+    std::getline(std::cin, response);
+
     if (response == "책 복원 시작") {
         for (auto& book : crud.getInventory().getBooks()) {
             if (book->getCondition() != eBookCondition::Perfect) {
                 ConsoleIO::println("책 \"" + book->getTitle() + "\"이 손상되었습니다. 복구를 시도하시겠습니까? (y/n)");
                 ConsoleIO::print("입력: ");
                 std::string res;
-                std::cin >> res;
+                std::getline(std::cin, res);
                 if (res == "y" || res == "Y") {
                     MiniGame* game = new TypingGame();
                     crud.getInventory().attemptToRestoreDamagedBook(book, game);
@@ -435,6 +426,7 @@ void GameManager::promptBookRestoration() {
         }
     }
 }
+
 
 void GameManager::promptInventoryView() {
     std::string ans;
