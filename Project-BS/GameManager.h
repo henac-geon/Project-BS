@@ -11,6 +11,8 @@
 #include <string>
 #include <thread>  // std::this_thread::sleep_for
 #include <chrono>  // std::chrono::seconds
+#include <cstdlib>  // rand(), srand()
+#include <ctime>    // time()
 
 /**
  * @class GameManager

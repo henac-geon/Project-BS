@@ -12,6 +12,7 @@
 
 
 GameManager::GameManager() : day(1) {
+    srand(time(NULL));
     // 초기화 작업
     crud = CrudStore();
 }
@@ -51,7 +52,10 @@ bool GameManager::startDay() {
         return false;
     }
 
-    ConsoleIO::println("\nDay " + std::to_string(day) + " 시작!\n");
+    crud.setnumberOfVisitorsToday(rand() % 5 + 4);  // 4 ~ 8
+
+    //ConsoleIO::println("\nDay " + std::to_string(day) + " 시작!\n");
+
     return true;
 }
 
@@ -241,7 +245,7 @@ void GameManager::performNPCPhase() {
     bool shouldCreateNewNPC = true;
     NPC* npc = nullptr;
 
-    while (npcs.size() < MAX_NPC_COUNT) {
+    while (npcs.size() < MAX_NPC_COUNT && npcs.size() < crud.getNumberOfVisitorsToday()) {
         uiManager.clearScreen();
         ConsoleIO::println("손님을 기다리는 중입니다...");
 

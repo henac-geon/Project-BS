@@ -7,8 +7,6 @@
 CrudStore::CrudStore()
     : experience(0), level(1),
     magicPower(MAX_MAGIC_POWER), gold(0), bookstoreRank(1), bookStock(0), maxBookStock(5) {
-
-    // 초기화: Inventory 생성
     std::vector<Book*> books = bookFactory.initBooks();
     inventory.addBooks(books);
     bookStock = inventory.getTotalBookCount();
@@ -28,6 +26,15 @@ void CrudStore::gainExperience(int amount) {
     if (amount < 0) return;
     experience += amount;
     checkLevelUp();
+}
+
+void CrudStore::setnumberOfVisitorsToday(int num) {
+    if (num < 0) num = 0;
+    numberOfVisitorsToday = num;
+}
+
+int CrudStore::getNumberOfVisitorsToday() const {
+    return numberOfVisitorsToday;
 }
 
 bool CrudStore::checkLevelUp() {
