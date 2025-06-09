@@ -136,6 +136,10 @@ void NPC::setDialogues(const std::vector<std::string>& lines) {
     dialogues = lines;
 }
 
+void NPC::setName(const std::string& newName) {
+    name = newName;
+}
+
 /////////////////////////////
 // 기타 유틸리티
 /////////////////////////////

@@ -142,41 +142,45 @@ NPC* RandomNPC::createNpcFromOpenAISimple(NPC* baseNPC) {
     std::string genderStr = baseNPC->getIsMale() ? "male" : "female";
     std::string genreStr = Enum_Utils::toEnglish(baseNPC->getPreferredGenre());
     std::string moodStr = Enum_Utils::toEnglish(baseNPC->getPreferredMood());
-    int gold = baseNPC->getGold();
-    int magic = baseNPC->getMagicPower();
     std::string RequestTypeStr = Enum_Utils::toEnglish(baseNPC->getRequestType());
 
-
     std::string prompt = R"(
-다음 NPC의 정보를 참고하여 간단한 대사 3줄을 JSON 형식으로 생성해줘.
-dialogue는 최소 3줄 이상이어야 하며, NPC의 성격과 배경에 맞는 대사를 포함해야 해. 추가로 대사를 통해 NPC가 원하는 책의 장르와 기분을 표현해줘.
+다음 NPC 정보를 참고하여 다음 항목을 JSON으로 생성해줘:
+1. 캐릭터의 배경과 특성에 어울리는 새로운 이름 (기존 이름보다 자연스럽고 세계관에 어울리게).
+2. 최소 3줄 이상의 대사 목록. 대사는 캐릭터의 성격과 원하는 책의 장르, 기분을 반영해야 함.
+
 입력: {
   "name": ")" + name + R"(",
   "gender": ")" + genderStr + R"(",
   "preferredGenre": ")" + genreStr + R"(",
   "preferredMood": ")" + moodStr + R"(",
-  "RequestType": ")" + RequestTypeStr + R"(",
+  "RequestType": ")" + RequestTypeStr + R"("
 }
 
-형식 예:
+출력 형식 예:
 {
+  "name": "세라핀",
   "dialogue": [
-    "이 책방에서 금지된 마법서를 찾을 수 있을까?",
-    "조심해라. 마법은 항상 대가를 요구하지."
+    "고요한 밤에 어울릴 만한 책을 찾고 있어.",
+    "나는 낭만적인 이야기를 좋아하지, 현실을 잊게 해주거든.",
+    "혹시 사랑과 슬픔이 교차하는 소설이 있을까?"
   ]
 })";
 
     nlohmann::json json = client.sendChatCompletion(prompt);
 
+    // 대사 처리
     std::vector<std::string> dialogues;
     if (json.contains("dialogue") && json["dialogue"].is_array()) {
         for (const auto& d : json["dialogue"]) {
             if (d.is_string()) dialogues.push_back(d.get<std::string>());
         }
+        baseNPC->setDialogues(dialogues);
     }
 
-    if (!dialogues.empty()) {
-        baseNPC->setDialogues(dialogues);
+    // 이름 변경
+    if (json.contains("name") && json["name"].is_string()) {
+        baseNPC->setName(json["name"].get<std::string>());
     }
 
     return baseNPC;

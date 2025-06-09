@@ -33,6 +33,9 @@ private:
     int dailyMagicPowerEarned = 0;
     int dailyExperienceEarned = 0;
 
+    int satisfiedCount = 0; // 만족한 고객 수
+    int dissatisfiedCount = 0; // 불만족한 고객 수
+
     Inventory inventory;
     BookFactory bookFactory;
     WritingElementManager writingElementManager;
@@ -66,7 +69,6 @@ public:
     // 점수 관련
     int getScore() const;
     void addScore(int amount);
-    void deductScore(int amount);
 
     // 랭킹 / 재고
     int getBookstoreRank() const;
@@ -110,6 +112,12 @@ public:
     // 추후 구현
     int calculateGoldPenalty(const Book& book) const;
     int calculateMagicPenalty(const Book& book) const;
+
+    void incrementSatisfied() { satisfiedCount++; }
+    void incrementDissatisfied() { dissatisfiedCount++; };
+
+    void displayCustomerSatisfaction() const;
+    void resetSatisfactionCounters();
 };
 
 #endif // KURDS_STORE_H
