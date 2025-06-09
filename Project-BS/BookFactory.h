@@ -10,8 +10,11 @@
 
 class BookFactory {
 public:
-    std::vector<Book*> initBooks(int count = 15);
+    std::vector<Book*> initBooks(int count = 5);
     Book* createBook(const std::string& title, const std::string& description,
+        eBookGenre genre, eBookMood mood, int length,
+        eBookEdge edge, eBookEtc etc);
+    Book* createBookinit(const std::string& title, const std::string& description,
         eBookGenre genre, eBookMood mood, int length,
         eBookEdge edge, eBookEtc etc);
 

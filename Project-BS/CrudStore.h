@@ -36,6 +36,9 @@ private:
     int rankPoints = 0;              // 랭킹 포인트
     int dailyRankPointsEarned = 0;   // 오늘 얻은 랭킹 포인트
 
+    int satisfiedCount = 0; // 만족한 고객 수
+    int dissatisfiedCount = 0; // 불만족한 고객 수
+
     Inventory inventory;
     BookFactory bookFactory;
     WritingElementManager writingElementManager;
@@ -114,6 +117,12 @@ public:
     // 추후 구현
     int calculateGoldPenalty(const Book& book) const;
     int calculateMagicPenalty(const Book& book) const;
+
+    void incrementSatisfied() { satisfiedCount++; }
+    void incrementDissatisfied() { dissatisfiedCount++; };
+
+    void displayCustomerSatisfaction() const;
+    void resetSatisfactionCounters();
 };
 
 #endif // KURDS_STORE_H

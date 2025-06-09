@@ -43,6 +43,7 @@ public:
     void promptSatisfactionCheck();
     void promptBookRestoration();
     void promptInventoryView();
+    void renderCurrentNPCInteraction(NPC* npc);
 };
 
 #endif // GAME_MANAGER_H

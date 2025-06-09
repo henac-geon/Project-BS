@@ -115,6 +115,17 @@ int CrudStore::calculateMagicPenalty(const Book& book) const {
     return 0; // TODO: 구현 예정
 }
 
+void CrudStore::addScore(int amount) {
+    score += amount;
+}
+void CrudStore::deductScore(int amount) {
+    score -= amount;
+    if (score < 0) score = 0;
+}
+int CrudStore::getScore() const {
+    return score;
+}
+
 Inventory& CrudStore::getInventory() {
     return inventory;
 }
@@ -288,6 +299,27 @@ void CrudStore::displayAvailableElements() const {
 
         ConsoleIO::println(line);
     }
+}
+
+void CrudStore::displayCustomerSatisfaction() const {
+    ConsoleIO::println("\n[오늘의 고객 만족도]");
+
+    int totalInteractions = satisfiedCount + dissatisfiedCount;
+    if (totalInteractions == 0) {
+        ConsoleIO::println("- 오늘은 고객 응대가 없었습니다.");
+        return;
+    }
+
+    double satisfactionRate = 100.0 * satisfiedCount / totalInteractions;
+    ConsoleIO::println("- 만족한 고객 수: " + std::to_string(satisfiedCount));
+    ConsoleIO::println("- 불만족한 고객 수: " + std::to_string(dissatisfiedCount));
+    ConsoleIO::println("- 총 응대한 고객 수: " + std::to_string(totalInteractions));
+    ConsoleIO::println("- 고객 만족도: " + std::to_string(satisfactionRate) + "%");
+}
+
+void CrudStore::resetSatisfactionCounters() {
+    satisfiedCount = 0;
+    dissatisfiedCount = 0;
 }
 
 
