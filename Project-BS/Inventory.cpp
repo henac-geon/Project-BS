@@ -49,3 +49,7 @@ bool Inventory::attemptToRestoreDamagedBook(Book* book, MiniGame* game) {
         return false;
     }
 }
+
+int Inventory::getTotalBookCount() const {
+    return books.size();
+}

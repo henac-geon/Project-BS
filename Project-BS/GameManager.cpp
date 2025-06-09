@@ -59,7 +59,7 @@ void GameManager::performWritingPhase() {
         ConsoleIO::println("\n[책 집필]\n");
         ConsoleIO::println("마법 기운을 소모하여 책을 만들어 보세요!");
         ConsoleIO::println("[텍스트 입력창]에 집필 요소를 입력하여 나만의 책을 집필할 수 있습니다.\n");
-        AsciiArt::getLine();
+        ConsoleIO::println(AsciiArt::getLine('='));
 
         crud.displayStatus();
         ConsoleIO::println("\n\"(장르), (분위기), (분량), (엣지요소), (기타), (제목)\" 순서로 입력해주세요.");
@@ -125,7 +125,14 @@ void GameManager::performWritingPhase() {
             edge = Enum_Utils::fromKoreanEdge(edgeStr);
             etc = Enum_Utils::fromKoreanEtc(etcStr);
             Book* newBook = crud.getBookFactory().createBook(title, "수동 제작", genre, mood, length, edge, etc);
+
+            if (crud.getBookStock() >= crud.getMaxBookStock()) {
+                ConsoleIO::println("※ 재고 한도 초과! 책을 더 이상 보관할 수 없습니다.");
+                return;
+            }
+
             crud.getInventory().addBook(newBook);
+            crud.setBookStock(crud.getInventory().getTotalBookCount());
             ConsoleIO::println("책이 성공적으로 집필되었습니다: " + title);
         }
         catch (const std::exception& e) {
@@ -172,6 +179,7 @@ void GameManager::performShowInventoryPhase() {
             Book* target = crud.getInventory().findBook(title);
             if (target) {
                 crud.getInventory().removeBook(target);
+                crud.setBookStock(crud.getInventory().getTotalBookCount());
                 ConsoleIO::println("\"" + title + "\" 책이 소각되었습니다.");
             }
             else {
@@ -183,11 +191,17 @@ void GameManager::performShowInventoryPhase() {
             Book* target = crud.getInventory().findBook(title);
             if (target && target->getCondition() != eBookCondition::Perfect) {
                 MiniGame* game = new TypingGame();
-                crud.getInventory().attemptToRestoreDamagedBook(target, game);
-                delete game;
-                target->repair();
-                ConsoleIO::println(AsciiArt::showRestoreBookArt());
-                ConsoleIO::println(target->getTitle() + " 복원 완료!");
+                if (crud.getInventory().attemptToRestoreDamagedBook(target, game)) {
+                    delete game;
+                    target->repair();
+                    ConsoleIO::println(AsciiArt::showRestoreBookArt());
+                    ConsoleIO::println(target->getTitle() + " 복원 완료!");
+                }
+                else {
+                    delete game;
+                    crud.setBookStock(crud.getInventory().getTotalBookCount());
+                    ConsoleIO::println("복원 실패! 책이 너무 손상되어 복구할 수 없습니다.");
+                }
             }
             else {
                 ConsoleIO::println("복구할 수 있는 책이 없습니다: \"" + title + "\"");
@@ -221,7 +235,7 @@ void GameManager::performNPCPhase() {
 
         ConsoleIO::println("[NPC 접객 시작]");
         ConsoleIO::println("고객은 책을 반납하거나 대여하거나, 아무 말 없이 그냥 갈 수도 있습니다!");
-        AsciiArt::getLine();
+        ConsoleIO::println(AsciiArt::getLine('='));
 
         for (const auto& line : npc->getDialogues()) {
             ConsoleIO::println(line);
@@ -238,7 +252,6 @@ void GameManager::performNPCPhase() {
                 crud.addDailyGold(npc->payGold(10));       // 일일 골드
                 crud.addDailyMagicPower(npc->payMagicPower(10)); // 마법력 증가
                 crud.addDailyExperience(npc->payExp(20)); // 일일 경험치, 일부 NPC는 경험치 지급 로직이 다름
-                crud.addDailyScore(3);       // 일일 점수
             }
             else {
                 ConsoleIO::println("반납할 책이 없습니다.");
@@ -277,13 +290,12 @@ void GameManager::performNPCPhase() {
                     crud.addDailyGold(npc->payGold(10));       // 일일 골드
                     crud.addDailyMagicPower(npc->payMagicPower(10)); // 마법력 증가
                     crud.addDailyExperience(npc->payExp(10)); // 일일 경험치, 일부 NPC는 경험치 지급 로직이 다름
-                    crud.addDailyScore(3);       // 일일 점수
+                    crud.addDailyRankPoints(5); //랭킹 포인트 추가
                 }
                 else {
                     ConsoleIO::println("고객이 불만족해합니다...");
                     // 고객 불만족 시 패널티 처리, 책의 상태에 따라 재화 획득량이 달라짐
                     crud.addDailyExperience(npc->payExp(5)); // 일일 경험치, 일부 NPC는 경험치 지급 로직이 다름
-                    crud.addDailyScore(-3);      // 일일 점수도 반영
                 }
 
                 // crud.getInventory().removeBook(selected);
@@ -336,22 +348,6 @@ void GameManager::performNPCPhase() {
     ConsoleIO::println("모든 NPC 응대가 완료되었습니다.");
 }
 
-// API 호출 흉내 함수
-void GameManager::callNPCGenerationAPI() {
-    ConsoleIO::println("[API 호출] NPC 생성 요청 중...");
-    // 여기에서 실제 API 호출이 있다면 REST 요청 등을 수행
-    std::this_thread::sleep_for(std::chrono::seconds(1)); // 1초 대기
-}
-
-// 로딩 애니메이션 함수
-void GameManager::displayLoadingAnimation(int seconds) {
-    for (int i = 0; i < seconds; ++i) {
-        ConsoleIO::print(".");
-        std::this_thread::sleep_for(std::chrono::seconds(1));
-    }
-    ConsoleIO::println(""); // 줄바꿈
-}
-
 void GameManager::promptMagicCommand() {
     ConsoleIO::println("<STSTEM> 접객을 종료할 시간입니다. 정리 마법을 사용해 주세요");
     ConsoleIO::println("> 정리 마법 사용: \"MeraM\"");
@@ -381,6 +377,12 @@ void GameManager::promptSettlementConfirmation() {
         std::cin >> response;
         if (response == "정산 결과 확인") {
             crud.displayDailySummary();
+
+            ConsoleIO::println("- 획득 랭킹 포인트: " + std::to_string(crud.getDailyRankPointsEarned()));
+            ConsoleIO::println("- 총 랭킹 포인트: " + std::to_string(crud.getRankPoints()));
+
+            crud.checkupRankUP(); // 랭킹 포인트 확인 및 랭킹 업데이트
+
             crud.resetDailyEarnings();
             if (crud.checkLevelUp()) {
                 uiManager.displayLevelUpMessage(crud.getLevel());
@@ -402,6 +404,8 @@ void GameManager::promptSatisfactionCheck() {
         std::cin >> response;
         if (response == "만족도 확인") {
             // TODO: 만족도 출력 로직 구현
+            ConsoleIO::println("오늘 하루 고객들의 만족도를 확인합니다.");
+
             break;
         }
         else {
@@ -451,7 +455,7 @@ void GameManager::performSettlementPhase() {
     ConsoleIO::println("\n 오늘 하루도 고생 많으셨습니다! 오늘의 수익은 얼마나 될까요?");
     ConsoleIO::println("수익과 재고 현황, 나의 레벨 그리고 서점 랭킹을 확인하는 시간입니다.");
 
-    AsciiArt::getLine();
+    ConsoleIO::println(AsciiArt::getLine('='));
     crud.displayStatus();
 
     promptMagicCommand();
