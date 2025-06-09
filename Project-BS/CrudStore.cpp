@@ -115,17 +115,6 @@ int CrudStore::calculateMagicPenalty(const Book& book) const {
     return 0; // TODO: 구현 예정
 }
 
-void CrudStore::addScore(int amount) {
-    score += amount;
-}
-void CrudStore::deductScore(int amount) {
-    score -= amount;
-    if (score < 0) score = 0;
-}
-int CrudStore::getScore() const {
-    return score;
-}
-
 Inventory& CrudStore::getInventory() {
     return inventory;
 }
