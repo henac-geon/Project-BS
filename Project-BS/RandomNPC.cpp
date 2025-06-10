@@ -34,6 +34,10 @@ NPC* RandomNPC::createRandomNpcLocally() {
     eBookGenre genre = static_cast<eBookGenre>(rand() % 7);
     eBookMood mood = static_cast<eBookMood>(rand() % 5);
     eRequestType requestType = static_cast<eRequestType>(rand() % 5);
+    int length = rand() % 201 + 50; // 50~250
+    eBookEdge edge = static_cast<eBookEdge>(rand() % 4);
+    eBookEtc etc = static_cast<eBookEtc>(rand() % 5);
+
     int gold = rand() % 101 + 50;
     int magic = rand() % 51 + 20;
     bool isMale = rand() % 2;
@@ -46,13 +50,13 @@ NPC* RandomNPC::createRandomNpcLocally() {
 
     int i = rand() % 7;
     NPC* npc = nullptr;
-    if (i == 0) npc = new StudentNPC(name, isMale, genre, mood, gold, magic, defaultDialogues);
-    else if (i == 1) npc = new WizardNPC(name, isMale, genre, mood, gold, magic, defaultDialogues);
-    else if (i == 2) npc = new MerchantNPC(name, isMale, genre, mood, gold, magic, defaultDialogues);
-    else if (i == 3) npc = new LibrarianNPC(name, isMale, genre, mood, gold, magic, defaultDialogues);
-    else if (i == 4) npc = new VampireNPC(name, isMale, genre, mood, gold, magic, defaultDialogues);
-    else if (i == 5) npc = new KnightNPC(name, isMale, genre, mood, gold, magic, defaultDialogues);
-    else npc = new ElfScholarNPC(name, isMale, genre, mood, gold, magic, defaultDialogues);
+    if (i == 0) npc = new StudentNPC(name, isMale, genre, mood, length, edge, etc, gold, magic, defaultDialogues);
+    else if (i == 1) npc = new WizardNPC(name, isMale, genre, mood, length, edge, etc, gold, magic, defaultDialogues);
+    else if (i == 2) npc = new MerchantNPC(name, isMale, genre, mood, length, edge, etc, gold, magic, defaultDialogues);
+    else if (i == 3) npc = new LibrarianNPC(name, isMale, genre, mood, length, edge, etc, gold, magic, defaultDialogues);
+    else if (i == 4) npc = new VampireNPC(name, isMale, genre, mood, length, edge, etc, gold, magic, defaultDialogues);
+    else if (i == 5) npc = new KnightNPC(name, isMale, genre, mood, length, edge, etc, gold, magic, defaultDialogues);
+    else npc = new ElfScholarNPC(name, isMale, genre, mood, length, edge, etc, gold, magic, defaultDialogues);
 
     npc->setRequestType(requestType);
 
@@ -70,6 +74,9 @@ dialogue는 최소 3줄 이상이어야 하며, NPC의 성격과 배경에 맞�
 - gender: true (남성), false (여성)
 - genre (preferredGenre): "Fantasy", "Romance", "Horror", "Mystery", "SciFi", "Apocalypse", "Documentary"
 - mood: "Dark", "Light", "Touching", "Tense", "Strange"
+- len: 30, 60, 90, 120, 150, 180, 210, 300 (책의 길이)
+- edge: "None", "Reversal", "Cliché", "Unprecedented"
+- etc: "None", "Fragrance", "Label", "Promotion", "Branding" (책의 부가적인 요소)
 - RequestType: "GenreOnly", "MoodOnly", "GenreAndMood", "AnyBook"
 - dialogue: 문자열 배열, 최소 3줄 이상 (예: ["어서오세요!", "찾으시는 책이 있나요?"])
 
@@ -80,6 +87,9 @@ dialogue는 최소 3줄 이상이어야 하며, NPC의 성격과 배경에 맞�
   "age": 43,
   "gold": 120,
   "preferredGenre": "Fantasy",
+  "len" : 150,
+  "edge": "Reversal",
+  "etc": "Fragrance",
   "RequestType": "GenreOnly",
   "mood": "Dark",
   "dialogue": [
@@ -101,6 +111,9 @@ dialogue는 최소 3줄 이상이어야 하며, NPC의 성격과 배경에 맞�
     std::string genreStr = json.value("preferredGenre", "Fantasy");
     std::string moodStr = json.value("mood", "Light");
     std::string RequestTypeStr = json.value("RequestType", "GenreOnly");
+    int length = json.value("len", 30);
+    eBookEdge edge = Enum_Utils::fromEnglishEdge(json.value("edge", "Normal"));
+    eBookEtc etc = Enum_Utils::fromEnglishEtc(json.value("etc", "None"));
 
 
     std::vector<std::string> dialogues;
@@ -108,14 +121,6 @@ dialogue는 최소 3줄 이상이어야 하며, NPC의 성격과 배경에 맞�
         for (const auto& d : json["dialogue"]) {
             if (d.is_string()) dialogues.push_back(d.get<std::string>());
         }
-    }
-
-    if (dialogues.size() < 3) {
-        dialogues = {
-            "어서오세요!",
-            "책을 찾으시는군요?",
-            "어떤 장르를 좋아하시나요?"
-        };
     }
 
     int gold = json.value("gold", 100);
@@ -127,7 +132,7 @@ dialogue는 최소 3줄 이상이어야 하며, NPC의 성격과 배경에 맞�
 
     NPC* npc = nullptr;
     // AI 생성용 NPC 클래스를 사용
-    npc = new AINPC(name, isMale, genre, mood, gold, magic, dialogues);
+    npc = new AINPC(name, isMale, genre, mood, length, edge, etc, gold, magic, dialogues);
 
     npc->setRequestType(requestType);
 
@@ -142,6 +147,9 @@ NPC* RandomNPC::createNpcFromOpenAISimple(NPC* baseNPC) {
     std::string genderStr = baseNPC->getIsMale() ? "male" : "female";
     std::string genreStr = Enum_Utils::toEnglish(baseNPC->getPreferredGenre());
     std::string moodStr = Enum_Utils::toEnglish(baseNPC->getPreferredMood());
+    int lenStr = baseNPC->getPreferredLength();
+    std::string edgeStr = Enum_Utils::toEnglish(baseNPC->getPreferredEdge());
+    std::string etcStr = Enum_Utils::toEnglish(baseNPC->getPreferredEtc());
     std::string RequestTypeStr = Enum_Utils::toEnglish(baseNPC->getRequestType());
 
     std::string prompt = R"(
@@ -154,6 +162,9 @@ NPC* RandomNPC::createNpcFromOpenAISimple(NPC* baseNPC) {
   "gender": ")" + genderStr + R"(",
   "preferredGenre": ")" + genreStr + R"(",
   "preferredMood": ")" + moodStr + R"(",
+  "preferredLen" : ")" + std::to_string(lenStr) + R"(",
+  "edge": ")" + edgeStr + R"(",
+  "etc": ")" + etcStr + R"(",
   "RequestType": ")" + RequestTypeStr + R"("
 }
 

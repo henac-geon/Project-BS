@@ -132,7 +132,8 @@ void GameManager::performWritingPhase() {
             mood = Enum_Utils::fromKoreanMood(moodStr);
             edge = Enum_Utils::fromKoreanEdge(edgeStr);
             etc = Enum_Utils::fromKoreanEtc(etcStr);
-            Book* newBook = crud.getBookFactory().createBook(title, "수동 제작", genre, mood, length, edge, etc);
+
+            Book* newBook = crud.tryWriteBook(title, "", genre, mood, length, edge, etc);
 
             if (crud.getBookStock() >= crud.getMaxBookStock()) {
                 ConsoleIO::println("※ 재고 한도 초과! 책을 더 이상 보관할 수 없습니다.");
@@ -172,9 +173,11 @@ void GameManager::performWritingPhase() {
 void GameManager::performShowInventoryPhase() {
     uiManager.clearScreen();
     uiManager.displayInventory(crud.getInventory());
+    ConsoleIO::println("");
 
     while (true) {
         ConsoleIO::println("> 책 소각: \"[제목] 소각\"  |  복원: \"[제목] RepARARe\"  |  뒤로가기: \"뒤로가기\"");
+        ConsoleIO::println("");
         ConsoleIO::print("입력: ");
 
         std::string input;
@@ -231,14 +234,17 @@ void GameManager::renderCurrentNPCInteraction(NPC* npc) {
     uiManager.clearScreen();
     ConsoleIO::println(npc->getArt());
     ConsoleIO::println("[NPC 접객 시작]");
-    ConsoleIO::println("고객은 책을 반납하거나 대여하거나, 아무 말 없이 그냥 갈 수도 있습니다!");
+    ConsoleIO::println("고객은 책을 반납하거나 대여하거나, 아무 말 없이 그냥 갈 수도 있습니다!\n\n");
     ConsoleIO::println(AsciiArt::getLine('='));
+    ConsoleIO::println("");
 
     crud.displayStatus();
+    ConsoleIO::println("");
 
     for (const auto& line : npc->getDialogues()) {
         ConsoleIO::println("NPC: " + line);
     }
+    ConsoleIO::println("");
 }
 
 void GameManager::performNPCPhase() {
@@ -281,6 +287,7 @@ void GameManager::performNPCPhase() {
         else if (npc->wantsRecommendation()) {
             while (true) {
                 ConsoleIO::println("책 추천: [책 제목] 입력    |    책 재고 확인: \"재고 확인\" 입력    |    아무 것도 하지 않기: \"패스\"");
+                ConsoleIO::println("");
                 std::string input;
                 ConsoleIO::print("> 입력: ");
                 std::getline(std::cin, input);
@@ -292,6 +299,7 @@ void GameManager::performNPCPhase() {
                 }
                 else if (input == "패스") {
                     ConsoleIO::println("NPC는 고개를 끄덕이고 떠났습니다.");
+                    ConsoleIO::println("");
                     break;
                 }
 
@@ -301,20 +309,30 @@ void GameManager::performNPCPhase() {
                     continue;
                 }
 
-                bool satisfied = npc->rateBook(selected);
-                if (satisfied) {
-                    ConsoleIO::println("고객이 만족해했습니다!");
+                int matchCount = npc->rateBook(selected);
+                if (matchCount >= 3) {
+                    ConsoleIO::println("고객이 매우 만족해했습니다!");
                     npc->borrowBook(selected);
                     selected->setAvailable(false);
-                    crud.addDailyGold(npc->payGold(10));
-                    crud.addDailyMagicPower(npc->payMagicPower(10));
-                    crud.addDailyExperience(npc->payExp(10));
+                    crud.addDailyGold(npc->payGold(10 + matchCount * 2));
+                    crud.addDailyMagicPower(npc->payMagicPower(5 + matchCount));
+                    crud.addDailyExperience(npc->payExp(10 + matchCount * 2));
                     crud.incrementSatisfied();
-                    crud.addDailyRankPoints(5);
+                    crud.addDailyRankPoints(matchCount * 3);
+                }
+                else if (matchCount > 0) {
+                    ConsoleIO::println("\n고객이 어느 정도 만족해했습니다.");
+                    npc->borrowBook(selected);
+                    selected->setAvailable(false);
+                    crud.addDailyGold(npc->payGold(5 + matchCount));
+                    crud.addDailyMagicPower(npc->payMagicPower(2 + matchCount));
+                    crud.addDailyExperience(npc->payExp(5 + matchCount));
+                    crud.incrementSatisfied();
+                    crud.addDailyRankPoints(matchCount * 2);
                 }
                 else {
                     ConsoleIO::println("고객이 불만족해합니다...");
-                    crud.addDailyExperience(npc->payExp(5));
+                    crud.addDailyExperience(npc->payExp(2));
                     crud.incrementDissatisfied();
                 }
 
@@ -328,6 +346,7 @@ void GameManager::performNPCPhase() {
         // 3. 아무 말 없이 떠나는 경우
         else {
             ConsoleIO::println("NPC는 조용히 둘러보더니 그냥 떠났습니다.");
+            ConsoleIO::println("");
             shouldRemove = true;
         }
 
@@ -342,7 +361,7 @@ void GameManager::performNPCPhase() {
         if (npcs.size() < MAX_NPC_COUNT && shouldCreateNewNPC) {
             std::string decision;
             while (true) {
-                ConsoleIO::println("다음 손님을 받으시겠습니까? (yes / no)");
+                ConsoleIO::println("다음 손님을 받으시겠습니까? (yes / no)\n\n");
                 ConsoleIO::print("> 입력: ");
                 std::getline(std::cin, decision);
 
@@ -377,10 +396,12 @@ void GameManager::performNPCPhase() {
 void GameManager::displayClosingMessage(const std::string& customPrompt) {
     uiManager.clearScreen();
     ConsoleIO::println(AsciiArt::showClosingArt());
-    ConsoleIO::println("[NPC 접객 종료]");
+    ConsoleIO::println("[NPC 접객 종료]\n");
     ConsoleIO::println("\n 오늘 하루도 고생 많으셨습니다! 오늘의 수익은 얼마나 될까요?");
     ConsoleIO::println("수익과 재고 현황, 나의 레벨 그리고 서점 랭킹을 확인하는 시간입니다.");
+    ConsoleIO::println("");
     ConsoleIO::println(AsciiArt::getLine('='));
+    ConsoleIO::println("");
     crud.displayStatus();
     if (!customPrompt.empty()) {
         ConsoleIO::println(customPrompt);

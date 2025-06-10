@@ -48,6 +48,9 @@ public:
     eBookCondition getCondition() const;
     eBookGenre getGenre() const;
     eBookMood getMood() const;
+    int getLength() const;
+    eBookEdge getEdge() const;
+    eBookEtc getEtc() const;
     std::string getGenreName() const;
     std::string getMoodName() const;
     std::string getEdgeName() const;

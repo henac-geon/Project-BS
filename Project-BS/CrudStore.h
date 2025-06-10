@@ -32,7 +32,7 @@ private:
     int dailyScoreEarned = 0;
     int dailyMagicPowerEarned = 0;
     int dailyExperienceEarned = 0;
-    int numberOfVisitorsToday; // 오늘 방문할 NPC 수
+    int numberOfVisitorsToday = 4; // 오늘 방문할 NPC 수
 
     int rankPoints = 0;              // 랭킹 포인트
     int dailyRankPointsEarned = 0;   // 오늘 얻은 랭킹 포인트
@@ -44,6 +44,7 @@ private:
     BookFactory bookFactory;
     WritingElementManager writingElementManager;
 
+    bool canAffordGold(int amount);
 public:
     CrudStore();
 

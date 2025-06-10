@@ -6,13 +6,14 @@
 
 CrudStore::CrudStore()
     : experience(0), level(1),
-    magicPower(MAX_MAGIC_POWER), gold(0), bookstoreRank(1), bookStock(0), maxBookStock(5) {
+    magicPower(MAX_MAGIC_POWER), gold(0), bookstoreRank(1), bookStock(0), maxBookStock(5), numberOfVisitorsToday(4){
     std::vector<Book*> books = bookFactory.initBooks();
     inventory.addBooks(books);
     bookStock = inventory.getTotalBookCount();
 }
 
 void CrudStore::displayStatus() const {
+    ConsoleIO::println("");
     std::string line;
     line += "◆ 마법 기운: " + std::to_string(magicPower) + "   ";
     line += "◎ 골드: " + std::to_string(gold) + "   ";
@@ -181,26 +182,41 @@ bool CrudStore::canAffordBookElements(eBookGenre genre, eBookMood mood, int leng
     return magicPower >= totalMagic;
 }
 
+bool CrudStore::canAffordGold(int amount) {
+    return gold >= amount;
+}
 
 // 책 집필 요청 함수
 Book* CrudStore::tryWriteBook(const std::string& title, const std::string& desc,
     eBookGenre genre, eBookMood mood, int length,
     eBookEdge edge, eBookEtc etc) {
-    if (!canAffordBookElements(genre, mood, length, edge, etc)) {
-        ConsoleIO::println("마법 기운이 부족하여 책을 집필할 수 없습니다.");
-        return nullptr;
-    }
 
-    int cost =
+    // 마법 기운과 골드 소비량 계산
+    int magicCost =
         writingElementManager.getMagicCost(WritingElementCategory::Genre, static_cast<int>(genre)) +
         writingElementManager.getMagicCost(WritingElementCategory::Mood, static_cast<int>(mood)) +
         length +
         writingElementManager.getMagicCost(WritingElementCategory::Edge, static_cast<int>(edge)) +
         writingElementManager.getMagicCost(WritingElementCategory::Etc, static_cast<int>(etc));
 
-    consumeMagicPower(cost);
+    int goldCost = writingElementManager.getGoldCost(WritingElementCategory::Genre, static_cast<int>(genre)) +
+        writingElementManager.getGoldCost(WritingElementCategory::Mood, static_cast<int>(mood)) +
+        writingElementManager.getGoldCost(WritingElementCategory::Edge, static_cast<int>(edge)) +
+        writingElementManager.getGoldCost(WritingElementCategory::Etc, static_cast<int>(etc));
+
+    if (!canAffordBookElements(genre, mood, length, edge, etc) || !canAffordGold(goldCost)) {
+        ConsoleIO::println("마법 기운 또는 골드가 부족하여 책을 집필할 수 없습니다.");
+        return nullptr;
+    }
+
+    // 자원 소비
+    consumeMagicPower(magicCost);
+    useGold(goldCost);
+
+    // 책 생성
     return bookFactory.createBook(title, desc, genre, mood, length, edge, etc);
 }
+
 
 // Enum 값 + category만 받아 포맷된 문자열을 반환하는 함수
 std::string CrudStore::formatEnumElement(WritingElementCategory category, int enumValue) const {

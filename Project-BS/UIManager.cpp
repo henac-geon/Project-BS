@@ -7,11 +7,11 @@
 #include <array>
 
 void UIManager::displayInventory(const Inventory& inventory) {
-    ConsoleIO::println("\n[책 재고]");
-    ConsoleIO::println("[텍스트 입력창]에 희망하는 행동을 텍스트로 작성해주세요.");
+    ConsoleIO::println("\n[책 재고]\n");
+    ConsoleIO::println("[텍스트 입력창]에 희망하는 행동을 텍스트로 작성해주세요.\n");
     ConsoleIO::println(AsciiArt::getLine('='));
     ConsoleIO::println("  번호 | 제목 | 장르 | 분위기 | 분량 | 반전 | 엣지 요소 | 품질"); // | 재고 상태 | 품질");
-
+    ConsoleIO::println("");
     const auto& books = inventory.getBooks();
     if (books.empty()) {
         ConsoleIO::println(" - 등록된 책이 없습니다.");
@@ -32,6 +32,7 @@ void UIManager::displayInventory(const Inventory& inventory) {
         line += " - " + book->getConditionPercentText();  // 손상 비율
         ConsoleIO::println(line);
     }
+    ConsoleIO::println("");
     ConsoleIO::println(AsciiArt::getLine('='));
 }
 

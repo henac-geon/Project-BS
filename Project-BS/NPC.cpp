@@ -5,11 +5,14 @@
 #include <algorithm>
 
 // 생성자: NPC 속성 초기화 및 랜덤 요청 타입 설정
-NPC::NPC(const std::string& name, bool isMale, eBookGenre genre, eBookMood mood, int gold, int magicPower, const std::vector<std::string>& dialogues)
+NPC::NPC(const std::string& name, bool isMale, eBookGenre genre, eBookMood mood, int len, eBookEdge edge, eBookEtc etc, int gold, int magicPower, const std::vector<std::string>& dialogues)
     : name(name),
     isMale(isMale),
     preferredGenre(genre),
     preferredMood(mood),
+    preferredLength(len), // 기본 길이 설정
+    preferredEdge(edge), // 기본 엣지 설정
+    preferredEtc(etc), // 기본 기타 설정
     gold(gold),
     magicPower(magicPower),
     requestType(eRequestType::GenreOnly),
@@ -29,21 +32,19 @@ NPC::NPC(const std::string& name, bool isMale, eBookGenre genre, eBookMood mood,
 /////////////////////////////
 
 // 추천된 책 평가
-bool NPC::rateBook(Book* book) const {
-    if (!book) return false;
+int NPC::rateBook(Book* book) const {
+    if (!book) return 0;
 
-    switch (requestType) {
-    case eRequestType::GenreOnly:
-        return book->getGenre() == preferredGenre;
-    case eRequestType::MoodOnly:
-        return book->getMood() == preferredMood;
-    case eRequestType::GenreAndMood:
-        return book->getGenre() == preferredGenre && book->getMood() == preferredMood;
-    case eRequestType::AnyBook:
-        return true;
-    }
-    return false;
+    int match = 0;
+    if (book->getGenre() == preferredGenre) ++match;
+    if (book->getMood() == preferredMood) ++match;
+    if (book->getLength() == preferredLength) ++match;
+    if (book->getEdge() == preferredEdge) ++match;
+    if (book->getEtc() == preferredEtc) ++match;
+
+    return match;
 }
+
 
 // 책 대여 시도
 bool NPC::borrowBook(Book* book) {
@@ -106,6 +107,18 @@ int NPC::getGold() const {
 
 int NPC::getMagicPower() const {
     return magicPower;
+}
+
+int NPC::getPreferredLength() const {
+    return preferredLength;
+}
+
+eBookEdge NPC::getPreferredEdge() const {
+    return preferredEdge;
+}
+
+eBookEtc NPC::getPreferredEtc() const {
+    return preferredEtc;
 }
 
 eRequestType NPC::getRequestType() const {

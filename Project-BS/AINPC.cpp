@@ -2,27 +2,23 @@
 #include <iostream>
 #include <cstdlib>
 
-AINPC::AINPC(const std::string& name, bool isMale, eBookGenre genre, eBookMood mood, int gold, int magicPower, const std::vector<std::string>& dialogues)
-    : NPC(name, isMale, genre, mood, gold, magicPower, dialogues)
-{
-}
 
 // 추천된 책 평가
-bool AINPC::rateBook(Book* book) const {
-    if (!book) return false;
+int AINPC::rateBook(Book* book) const {
+    if (!book) return 0;
 
-    switch (requestType) {
-    case eRequestType::GenreOnly:
-        return book->getGenre() == preferredGenre;
-    case eRequestType::MoodOnly:
-        return book->getMood() == preferredMood;
-    case eRequestType::GenreAndMood:
-        return book->getGenre() == preferredGenre && book->getMood() == preferredMood;
-    case eRequestType::AnyBook:
-        return true;
-    }
-    return false;
+    int matchCount = 0;
+
+    // 5가지 요소 각각 비교
+    if (book->getGenre() == preferredGenre) ++matchCount;
+    if (book->getMood() == preferredMood) ++matchCount;
+    if (book->getLength() == preferredLength) ++matchCount;
+    if (book->getEdge() == preferredEdge) ++matchCount;
+    if (book->getEtc() == preferredEtc) ++matchCount;
+
+    return matchCount;
 }
+
 
 bool AINPC::borrowBook(Book* book) {
     if (currentBook) return false;

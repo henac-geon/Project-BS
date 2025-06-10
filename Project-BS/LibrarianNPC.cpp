@@ -4,56 +4,69 @@
 #include <cstdlib>      // rand()
 
 // TODO: 아 이거 ai서서 더 자연스럽게 하고 싶은데...
-bool LibrarianNPC::rateBook(Book* book) const {
-    if (!book) return false;
+int LibrarianNPC::rateBook(Book* book) const {
+    if (!book) return 0;
 
     ConsoleIO::print(name + "이(가) 책을 꼼꼼히 평가하고 있습니다...");
 
+    int matchCount = 0;
+
     bool genreMatch = book->getGenre() == preferredGenre;
     bool moodMatch = book->getMood() == preferredMood;
+    bool lengthMatch = book->getLength() == preferredLength;
+    bool edgeMatch = book->getEdge() == preferredEdge;
+    bool etcMatch = book->getEtc() == preferredEtc;
 
     switch (requestType) {
     case eRequestType::GenreOnly:
         if (genreMatch) {
             ConsoleIO::print("장르가 제 전문 분야와 일치하네요. 인상 깊습니다.");
-            return true;
+            matchCount += 1;
         }
         else {
             ConsoleIO::print("장르가 다소 생소하군요. 연구에는 부적절할 수도 있겠습니다.");
-            return false;
         }
+        break;
 
     case eRequestType::MoodOnly:
         if (moodMatch) {
             ConsoleIO::print("이 분위기는 읽는 즐거움을 줍니다. 괜찮네요.");
-            return true;
+            matchCount += 1;
         }
         else {
             ConsoleIO::print("분위기가 제 취향과는 조금 다릅니다.");
-            return false;
         }
+        break;
 
     case eRequestType::GenreAndMood:
         if (genreMatch && moodMatch) {
             ConsoleIO::print("장르와 분위기 모두 제가 선호하는 기준에 완벽하게 부합합니다.");
-            return true;
+            matchCount += 2;
         }
         else if (genreMatch || moodMatch) {
             ConsoleIO::print("부분적으로는 만족스럽지만 완벽하다고 보긴 어렵네요.");
-            return true;
+            matchCount += 1;
         }
         else {
             ConsoleIO::print("이 책은 제 연구 주제와는 관련이 없습니다.");
-            return false;
         }
+        break;
 
     case eRequestType::AnyBook:
         ConsoleIO::print("모든 책에는 배울 점이 있죠. 긍정적으로 평가하겠습니다.");
-        return true;
+        if (genreMatch) matchCount += 1;
+        if (moodMatch)  matchCount += 1;
+        break;
     }
 
-    return false;
+    // 항상 보조 요소 평가
+    if (lengthMatch) matchCount += 1;
+    if (edgeMatch)   matchCount += 1;
+    if (etcMatch)    matchCount += 1;
+
+    return matchCount;
 }
+
 
 
 bool LibrarianNPC::borrowBook(Book* book) {

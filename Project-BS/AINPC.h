@@ -13,10 +13,12 @@ private:
     int experience;  // AI 생성 캐릭터에 부여할 추가 특성 (예: 경험치)
 
 public:
-    AINPC(const std::string& name, bool isMale, eBookGenre genre, eBookMood mood, int gold, int magicPower, const std::vector<std::string>& dialogues);
-
+    AINPC(const std::string& name, bool isMale, eBookGenre genre, eBookMood mood, int len, eBookEdge edge, eBookEtc etc, int gold, int magicPower, const std::vector<std::string>& dialogues)
+        : NPC(name, isMale, genre, mood, len, edge, etc, gold, magicPower, dialogues)
+    {
+    }
     // 필수 메서드 구현
-    bool rateBook(Book* book) const override;
+    int rateBook(Book* book) const override;
     bool borrowBook(Book* book) override;
     Book* returnBook() override;
     bool isReturningBook() const override;
