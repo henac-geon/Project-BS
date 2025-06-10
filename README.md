@@ -43,7 +43,7 @@ NPC는 자신의 취향에 맞는 책을 요청하며, 사용자는 그에 맞�
 
 | 항목 | 내용 |
 |------|------|
-| 언어 | `C++17 이상` |
+| 언어 | `C++14 이상` |
 | 빌드 | `CMake` |
 | 설계 | `PlantUML` 기반 UML |
 | 개발 환경 | `Visual Studio`|
@@ -65,3 +65,5 @@ cmake --build .
 
 # 3. 실행
 ./BookGameSystem
+
+[프로젝트 소개 영상]([https://www.youtube.com/watch?v=dQw4w9WgXcQ](https://youtu.be/B9qQArcYyiQ))
