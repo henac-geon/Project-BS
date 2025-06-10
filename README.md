@@ -66,4 +66,5 @@ cmake --build .
 # 3. 실행
 ./BookGameSystem
 
-[프로젝트 소개 영상]([https://www.youtube.com/watch?v=dQw4w9WgXcQ](https://youtu.be/B9qQArcYyiQ))
+
+[프로젝트 소개 영상](https://youtu.be/B9qQArcYyiQ)
