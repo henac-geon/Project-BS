@@ -55,6 +55,19 @@ eBookMood Book::getMood() const {
     return mood;
 }
 
+int Book::getLength() const {
+    return length;
+}
+
+eBookEdge Book::getEdge() const {
+    return edge;
+}
+
+eBookEtc Book::getEtc() const {
+    return etc;
+}
+
+
 int Book::getConditionValue() const {
     return conditionValue;
 }

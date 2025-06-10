@@ -4,52 +4,68 @@
 
 
 // TODO: 아 이거 ai서서 더 자연스럽게 하고 싶은데...
-bool ElfScholarNPC::rateBook(Book* book) const {
-    if (!book) return false;
+int ElfScholarNPC::rateBook(Book* book) const {
+    if (!book) return 0;
 
     ConsoleIO::print(name + "이(가) 책의 문학적 깊이를 섬세하게 평가합니다...");
 
+    int matchCount = 0;
+
     bool genreMatch = book->getGenre() == preferredGenre;
     bool moodMatch = book->getMood() == preferredMood;
+    bool lengthMatch = book->getLength() == preferredLength;
+    bool edgeMatch = book->getEdge() == preferredEdge;
+    bool etcMatch = book->getEtc() == preferredEtc;
 
     switch (requestType) {
     case eRequestType::GenreOnly:
         if (genreMatch) {
             ConsoleIO::print("장르 선택이 아주 훌륭하군요. 이 책은 고귀한 지식을 담고 있습니다.");
-            return true;
+            matchCount++;
         }
         else {
             ConsoleIO::print("이 장르는 제 취향과는 조금 거리가 있군요.");
-            return false;
         }
+        break;
 
     case eRequestType::MoodOnly:
         if (moodMatch) {
             ConsoleIO::print("이 책은 엘프의 영혼에 완벽히 울려 퍼집니다.");
-            return true;
+            matchCount++;
         }
         else {
             ConsoleIO::print("이 책은 엘프의 감성에 부족합니다.");
-            return false;
         }
+        break;
 
     case eRequestType::GenreAndMood:
         if (genreMatch && moodMatch) {
             ConsoleIO::print("장르와 분위기 모두 엘프의 이상에 부합합니다. 매우 감명 깊군요.");
-            return true;
+            matchCount += 2;
+        }
+        else if (genreMatch || moodMatch) {
+            ConsoleIO::print("책은 괜찮지만, 제가 원하는 완벽한 조합은 아니군요.");
+            matchCount += 1;
         }
         else {
-            ConsoleIO::print("책은 괜찮지만, 제가 원하는 완벽한 조합은 아니군요.");
-            return false;
+            ConsoleIO::print("유감이지만 제 감성과는 다소 거리가 있습니다.");
         }
+        break;
 
     case eRequestType::AnyBook:
         ConsoleIO::print("지식은 모든 형태로 빛나는 법이죠. 이 책도 소중합니다.");
-        return true;
+        matchCount += (genreMatch + moodMatch); // 기본 취향 반영
+        break;
     }
 
-    return false;
+    // 나머지 취향 요소 평가 (항상)
+    if (lengthMatch) ++matchCount;
+    if (edgeMatch) ++matchCount;
+    if (etcMatch) ++matchCount;
+
+    return matchCount;
 }
+
 
 
 bool ElfScholarNPC::borrowBook(Book* book) {

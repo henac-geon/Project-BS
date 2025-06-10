@@ -3,57 +3,70 @@
 #include <cstdlib>
 
 // TODO: 아 이거 ai서서 더 자연스럽게 하고 싶은데...
-bool WizardNPC::rateBook(Book* book) const {
-    if (!book) return false;
+int WizardNPC::rateBook(Book* book) const {
+    if (!book) return 0;
 
     ConsoleIO::print("마법사가 책의 기운을 점치고 있습니다...");
+
+    int matchCount = 0;
 
     bool genreMatch = book->getGenre() == preferredGenre;
     bool moodMatch = book->getMood() == preferredMood;
     bool isMagicalGenre = book->getGenre() == eBookGenre::Fantasy || book->getGenre() == eBookGenre::Mystery;
+    bool lengthMatch = book->getLength() == preferredLength;
+    bool edgeMatch = book->getEdge() == preferredEdge;
+    bool etcMatch = book->getEtc() == preferredEtc;
 
     switch (requestType) {
     case eRequestType::GenreOnly:
         if (genreMatch || isMagicalGenre) {
             ConsoleIO::print("이 장르는 마법의 흐름과 공명합니다... 좋아요.");
-            return true;
+            matchCount += 2;
         }
         else {
             ConsoleIO::print("지식은 있으나, 마법적 울림은 약하군요.");
-            return false;
         }
+        break;
 
     case eRequestType::MoodOnly:
         if (moodMatch) {
             ConsoleIO::print("이 분위기 속에 마력이 흐르고 있어요. 흐음... 괜찮군.");
-            return true;
+            matchCount += 2;
         }
         else {
             ConsoleIO::print("감정의 떨림이 부족하군요. 마법은 감정과 함께 흐르니까요.");
-            return false;
         }
+        break;
 
     case eRequestType::GenreAndMood:
         if ((genreMatch || isMagicalGenre) && moodMatch) {
             ConsoleIO::print("이 책은 마법진 하나 없이도 강력한 기운을 품고 있군요. 훌륭합니다.");
-            return true;
+            matchCount += 3;
         }
         else if (genreMatch || moodMatch || isMagicalGenre) {
             ConsoleIO::print("부분적으로는 기운이 느껴지나... 아직 완전하진 않습니다.");
-            return true;
+            matchCount += 1;
         }
         else {
             ConsoleIO::print("이 책은 마법과는 인연이 없군요.");
-            return false;
         }
+        break;
 
     case eRequestType::AnyBook:
         ConsoleIO::print("책이란 곧 주문서. 무엇이든 배움의 씨앗이 될 수 있지요.");
-        return true;
+        if (genreMatch || isMagicalGenre) matchCount += 1;
+        if (moodMatch) matchCount += 1;
+        break;
     }
 
-    return false;
+    // 보조 취향 요소는 항상 반영
+    if (lengthMatch) matchCount += 1;
+    if (edgeMatch)   matchCount += 1;
+    if (etcMatch)    matchCount += 1;
+
+    return matchCount;
 }
+
 
 
 bool WizardNPC::borrowBook(Book* book) {

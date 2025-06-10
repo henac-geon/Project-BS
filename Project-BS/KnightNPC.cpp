@@ -3,56 +3,73 @@
 #include <cstdlib>
 
 // TODO: 아 이거 ai서서 더 자연스럽게 하고 싶은데...
-bool KnightNPC::rateBook(Book* book) const {
-    if (!book) return false;
+int KnightNPC::rateBook(Book* book) const {
+    if (!book) return 0;
 
     ConsoleIO::print(name + "이(가) 책의 명예와 가치를 판단합니다...");
 
+    int matchCount = 0;
+
     bool genreMatch = book->getGenre() == preferredGenre;
     bool moodMatch = book->getMood() == preferredMood;
+    bool lengthMatch = book->getLength() == preferredLength;
+    bool edgeMatch = book->getEdge() == preferredEdge;
+    bool etcMatch = book->getEtc() == preferredEtc;
 
     switch (requestType) {
     case eRequestType::GenreOnly:
         if (genreMatch) {
             ConsoleIO::print("이 책은 나의 사명과 완벽히 맞아떨어집니다. 읽을 가치가 있지.");
-            return true;
+            matchCount += 1;
         }
         else if (book->getGenre() == eBookGenre::Fantasy) {
             ConsoleIO::print("판타지라면 기사도 정신을 함양하는 데 부족함이 없지.");
-            return true;
+            matchCount += 1;
         }
         else {
             ConsoleIO::print("이 장르는 기사의 길과는 거리가 멀다.");
-            return false;
         }
+        break;
 
     case eRequestType::MoodOnly:
         if (moodMatch) {
             ConsoleIO::print("이 책은 내 마음을 불타오르게 만드는군!");
-            return true;
+            matchCount += 1;
         }
         else {
             ConsoleIO::print("이런 분위기는 전장에서 도움이 되지 않는다.");
-            return false;
         }
+        break;
 
     case eRequestType::GenreAndMood:
         if (genreMatch && moodMatch) {
             ConsoleIO::print("장르도 분위기도 나의 길에 부합한다. 명예로운 선택이군.");
-            return true;
+            matchCount += 2;
+        }
+        else if (genreMatch || moodMatch) {
+            ConsoleIO::print("부분적으로는 괜찮지만, 기사에겐 완전한 일치를 원한다.");
+            matchCount += 1;
         }
         else {
-            ConsoleIO::print("부분적으로는 괜찮지만, 기사에겐 완전한 일치를 원한다.");
-            return false;
+            ConsoleIO::print("명예도 감성도 이 책엔 부족하군.");
         }
+        break;
 
     case eRequestType::AnyBook:
         ConsoleIO::print("모든 지식은 검보다 강할 수 있다. 받아들이겠다.");
-        return true;
+        if (genreMatch) matchCount += 1;
+        if (moodMatch)  matchCount += 1;
+        break;
     }
 
-    return false;
+    // 보조 취향 요소는 무조건 반영
+    if (lengthMatch) matchCount += 1;
+    if (edgeMatch)   matchCount += 1;
+    if (etcMatch)    matchCount += 1;
+
+    return matchCount;
 }
+
 
 bool KnightNPC::borrowBook(Book* book) {
     if (!book) return false;

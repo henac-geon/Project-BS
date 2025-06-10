@@ -4,8 +4,15 @@
 
 
 void Inventory::addBook(Book* book) {
+    for (const auto& b : books) {
+        if (b->getTitle() == book->getTitle()) {
+            ConsoleIO::println("이미 동일한 제목의 책이 인벤토리에 존재합니다: " + book->getTitle());
+            return;
+        }
+    }
     books.push_back(book);
 }
+
 
 void Inventory::addBooks(const std::vector<Book*>& newBooks) {
     books.insert(books.end(), newBooks.begin(), newBooks.end());
@@ -48,4 +55,8 @@ bool Inventory::attemptToRestoreDamagedBook(Book* book, MiniGame* game) {
         removeBook(book);
         return false;
     }
+}
+
+int Inventory::getTotalBookCount() const {
+    return books.size();
 }

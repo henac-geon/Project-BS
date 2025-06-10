@@ -8,11 +8,12 @@
 
 class VampireNPC : public NPC {
 public:
-    VampireNPC(const std::string& n, bool s, eBookGenre g, eBookMood m, int gold, int mp, const std::vector<std::string>& dialogues)
-        : NPC(n, s, g, m, gold, mp, dialogues) {
+    VampireNPC(const std::string& name, bool isMale, eBookGenre genre, eBookMood mood, int len, eBookEdge edge, eBookEtc etc, int gold, int magicPower, const std::vector<std::string>& dialogues)
+        : NPC(name, isMale, genre, mood, len, edge, etc, gold, magicPower, dialogues)
+    {
     }
-
-    bool rateBook(Book* book) const override;
+    // 필수 메서드 구현
+    int rateBook(Book* book) const override;
     bool borrowBook(Book* book) override;
     Book* returnBook() override;
     bool isReturningBook() const override;

@@ -5,21 +5,21 @@
 #include "Enum_Utils.h"
 
 CrudStore::CrudStore()
-    : experience(0), level(1), score(0),
-    magicPower(MAX_MAGIC_POWER), gold(0), bookstoreRank(1), bookStock(0) {
-
-    // 초기화: Inventory 생성
+    : experience(0), level(1),
+    magicPower(MAX_MAGIC_POWER), gold(0), bookstoreRank(1), bookStock(0), maxBookStock(5), numberOfVisitorsToday(4){
     std::vector<Book*> books = bookFactory.initBooks();
     inventory.addBooks(books);
+    bookStock = inventory.getTotalBookCount();
 }
 
 void CrudStore::displayStatus() const {
+    ConsoleIO::println("");
     std::string line;
-    line += "마법 기운: " + std::to_string(magicPower) + "   ";
-    line += "골드: " + std::to_string(gold) + "   ";
-    line += "LV." + std::to_string(level) + " (" + std::to_string(experience) + "%)   ";
-    line += "서점 랭킹: Rank " + std::to_string(bookstoreRank) + "   ";
-    line += "재고 상태: " + std::to_string(bookStock) + "/" + std::to_string(MAX_BOOK_STOCK);
+    line += "◆ 마법 기운: " + std::to_string(magicPower) + "   ";
+    line += "◎ 골드: " + std::to_string(gold) + "   ";
+    line += "☆ LV." + std::to_string(level) + " (" + std::to_string(experience) + "%)   ";
+    line += "★ 서점 랭킹: Rank " + std::to_string(bookstoreRank) + "   ";
+    line += "▦ 재고 상태: " + std::to_string(bookStock) + "/" + std::to_string(maxBookStock);
     ConsoleIO::println(line);
 }
 
@@ -27,6 +27,15 @@ void CrudStore::gainExperience(int amount) {
     if (amount < 0) return;
     experience += amount;
     checkLevelUp();
+}
+
+void CrudStore::setnumberOfVisitorsToday(int num) {
+    if (num < 0) num = 0;
+    numberOfVisitorsToday = num;
+}
+
+int CrudStore::getNumberOfVisitorsToday() const {
+    return numberOfVisitorsToday;
 }
 
 bool CrudStore::checkLevelUp() {
@@ -54,7 +63,7 @@ int CrudStore::getGold() const { return gold; }
 double CrudStore::getExperience() const { return experience; }
 int CrudStore::getBookstoreRank() const { return bookstoreRank; }
 int CrudStore::getBookStock() const { return bookStock; }
-int CrudStore::getMaxBookStock() const { return MAX_BOOK_STOCK; }
+int CrudStore::getMaxBookStock() const { return maxBookStock; }
 
 void CrudStore::consumeMagicPower(int amount) {
     if (amount < 0) return;
@@ -97,12 +106,13 @@ void CrudStore::setBookstoreRank(int rank) {
 }
 void CrudStore::setBookStock(int stock) {
     if (stock < 0) stock = 0;
-    if (stock > MAX_BOOK_STOCK) stock = MAX_BOOK_STOCK;
+    if (stock > maxBookStock) stock = maxBookStock;
     bookStock = stock;
 }
+
 void CrudStore::adjustBookStock(int delta) {
     bookStock += delta;
-    if (bookStock > MAX_BOOK_STOCK) bookStock = MAX_BOOK_STOCK;
+    if (bookStock > maxBookStock) bookStock = maxBookStock;
     if (bookStock < 0) bookStock = 0;
 }
 
@@ -111,15 +121,6 @@ int CrudStore::calculateGoldPenalty(const Book& book) const {
 }
 int CrudStore::calculateMagicPenalty(const Book& book) const {
     return 0; // TODO: 구현 예정
-}
-
-void CrudStore::addScore(int amount) {
-    score += amount;
-    if (score < 0) score = 0;
-}
-
-int CrudStore::getScore() const {
-    return score;
 }
 
 Inventory& CrudStore::getInventory() {
@@ -136,10 +137,7 @@ void CrudStore::addDailyGold(int amount) {
     dailyGoldEarned += amount;
     addGold(amount);
 }
-void CrudStore::addDailyScore(int amount) {
-    dailyScoreEarned += amount;
-    addScore(amount);
-}
+
 void CrudStore::addDailyMagicPower(int amount) {
     dailyMagicPowerEarned += amount;
     addMagicPower(amount);
@@ -149,15 +147,14 @@ void CrudStore::addDailyExperience(int amount) {
     gainExperience(amount);
 }
 int CrudStore::getDailyGoldEarned() const { return dailyGoldEarned; }
-int CrudStore::getDailyScoreEarned() const { return dailyScoreEarned; }
 int CrudStore::getDailyMagicPowerEarned() const { return dailyMagicPowerEarned; }
 int CrudStore::getDailyExperienceEarned() const { return dailyExperienceEarned; }
 
 void CrudStore::resetDailyEarnings() {
     dailyGoldEarned = 0;
-    dailyScoreEarned = 0;
     dailyMagicPowerEarned = 0;
     dailyExperienceEarned = 0;
+    dailyRankPointsEarned = 0;
 }
 
 void CrudStore::displayDailySummary() const {
@@ -165,7 +162,8 @@ void CrudStore::displayDailySummary() const {
     ConsoleIO::println("- 획득 골드: " + std::to_string(dailyGoldEarned));
     ConsoleIO::println("- 획득 점수: " + std::to_string(dailyScoreEarned));
     ConsoleIO::println("- 획득 마법 기운: " + std::to_string(dailyMagicPowerEarned));
-    ConsoleIO::println("- 총 점수: " + std::to_string(score));
+    ConsoleIO::println("- 획득 경험치: " + std::to_string(dailyExperienceEarned));
+    ConsoleIO::println("- 획득 랭크 포인트: " + std::to_string(dailyRankPointsEarned));
     ConsoleIO::println("- 현재 레벨: " + std::to_string(level));
 }
 
@@ -184,26 +182,41 @@ bool CrudStore::canAffordBookElements(eBookGenre genre, eBookMood mood, int leng
     return magicPower >= totalMagic;
 }
 
+bool CrudStore::canAffordGold(int amount) {
+    return gold >= amount;
+}
 
 // 책 집필 요청 함수
 Book* CrudStore::tryWriteBook(const std::string& title, const std::string& desc,
     eBookGenre genre, eBookMood mood, int length,
     eBookEdge edge, eBookEtc etc) {
-    if (!canAffordBookElements(genre, mood, length, edge, etc)) {
-        ConsoleIO::println("마법 기운이 부족하여 책을 집필할 수 없습니다.");
-        return nullptr;
-    }
 
-    int cost =
+    // 마법 기운과 골드 소비량 계산
+    int magicCost =
         writingElementManager.getMagicCost(WritingElementCategory::Genre, static_cast<int>(genre)) +
         writingElementManager.getMagicCost(WritingElementCategory::Mood, static_cast<int>(mood)) +
         length +
         writingElementManager.getMagicCost(WritingElementCategory::Edge, static_cast<int>(edge)) +
         writingElementManager.getMagicCost(WritingElementCategory::Etc, static_cast<int>(etc));
 
-    consumeMagicPower(cost);
+    int goldCost = writingElementManager.getGoldCost(WritingElementCategory::Genre, static_cast<int>(genre)) +
+        writingElementManager.getGoldCost(WritingElementCategory::Mood, static_cast<int>(mood)) +
+        writingElementManager.getGoldCost(WritingElementCategory::Edge, static_cast<int>(edge)) +
+        writingElementManager.getGoldCost(WritingElementCategory::Etc, static_cast<int>(etc));
+
+    if (!canAffordBookElements(genre, mood, length, edge, etc) || !canAffordGold(goldCost)) {
+        ConsoleIO::println("마법 기운 또는 골드가 부족하여 책을 집필할 수 없습니다.");
+        return nullptr;
+    }
+
+    // 자원 소비
+    consumeMagicPower(magicCost);
+    useGold(goldCost);
+
+    // 책 생성
     return bookFactory.createBook(title, desc, genre, mood, length, edge, etc);
 }
+
 
 // Enum 값 + category만 받아 포맷된 문자열을 반환하는 함수
 std::string CrudStore::formatEnumElement(WritingElementCategory category, int enumValue) const {
@@ -319,4 +332,43 @@ void CrudStore::displayCustomerSatisfaction() const {
 void CrudStore::resetSatisfactionCounters() {
     satisfiedCount = 0;
     dissatisfiedCount = 0;
+}
+
+
+int CrudStore::getRankPoints() const { return rankPoints; }
+int CrudStore::getDailyRankPointsEarned() const { return dailyRankPointsEarned; }
+
+void CrudStore::addRankPoints(int amount) {
+    if (amount < 0) return;
+    rankPoints += amount;
+}
+
+void CrudStore::addDailyRankPoints(int amount) {
+    if (amount < 0) return;
+    dailyRankPointsEarned += amount;
+    addRankPoints(amount);
+}
+
+void CrudStore::increaseMaxBookStock(int amount) {
+    maxBookStock += amount;
+    if (maxBookStock > MAX_BOOK_STOCK) {
+        maxBookStock = MAX_BOOK_STOCK;
+    }
+}
+
+void CrudStore::checkupRankUP() {
+    int previousRank = bookstoreRank;
+
+    if (rankPoints >= 300) bookstoreRank = 5;
+    else if (rankPoints >= 200) bookstoreRank = 4;
+    else if (rankPoints >= 120) bookstoreRank = 3;
+    else if (rankPoints >= 50) bookstoreRank = 2;
+    else bookstoreRank = 1;
+
+    int diff = bookstoreRank - previousRank;
+    if (diff > 0) {
+        increaseMaxBookStock(diff * 3); // 랭킹 1단계당 최대 재고 +3 증가
+        ConsoleIO::println("★ 서점 랭킹이 " + std::to_string(previousRank) + " → " + std::to_string(bookstoreRank) + "로 상승했습니다!");
+        ConsoleIO::println("★ 최대 재고량이 " + std::to_string(diff * 3) + "만큼 증가했습니다! (현재 " + std::to_string(maxBookStock) + ")");
+    }
 }

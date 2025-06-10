@@ -15,6 +15,9 @@ protected:
     bool isMale;                              // 성별
     eBookGenre preferredGenre;                // 선호 장르
     eBookMood preferredMood;                  // 선호 분위기
+    int preferredLength;
+    eBookEdge preferredEdge;
+    eBookEtc preferredEtc;
     int gold;                                 // 보유 골드
     int magicPower;                           // 마법 기운
     eRequestType requestType;                 // 요청 유형
@@ -23,11 +26,11 @@ protected:
 
 public:
     // 생성자 및 소멸자
-    NPC(const std::string& name, bool isMale, eBookGenre genre, eBookMood mood, int gold, int magicPower, const std::vector<std::string>& dialogues);
+    NPC(const std::string& name, bool isMale, eBookGenre genre, eBookMood mood, int len, eBookEdge edge, eBookEtc etc, int gold, int magicPower, const std::vector<std::string>& dialogues);
     virtual ~NPC() = default;
 
     // 순수 가상 함수 (자식 클래스에서 구현 필요)
-    virtual bool rateBook(Book* book) const = 0;           // 책 평가
+    virtual int rateBook(Book* book) const = 0;           // 책 평가
     virtual bool borrowBook(Book* book) = 0;               // 책 대여 시도
     virtual Book* returnBook() = 0;                        // 책 반환
     virtual bool isReturningBook() const = 0;              // 책을 반환할지 여부
@@ -45,6 +48,9 @@ public:
     bool getIsMale() const;
     eBookGenre getPreferredGenre() const;
     eBookMood getPreferredMood() const;
+    int getPreferredLength() const;
+    eBookEdge getPreferredEdge() const;
+    eBookEtc getPreferredEtc() const;
     int getGold() const;
     int getMagicPower() const;
     eRequestType getRequestType() const;

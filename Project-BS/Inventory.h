@@ -27,6 +27,7 @@ public:
     const std::vector<Book*>& getBooks() const;
     void removeBook(Book* book);
     bool attemptToRestoreDamagedBook(Book* book, MiniGame* game);
+    int getTotalBookCount() const;
 };
 
 #endif // INVENTORY_H

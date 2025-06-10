@@ -24,14 +24,18 @@ private:
     double experience;
     int magicPower;
     int gold;
-    int score;
     int bookstoreRank;
     int bookStock;
+    int maxBookStock = 5; // 최대 책 재고 수
 
     int dailyGoldEarned = 0;
     int dailyScoreEarned = 0;
     int dailyMagicPowerEarned = 0;
     int dailyExperienceEarned = 0;
+    int numberOfVisitorsToday = 4; // 오늘 방문할 NPC 수
+
+    int rankPoints = 0;              // 랭킹 포인트
+    int dailyRankPointsEarned = 0;   // 오늘 얻은 랭킹 포인트
 
     int satisfiedCount = 0; // 만족한 고객 수
     int dissatisfiedCount = 0; // 불만족한 고객 수
@@ -40,6 +44,7 @@ private:
     BookFactory bookFactory;
     WritingElementManager writingElementManager;
 
+    bool canAffordGold(int amount);
 public:
     CrudStore();
 
@@ -52,6 +57,9 @@ public:
     bool checkLevelUp();
     int getLevel() const;
     double getExperience() const;
+
+    void setnumberOfVisitorsToday(int num);
+    int getNumberOfVisitorsToday() const;
 
     // 마법 기운 관련
     int getMagicPower() const;
@@ -66,10 +74,6 @@ public:
     void addGold(int amount);
     void useGold(int amount);
 
-    // 점수 관련
-    int getScore() const;
-    void addScore(int amount);
-
     // 랭킹 / 재고
     int getBookstoreRank() const;
     void setBookstoreRank(int rank);
@@ -77,17 +81,23 @@ public:
     void setBookStock(int stock);
     int getMaxBookStock() const;
     void adjustBookStock(int delta);
+    void increaseMaxBookStock(int amount);
 
     // 일일 수익 기록
     void addDailyGold(int amount);
-    void addDailyScore(int amount);
     void addDailyMagicPower(int amount);
     void addDailyExperience(int amount);
     int getDailyGoldEarned() const;
-    int getDailyScoreEarned() const;
     int getDailyMagicPowerEarned() const;
     int getDailyExperienceEarned() const;
     void resetDailyEarnings();
+
+    // 랭킹 포인트
+    int getRankPoints() const;
+    int getDailyRankPointsEarned() const;
+    void addRankPoints(int amount);
+    void addDailyRankPoints(int amount);
+    void checkupRankUP();
 
     // 요소 접근자
     Inventory& getInventory();
