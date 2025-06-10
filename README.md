@@ -1,3 +1,6 @@
+[프로젝트 소개 영상](https://youtu.be/B9qQArcYyiQ)
+
+
 # 📚 BookGameSystem
 
 책 대여와 NPC 상호작용, 미니게임을 중심으로 한 **텍스트 기반 콘솔 게임**입니다.  
@@ -65,6 +68,3 @@ cmake --build .
 
 # 3. 실행
 ./BookGameSystem
-
-
-[프로젝트 소개 영상](https://youtu.be/B9qQArcYyiQ)
